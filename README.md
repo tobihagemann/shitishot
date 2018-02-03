@@ -43,3 +43,7 @@ The run script `deploy` executes
   "lint": "ng lint"
 }
 ```
+
+## License
+
+Distributed under the MIT license. See the LICENSE file for more info.
