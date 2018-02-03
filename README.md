@@ -22,15 +22,15 @@ Using the `--open` (or just `-o`) option will automatically open your browser on
 
 ## Deploy
 
-This project is hosted on GitHub Pages and uses [angular-cli-ghpages](https://github.com/angular-schule/angular-cli-ghpages) to publish it.
+This project is hosted on GitHub Pages with a custom domain and uses [angular-cli-ghpages](https://github.com/angular-schule/angular-cli-ghpages) to publish it.
 
 ```
 npm run deploy
 ```
 
 The run script `deploy` executes
-- `ng build` with `prod` environment and base-href `shitishot` (change it if your repository name is different),
-- `echo "shitishot.de" > dist/CNAME` (see [FAQ of angular-cli-ghpages](https://github.com/angular-schule/angular-cli-ghpages/wiki/FAQ#my-cname-file-is-deleted-on-every-publish-specific-to-github-pages-only)), and
+- `ng build` with `prod` environment,
+- `echo "shitishot.de" > dist/CNAME` for using a custom domain (see [FAQ of angular-cli-ghpages](https://github.com/angular-schule/angular-cli-ghpages/wiki/FAQ#my-cname-file-is-deleted-on-every-publish-specific-to-github-pages-only)), and
 - `ngh` (short for `angular-cli-ghpages`) to publish the output at `dist` into the `gh-pages` branch.
 
 ## Scripts
@@ -39,7 +39,7 @@ The run script `deploy` executes
 "scripts": {
   "ng": "ng",
   "start": "ng serve --open",
-  "deploy": "ng build --prod --base-href \"/shitishot/\" && echo \"shitishot.de\" > dist/CNAME && ngh",
+  "deploy": "ng build --prod && echo \"shitishot.de\" > dist/CNAME && ngh",
   "lint": "ng lint"
 }
 ```
