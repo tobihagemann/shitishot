@@ -7,7 +7,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --open",
-    "deploy": "ng build --prod --base-href \"/shitishot/\" --output-hashing=none && ngh",
+    "deploy": "ng build --prod --base-href \"/shitishot/\" && echo \"shitishot.de\" > dist/CNAME && ngh",
     "lint": "ng lint"
   },
   "private": true,
