@@ -18,11 +18,13 @@ npm install
 npm run start
 ```
 
-The run script `start` executes `ng serve` with `open` option.
+The run script `start` executes `ng serve` with `open` and `aot` options.
 
 The `ng serve` command launches the server, watches your files, and rebuilds the app as you make changes to those files.
 
 Using the `--open` (or just `-o`) option will automatically open your browser on `[http://localhost:4200/](http://localhost:4200/)`.
+
+Using the `--aot` ([Ahead-of-Time](https://angular.io/guide/aot-compiler)) option will compile the app at build time.
 
 ## Deploy
 This project is hosted on GitHub Pages with a custom domain and uses [angular-cli-ghpages](https://github.com/angular-schule/angular-cli-ghpages) to publish it.
@@ -33,14 +35,14 @@ npm run deploy
 
 The run script `deploy` executes
 - `ng build` with `prod` environment,
-- `echo "shitishot.de" > dist/CNAME` for using a custom domain (see [FAQ of angular-cli-ghpages](https://github.com/angular-schule/angular-cli-ghpages/wiki/FAQ#my-cname-file-is-deleted-on-every-publish-specific-to-github-pages-only)), and
+- writing `shitishot.de` into `dist/CNAME` for using a custom domain (see [FAQ of angular-cli-ghpages](https://github.com/angular-schule/angular-cli-ghpages/wiki/FAQ#my-cname-file-is-deleted-on-every-publish-specific-to-github-pages-only)), and
 - `ngh` (short for `angular-cli-ghpages`) to publish the output at `dist` into the `gh-pages` branch.
 
 ## Scripts
 ```json
 "scripts": {
   "ng": "ng",
-  "start": "ng serve --open",
+  "start": "ng serve --open --aot",
   "deploy": "ng build --prod && echo \"shitishot.de\" > dist/CNAME && ngh",
   "lint": "ng lint"
 }
