@@ -1,0 +1,13 @@
+<nav class="navbar navbar-light bg-light justify-content-between">
+  <div class="container">
+    <a class="navbar-brand" routerLink="/">{{'Title' | translate:lang}}</a>
+    <div class="nav-item dropdown" placement="bottom-right" ngbDropdown>
+      <a class="nav-link dropdown-toggle" id="languageDropdown" aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>
+        <span class="fas fa-globe"></span> {{currentLanguage.text}}
+      </a>
+      <div class="dropdown-menu" aria-labelledby="languageDropdown" ngbDropdownMenu>
+        <a *ngFor="let language of languages" class="dropdown-item" (click)="selectLanguage(language)">{{language.text}}</a>
+      </div>
+    </div>
+  </div>
+</nav>

@@ -5,6 +5,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { L10nConfig, L10nLoader, TranslationModule, StorageStrategy, ProviderType } from 'angular-l10n';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
+import { NavComponent } from './nav/nav.component';
+
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
@@ -36,6 +38,7 @@ export function initL10n(l10nLoader: L10nLoader): Function {
     { provide: APP_INITIALIZER, useFactory: initL10n, deps: [L10nLoader], multi: true }
   ],
   declarations: [
+    NavComponent,
     AppComponent
   ],
   imports: [
