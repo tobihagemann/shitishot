@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Language, LocaleService } from 'angular-l10n';
+import { LocaleService } from 'angular-l10n';
 
-interface Language {
+interface Locale {
   text: string;
-  code: string;
+  languageCode: string;
+  countryCode: string;
 }
 
 @Component({
@@ -13,22 +14,21 @@ interface Language {
 })
 export class NavComponent implements OnInit {
 
-  @Language() lang: string;
-  currentLanguage: Language;
-  languages: Language[] = [
-    { text: 'Deutsch', code: 'de' },
-    { text: 'English', code: 'en' }
+  currentLocale: Locale;
+  locales: Locale[] = [
+    { text: 'Deutsch', languageCode: 'de', countryCode: 'DE' },
+    { text: 'English', languageCode: 'en', countryCode: 'US' }
   ];
 
   constructor(private localeService: LocaleService) { }
 
   ngOnInit() {
-    this.currentLanguage = this.languages.find(language => language.code == this.localeService.getCurrentLanguage());
+    this.currentLocale = this.locales.find(language => language.languageCode == this.localeService.getCurrentLanguage());
   }
 
-  selectLanguage(language: Language) {
-    this.currentLanguage = language;
-    this.localeService.setCurrentLanguage(language.code);
+  selectLocale(locale: Locale) {
+    this.currentLocale = locale;
+    this.localeService.setDefaultLocale(locale.languageCode, locale.countryCode);
   }
 
 }

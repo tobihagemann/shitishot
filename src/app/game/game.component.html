@@ -1,0 +1,7 @@
+<button type="button" class="btn btn-primary mb-3" (click)="newGame()" l10nTranslate>New Game</button>
+<ul class="list-group">
+  <li *ngFor="let word of words" class="list-group-item d-flex justify-content-between">
+    <span>{{word.title}}</span>
+    <span class="text-muted" l10nDecimal>{{word.searchResults}}</span>
+  </li>
+</ul>
