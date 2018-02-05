@@ -4,7 +4,7 @@ import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/r
 import { L10nLoader } from 'angular-l10n';
 
 @Injectable()
-export class L18nResolver implements Resolve<void> {
+export class L10nResolver implements Resolve<void> {
 
   constructor(private l10nLoader: L10nLoader) { }
 

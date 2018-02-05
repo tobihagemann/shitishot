@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { NavComponent } from '../nav/nav.component';
 import { NavModule } from '../nav/nav.module';
-import { L18nResolver } from '../shared/l18n-resolver.service';
+import { L10nResolver } from '../shared/l10n-resolver.service';
 
 import { GameComponent } from './game.component';
 
@@ -11,7 +11,7 @@ const routes: Routes = [
   {
     path: '',
     component: NavComponent,
-    resolve: { void: L18nResolver },
+    resolve: { l10n: L10nResolver },
     children: [
       { path: '', component: GameComponent }
     ]
@@ -19,7 +19,6 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  providers: [L18nResolver],
   imports: [RouterModule.forChild(routes), NavModule],
   exports: [RouterModule]
 })

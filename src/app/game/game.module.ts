@@ -1,7 +1,8 @@
 import { NgModule, APP_INITIALIZER } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 import { L10nConfig, LocalizationModule, ProviderType } from 'angular-l10n';
+
+import { SharedModule } from '../shared/shared.module';
 
 import { GameComponent } from './game.component';
 import { GameRoutingModule } from './game-routing.module';
@@ -29,8 +30,8 @@ const l10nConfig: L10nConfig = {
     GameComponent
   ],
   imports: [
-    CommonModule,
     LocalizationModule.forChild(l10nConfig),
+    SharedModule,
     GameRoutingModule
   ],
 })
