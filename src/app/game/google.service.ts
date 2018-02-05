@@ -14,7 +14,7 @@ export class GoogleService {
   // Since I couldn't find an API that isn't deprecated or doesn't have ridiculous limitations, we're scraping this bad boy.
   // Due to cross-origin bullshit, we're using All Origins to bypass that.
   // https://medium.freecodecamp.org/client-side-web-scraping-with-javascript-using-jquery-and-regex-5b57a271cb86
-  private url = 'http://allorigins.me/get';
+  private url = 'https://allorigins.me/get';
   private params = function (language: string, query: string) {
     return new HttpParams({
       fromObject: {
