@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 
 import { LocaleService } from 'angular-l10n';
 
+import { LocalStorage } from '../shared/localstorage.decorator';
+
 import { GameService } from './game.service';
 import { Word } from './word';
 
@@ -11,23 +13,7 @@ import { Word } from './word';
 })
 export class GameComponent {
 
-  private _words: Word[];
-  get words() {
-    if (this._words) {
-      return this._words;
-    }
-    const words: Word[] = JSON.parse(localStorage.getItem('words'));
-    if (words) {
-      this._words = words;
-      return this._words;
-    } else {
-      return [];
-    }
-  }
-  set words(words: Word[]) {
-    this._words = words;
-    localStorage.setItem('words', JSON.stringify(words));
-  }
+  @LocalStorage([]) words: Word[];
 
   constructor(private localeService: LocaleService, private gameService: GameService) { }
 
