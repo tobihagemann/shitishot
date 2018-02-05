@@ -15,7 +15,7 @@ export class GoogleService {
   // Due to cross-origin bullshit, we're using All Origins to bypass that.
   // https://medium.freecodecamp.org/client-side-web-scraping-with-javascript-using-jquery-and-regex-5b57a271cb86
   private url = 'https://allorigins.me/get';
-  private params = function (language: string, query: string) {
+  private params = (language: string, query: string) => {
     return new HttpParams({
       fromObject: {
         url: 'https://www.google.com/search?q=' + encodeURIComponent(query) + '&hl=' + language
@@ -24,11 +24,11 @@ export class GoogleService {
   };
 
   // https://stackoverflow.com/a/25761750/1759462
-  private groupingSeparator = function (language: string) {
+  private groupingSeparator = (language: string) => {
     return (12345).toLocaleString(language).match(/12(.*)345/)[1];
   };
   // https://stackoverflow.com/a/16148273/1759462
-  private localizedNumberPattern = function (groupingSeparator: string) {
+  private localizedNumberPattern = (groupingSeparator: string) => {
     return new RegExp(`\\d{1,3}(${groupingSeparator}\\d{3})*`);
   };
 

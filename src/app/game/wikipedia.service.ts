@@ -16,10 +16,10 @@ interface WikipediaResponse {
 export class WikipediaService {
 
   // https://www.mediawiki.org/wiki/API:Random
-  private url = function (language: string) {
+  private url = (language: string) => {
     return `https://${language}.wikipedia.org/w/api.php`;
   };
-  private params = function (limit: number) {
+  private params = (limit: number) => {
     return new HttpParams({
       fromObject: {
         action: 'query',
