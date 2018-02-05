@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
@@ -53,9 +53,18 @@ export class GoogleService {
             observer.next(parseInt(localizedSearchResultsWithoutSeparator));
             observer.complete();
           } else {
-            observer.error(`Unable to get number of search results for "${query}"`);
+            // TODO: try to get search results in page 2
+            observer.error(-1);
             observer.complete();
           }
+        }, (err: HttpErrorResponse) => {
+          if (err.error instanceof Error) {
+            console.error('An error occurred:', err.error.message);
+          } else {
+            console.error(`Backend returned code ${err.status}, body was: ${err.error}`);
+          }
+          observer.error(err.status);
+          observer.complete();
         });
     });
   }

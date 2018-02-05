@@ -25,15 +25,26 @@ export class GameService {
           titles.forEach(title => this.googleService.getSearchResults(title, languageCode)
             .subscribe(searchResults => {
               words.push(new Word(title, searchResults));
-            }, (err: string) => {
-              // TODO: proper error handling
-              console.error(err);
+              this.newGameStep(observer, words, limit);
+            }, (err: number) => {
+              console.error(`Unable to get number of search results for: ${title}`);
+              words.push(new Word(title, -1));
+              this.newGameStep(observer, words, limit);
             })
           );
-          observer.next(words);
+        }, (err: number) => {
+          console.error('Unable to get random titles');
+          observer.error(-1);
           observer.complete();
         });
     });
+  }
+
+  private newGameStep(observer: Observer<Word[]>, words: Word[], limit: number) {
+    if (words.length == limit) {
+      observer.next(words);
+      observer.complete();
+    }
   }
 
 }
