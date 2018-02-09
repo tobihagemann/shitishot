@@ -1,0 +1,7 @@
+html {
+  font-size: $font-size-sm;
+
+  @include media-breakpoint-up(md) {
+    font-size: $font-size-base;
+  }
+}

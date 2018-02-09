@@ -1,0 +1,12 @@
+@import "variables";
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+
+.nav-logo {
+  height: 26px;
+
+  @include media-breakpoint-up(md) {
+    height: 30px;
+  }
+}

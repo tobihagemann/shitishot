@@ -1,17 +1,22 @@
 <nav class="navbar navbar-expand-sm navbar-light bg-light justify-content-between">
   <div class="container">
-    <a class="navbar-brand" routerLink="/" l10nTranslate>Title</a>
-    <div class="nav-item dropdown" placement="bottom-right" ngbDropdown>
-      <a class="nav-link dropdown-toggle" id="languageDropdown" aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>
-        <span class="fas fa-globe"></span> {{currentLocale.text}}
-      </a>
-      <div class="dropdown-menu" aria-labelledby="languageDropdown" ngbDropdownMenu>
-        <a *ngFor="let locale of locales" class="dropdown-item" (click)="selectLocale(locale)">{{locale.text}}</a>
-      </div>
-    </div>
+    <a class="navbar-brand d-flex align-items-center" routerLink="/">
+      <img class="nav-logo mr-2" src="assets/logo-nav.png" srcset="assets/logo-nav@2x.png 2x">
+      <span class="align-center" l10nTranslate>Title</span>
+    </a>
+    <ul class="navbar-nav">
+      <li class="nav-item dropdown" placement="bottom-right" ngbDropdown>
+        <a class="nav-link dropdown-toggle" id="languageDropdown" aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>
+          <span class="fas fa-globe"></span> {{currentLocale.text}}
+        </a>
+        <div class="dropdown-menu" aria-labelledby="languageDropdown" ngbDropdownMenu>
+          <a *ngFor="let locale of locales" class="dropdown-item" (click)="selectLocale(locale)">{{locale.text}}</a>
+        </div>
+      </li>
+    </ul>
   </div>
 </nav>
 
-<div class="container py-5">
+<div class="container py-4 py-sm-5">
   <router-outlet></router-outlet>
 </div>
