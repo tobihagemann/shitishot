@@ -15,22 +15,16 @@ export class GoogleService {
   // Due to cross-origin bullshit, we're using All Origins to bypass that.
   // https://medium.freecodecamp.org/client-side-web-scraping-with-javascript-using-jquery-and-regex-5b57a271cb86
   private url = 'https://allorigins.me/get';
-  private params = (language: string, query: string) => {
-    return new HttpParams({
-      fromObject: {
-        url: 'https://www.google.com/search?q=' + encodeURIComponent(query) + '&hl=' + language
-      }
-    });
-  };
+  private params = (language: string, query: string) => new HttpParams({
+    fromObject: {
+      url: 'https://www.google.com/search?q=' + encodeURIComponent(query) + '&hl=' + language + '&lr=lang_' + language
+    }
+  });
 
   // https://stackoverflow.com/a/25761750/1759462
-  private groupingSeparator = (language: string) => {
-    return (12345).toLocaleString(language).match(/12(.*)345/)[1];
-  };
+  private groupingSeparator = (language: string) => (12345).toLocaleString(language).match(/12(.*)345/)[1];
   // https://stackoverflow.com/a/16148273/1759462
-  private localizedNumberPattern = (groupingSeparator: string) => {
-    return new RegExp(`\\d{1,3}(${groupingSeparator}\\d{3})*`);
-  };
+  private localizedNumberPattern = (groupingSeparator: string) => new RegExp(`\\d{1,3}(${groupingSeparator}\\d{3})*`);
 
   constructor(private http: HttpClient) { }
 

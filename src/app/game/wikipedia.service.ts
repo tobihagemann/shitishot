@@ -16,21 +16,17 @@ interface WikipediaResponse {
 export class WikipediaService {
 
   // https://www.mediawiki.org/wiki/API:Random
-  private url = (language: string) => {
-    return `https://${language}.wikipedia.org/w/api.php`;
-  };
-  private params = (limit: number) => {
-    return new HttpParams({
-      fromObject: {
-        action: 'query',
-        format: 'json',
-        list: 'random',
-        rnnamespace: '0',
-        rnlimit: String(Math.min(Math.max(1, limit), 10)),
-        origin: '*'
-      }
-    });
-  };
+  private url = (language: string) => `https://${language}.wikipedia.org/w/api.php`;
+  private params = (limit: number) => new HttpParams({
+    fromObject: {
+      action: 'query',
+      format: 'json',
+      list: 'random',
+      rnnamespace: '0',
+      rnlimit: String(Math.min(Math.max(1, limit), 10)),
+      origin: '*'
+    }
+  });
 
   constructor(private http: HttpClient) { }
 
