@@ -18,14 +18,18 @@
       "tsconfig": "tsconfig.app.json",
       "prefix": "app",
       "styles": [
-        "scss/styles.scss"
+        "scss/styles.scss",
+        "../node_modules/mobile-drag-drop/default.css"
       ],
       "stylePreprocessorOptions": {
         "includePaths": [
           "scss"
         ]
       },
-      "scripts": [],
+      "scripts": [
+        "../node_modules/mobile-drag-drop/index.min.js",
+        "../node_modules/mobile-drag-drop/scroll-behaviour.min.js"
+      ],
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",

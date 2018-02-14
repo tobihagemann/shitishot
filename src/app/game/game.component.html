@@ -1,7 +1,24 @@
-<button type="button" class="btn btn-primary mb-3" (click)="newGame()" l10nTranslate>New Game</button>
-<ul class="list-group">
-  <li *ngFor="let word of words" class="list-group-item d-flex justify-content-between">
-    <span>{{word.title}}</span>
-    <span class="text-muted" l10nDecimal>{{word.searchResults}}</span>
-  </li>
-</ul>
+<div *ngIf="words.length > 0" class="mb-4">
+  <div class="d-flex justify-content-center mb-4">
+    <div class="card card-next grabbable" draggable="true" (dragstart)="onNextTitleDragStart($event)" (dragenter)="preventDefaultEvent($event)" (dragover)="onDragOver($event)" (dragend)="onNextTitleDragEnd($event)">
+      <div class="card-body">
+        <p class="card-text">{{nextTitle}}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-group">
+    <div *ngFor="let title of titles; index as i" class="card d-flex flex-row flex-sm-column">
+      <div class="card-body grabbable" [class.foo]="dragEnterTitleIndex == i" draggable="true" (dragstart)="onTitleDragStart($event, i)" (dragenter)="preventDefaultEvent($event); onTitleDragEnter($event, i)" (dragover)="onDragOver($event)" (dragleave)="onTitleDragLeave($event, i)" (drop)="onTitleDrop($event, i)">
+        <p class="card-text">{{titles[i] || '&nbsp;'}}</p>
+      </div>
+      <div class="card-footer card-footer-searchresults d-flex align-items-center">
+        <small class="text-muted" l10nDecimal>{{searchResults[i]}}</small>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="d-flex justify-content-end">
+  <button type="button" class="btn btn-outline-secondary" (click)="newGame()" l10nTranslate>New Game</button>
+</div>

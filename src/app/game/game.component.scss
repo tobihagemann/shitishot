@@ -1,0 +1,45 @@
+@import "variables";
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+
+.card-next {
+  background-color: $primary;
+  color: color-yiq($primary);
+  width: 100%;
+
+  @include media-breakpoint-up(sm) {
+    width: calc(100% / 5);
+  }
+}
+
+.card-active {
+  background-color: rgba($primary, .03);
+  color: color-yiq(rgba($primary, .03));
+}
+
+.card-footer-searchresults {
+  @include media-breakpoint-down(sm) {
+    border-left: $card-border-width solid $card-border-color;
+    border-top: none;
+    @include border-left-radius(0);
+  }
+}
+
+.foo {
+  background-color: $secondary;
+  color: $white;
+}
+
+.grabbable {
+  cursor: move;
+  cursor: grab;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+
+  &:active {
+    cursor: grabbing;
+    cursor: -moz-grabbing;
+    cursor: -webkit-grabbing;
+  }
+}
