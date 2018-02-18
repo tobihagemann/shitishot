@@ -9,7 +9,7 @@
   width: 100%;
 
   @include media-breakpoint-up(sm) {
-    width: calc(100% / 5);
+    width: calc(100% * .2);
   }
 }
 
@@ -26,9 +26,17 @@
   }
 }
 
-.foo {
+.card-highlight {
   background-color: $secondary;
   color: $white;
+}
+
+.btn-show-results {
+  width: 100%;
+
+  @include media-breakpoint-up(sm) {
+    width: calc(100% * .4);
+  }
 }
 
 .grabbable {

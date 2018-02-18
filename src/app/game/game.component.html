@@ -1,16 +1,26 @@
 <div *ngIf="words.length > 0" class="mb-4">
   <div class="d-flex justify-content-center mb-4">
-    <div class="card card-next grabbable" draggable="true" (dragstart)="onNextTitleDragStart($event)" (dragenter)="preventDefaultEvent($event)" (dragover)="onDragOver($event)" (dragend)="onNextTitleDragEnd($event)">
+    <div *ngIf="nextTitle" class="card card-next grabbable" draggable="true" (dragstart)="onNextTitleDragStart($event)" (dragenter)="preventDefaultEvent($event)" (dragover)="onNextTitleDragOver($event)" (dragend)="onNextTitleDragEnd($event)">
       <div class="card-body">
         <p class="card-text">{{nextTitle}}</p>
       </div>
     </div>
+    <button *ngIf="!nextTitle &amp;&amp; results.length == 0" class="btn btn-primary btn-lg btn-show-results" (click)="showResults()" l10nTranslate>Show Results</button>
   </div>
 
   <div class="card-group">
     <div *ngFor="let title of titles; index as i" class="card d-flex flex-row flex-sm-column">
-      <div class="card-body grabbable" [class.foo]="dragEnterTitleIndex == i" draggable="true" (dragstart)="onTitleDragStart($event, i)" (dragenter)="preventDefaultEvent($event); onTitleDragEnter($event, i)" (dragover)="onDragOver($event)" (dragleave)="onTitleDragLeave($event, i)" (drop)="onTitleDrop($event, i)">
-        <p class="card-text">{{titles[i] || '&nbsp;'}}</p>
+      <div class="card-body grabbable" [class.card-highlight]="dragOverTitleIndex == i" draggable="true" (dragstart)="onTitleDragStart($event, i)" (dragenter)="preventDefaultEvent($event)" (dragover)="onTitleDragOver($event, i)" (dragend)="onTitleDragEnd($event)">
+        <p *ngIf="results.length == 0" class="card-text">{{titles[i] || '&nbsp;'}}</p>
+        <p *ngIf="results.length > 0 &amp;&amp; results[i]" class="card-text">
+          <span class="fas fa-check text-success fa-fw"></span> {{titles[i] || '&nbsp;'}}
+        </p>
+        <p *ngIf="results.length > 0 &amp;&amp; !results[i]" class="card-text">
+          <span class="fas fa-times text-danger fa-fw"></span> {{titles[i] || '&nbsp;'}}
+        </p>
+        <p *ngIf="results.length > 0 &amp;&amp; !results[i]" class="card-text">
+          <span class="fas fa-check fa-fw"></span> {{sortedWords[i].title}}
+        </p>
       </div>
       <div class="card-footer card-footer-searchresults d-flex align-items-center">
         <small class="text-muted" l10nDecimal>{{searchResults[i]}}</small>
