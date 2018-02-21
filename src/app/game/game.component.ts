@@ -22,8 +22,13 @@ export class GameComponent {
   @LocalStorage() searchResults: number[];
   @LocalStorage([]) results: boolean[];
 
+  loadingGame = false;
+
   private fixedTitles: string[];
+  private draggedTitle: string;
+  private draggedTitleIndex = -1;
   private dragOverTitleIndex = -1;
+  private dragEnterLeaveCounter = 0;
 
   constructor(private localeService: LocaleService, private gameService: GameService) {
     // https://github.com/timruffles/ios-html5-drag-drop-shim/issues/77#issuecomment-261772175
@@ -31,11 +36,12 @@ export class GameComponent {
   }
 
   newGame() {
+    this.loadingGame = true;
     const language = this.localeService.getCurrentLanguage();
     this.gameService.newGame(5, language)
       .subscribe(words => this.initGame(words), (err: number) => {
         // TODO: proper error handling
-      });
+      }, () => this.loadingGame = false);
   }
 
   initGame(words: Word[]) {
@@ -92,8 +98,17 @@ export class GameComponent {
   // Drag & Drop – Next Title
 
   onNextTitleDragStart(event) {
+    event.dataTransfer.setData('text/plain', this.nextTitle);
     event.dataTransfer.effectAllowed = 'move';
     this.fixedTitles = this.titles.slice(0);
+    this.draggedTitle = this.nextTitle;
+    this.draggedTitleIndex = -1;
+  }
+
+  onNextTitleDragEnter(event) {
+    // https://github.com/timruffles/ios-html5-drag-drop-shim#polyfill-requires-dragenter-listener
+    event.preventDefault();
+    this.dragEnterLeaveCounter++;
   }
 
   onNextTitleDragOver(event) {
@@ -105,11 +120,22 @@ export class GameComponent {
     this.dragOverTitleIndex = -1;
   }
 
-  onNextTitleDragEnd(event) {
-    const didDropOnTitle = this.dragOverTitleIndex != -1 && event.dataTransfer.dropEffect != 'none';
+  onNextTitleDragLeave() {
+    this.dragEnterLeaveCounter--;
+    if (this.dragEnterLeaveCounter == 0) {
+      this.fixedTitles.forEach((fixedTitle, fixedIndex) => {
+        this.titles[fixedIndex] = fixedTitle;
+      });
+      this.dragOverTitleIndex = -1;
+    }
+  }
+
+  onNextTitleDragEnd() {
+    const didDropOverTitle = this.dragOverTitleIndex != -1;
     this.dragOverTitleIndex = -1;
+    this.dragEnterLeaveCounter = 0;
     this.titles = this.titles; // persist titles
-    if (didDropOnTitle) {
+    if (didDropOverTitle) {
       this.drawNextTitle();
     }
   }
@@ -117,30 +143,43 @@ export class GameComponent {
   // Drag & Drop – Title
 
   onTitleDragStart(event, index: number) {
+    event.dataTransfer.setData('text/plain', this.titles[index]);
     event.dataTransfer.effectAllowed = 'move';
     this.fixedTitles = this.titles.slice(0);
+    this.draggedTitle = this.titles[index];
+    this.draggedTitleIndex = index;
+  }
+
+  onTitleDragEnter(event) {
+    // https://github.com/timruffles/ios-html5-drag-drop-shim#polyfill-requires-dragenter-listener
+    event.preventDefault();
+    this.dragEnterLeaveCounter++;
   }
 
   onTitleDragOver(event, index: number) {
     event.preventDefault();
     event.dataTransfer.dropEffect = 'move';
     this.fixedTitles.forEach((fixedTitle, fixedIndex) => {
-      this.titles[fixedIndex] = fixedTitle;
+      this.titles[fixedIndex] = this.draggedTitleIndex != fixedIndex ? fixedTitle : null;
     });
     this.dragOverTitleIndex = index;
-    this.updateTitle(this.nextTitle, index, -1); // TODO: set preferred direction
+    this.updateTitle(this.draggedTitle, index, -1); // TODO: set preferred direction
   }
 
-  onTitleDragEnd(event) {
+  onTitleDragLeave() {
+    this.dragEnterLeaveCounter--;
+    if (this.dragEnterLeaveCounter == 0) {
+      this.fixedTitles.forEach((fixedTitle, fixedIndex) => {
+        this.titles[fixedIndex] = fixedTitle;
+      });
+      this.dragOverTitleIndex = -1;
+    }
+  }
+
+  onTitleDragEnd() {
     this.dragOverTitleIndex = -1;
+    this.dragEnterLeaveCounter = 0;
     this.titles = this.titles; // persist titles
-  }
-
-  // Drag & Drop – Common
-
-  preventDefaultEvent(event) {
-    // https://github.com/timruffles/ios-html5-drag-drop-shim#polyfill-requires-dragenter-listener
-    event.preventDefault();
   }
 
 }
