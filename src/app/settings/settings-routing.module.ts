@@ -6,7 +6,7 @@ import { NavModule } from '../nav/nav.module';
 import { L10nResolver } from '../shared/l10n-resolver.service';
 import { SharedModule } from '../shared/shared.module';
 
-import { GameComponent } from './game.component';
+import { SettingsComponent } from './settings.component';
 
 const routes: Routes = [
   {
@@ -14,7 +14,7 @@ const routes: Routes = [
     component: NavComponent,
     resolve: { l10n: L10nResolver },
     children: [
-      { path: '', component: GameComponent }
+      { path: '', component: SettingsComponent }
     ]
   }
 ];
@@ -23,4 +23,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes), NavModule, SharedModule],
   exports: [RouterModule]
 })
-export class GameRoutingModule { }
+export class SettingsRoutingModule { }

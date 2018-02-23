@@ -1,0 +1,32 @@
+import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { L10nConfig, LocalizationModule, ProviderType } from 'angular-l10n';
+
+import { SharedModule } from '../shared/shared.module';
+
+import { SettingsRoutingModule } from './settings-routing.module';
+import { SettingsComponent } from './settings.component';
+
+const l10nConfig: L10nConfig = {
+  translation: {
+    providers: [
+      { type: ProviderType.Static, prefix: './assets/locale-' },
+      { type: ProviderType.Static, prefix: './assets/locale-settings-' }
+    ],
+    missingValue: 'No key'
+  }
+};
+
+@NgModule({
+  declarations: [
+    SettingsComponent
+  ],
+  imports: [
+    FormsModule,
+    LocalizationModule.forChild(l10nConfig),
+    SharedModule,
+    SettingsRoutingModule
+  ]
+})
+export class SettingsModule { }

@@ -33,6 +33,6 @@ const l10nConfig: L10nConfig = {
     LocalizationModule.forChild(l10nConfig),
     SharedModule,
     GameRoutingModule
-  ],
+  ]
 })
 export class GameModule { }
