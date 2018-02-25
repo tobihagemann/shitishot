@@ -1,7 +1,7 @@
 <div class="mb-4">
   <div class="form-group">
     <label for="language" l10nTranslate>Language</label>
-    <select class="form-control" id="language" name="language" [(ngModel)]="currentLocale" (ngModelChange)="changeLocale($event)">
+    <select class="form-control" id="language" name="language" [(ngModel)]="currentLocale">
       <option *ngFor="let locale of locales" [ngValue]="locale" [selected]="currentLocale == locale">{{locale.text}}</option>
     </select>
   </div>

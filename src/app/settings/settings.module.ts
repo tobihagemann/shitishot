@@ -7,6 +7,7 @@ import { SharedModule } from '../shared/shared.module';
 
 import { SettingsRoutingModule } from './settings-routing.module';
 import { SettingsComponent } from './settings.component';
+import { SettingsService } from './settings.service';
 
 const l10nConfig: L10nConfig = {
   translation: {
@@ -19,6 +20,9 @@ const l10nConfig: L10nConfig = {
 };
 
 @NgModule({
+  providers: [
+    SettingsService
+  ],
   declarations: [
     SettingsComponent
   ],
