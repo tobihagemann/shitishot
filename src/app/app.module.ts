@@ -5,6 +5,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { L10nConfig, L10nLoader, LocalizationModule, ProviderType, StorageStrategy } from 'angular-l10n';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
+import { NavModule } from './nav/nav.module';
+
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
@@ -43,6 +45,7 @@ export function initL10n(l10nLoader: L10nLoader): Function {
     HttpClientModule,
     LocalizationModule.forRoot(l10nConfig),
     NgbModule.forRoot(),
+    NavModule,
     AppRoutingModule
   ],
   bootstrap: [AppComponent]

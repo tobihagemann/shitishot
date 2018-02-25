@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 import { L10nConfig, LocalizationModule, ProviderType } from 'angular-l10n';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { NavComponent } from './nav.component';
 
@@ -23,8 +22,7 @@ const l10nConfig: L10nConfig = {
   imports: [
     CommonModule,
     RouterModule,
-    LocalizationModule.forChild(l10nConfig),
-    NgbModule
+    LocalizationModule.forChild(l10nConfig)
   ],
   exports: [
     NavComponent
