@@ -60,7 +60,6 @@ export class WikipediaService {
     }
     return Observable.create((observer: Observer<string[]>) => {
       const complete = () => {
-        console.log(this.cachedMostViewedTitles[languageCode]);
         const titles: string[] = [];
         for (let index = 0; index < limit; index++) {
           titles.push(this.cachedMostViewedTitles[languageCode].splice(0, 1)[0]);
