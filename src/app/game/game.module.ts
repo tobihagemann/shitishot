@@ -5,6 +5,7 @@ import { L10nConfig, LocalizationModule, ProviderType } from 'angular-l10n';
 import { SettingsModule } from '../settings/settings.module';
 import { SharedModule } from '../shared/shared.module';
 
+import { BingService } from './bing.service';
 import { GameComponent } from './game.component';
 import { GameRoutingModule } from './game-routing.module';
 import { GameService } from './game.service';
@@ -24,6 +25,7 @@ const l10nConfig: L10nConfig = {
 @NgModule({
   providers: [
     GameService,
+    BingService,
     GoogleService,
     WikipediaService
   ],

@@ -16,7 +16,7 @@ interface WikipediaResponse {
 export class WikipediaService {
 
   // https://www.mediawiki.org/wiki/API:Random
-  private url = (language: string) => `https://${language}.wikipedia.org/w/api.php`;
+  private url = (languageCode: string) => `https://${languageCode}.wikipedia.org/w/api.php`;
   private params = (limit: number) => new HttpParams({
     fromObject: {
       action: 'query',

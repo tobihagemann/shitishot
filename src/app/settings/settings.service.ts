@@ -15,7 +15,8 @@ export enum WordTitleSource {
 }
 
 export enum WordSearchResultsSource {
-  Google = 'Google'
+  Google = 'Google',
+  Bing = 'Bing'
 }
 
 @Injectable()
@@ -27,8 +28,8 @@ export class SettingsService {
   ];
   private locale: Locale;
 
-  @LocalStorage(WordTitleSource.Wikipedia) wordTitleSource: WordTitleSource;
-  @LocalStorage(WordSearchResultsSource.Google) wordSearchResultsSource: WordSearchResultsSource;
+  @LocalStorage(WordTitleSource.Wikipedia) private wordTitleSource: WordTitleSource;
+  @LocalStorage(WordSearchResultsSource.Google) private wordSearchResultsSource: WordSearchResultsSource;
 
   constructor(private localeService: LocaleService) {
     this.locale = this.locales.find(language => language.languageCode == this.localeService.getCurrentLanguage());

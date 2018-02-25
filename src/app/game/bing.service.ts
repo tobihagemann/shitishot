@@ -4,20 +4,20 @@ import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http'
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
 
-interface GoogleResponse {
+interface BingResponse {
   contents: string;
 }
 
 @Injectable()
-export class GoogleService {
+export class BingService {
 
   // Since I couldn't find an API that isn't deprecated or doesn't have ridiculous limitations, we're scraping this bad boy.
   // Due to cross-origin bullshit, we're using All Origins to bypass that.
   // https://medium.freecodecamp.org/client-side-web-scraping-with-javascript-using-jquery-and-regex-5b57a271cb86
   private url = 'https://allorigins.me/get';
-  private params = (query: string, languageCode: string) => new HttpParams({
+  private params = (query: string, languageCode: string, countryCode: string) => new HttpParams({
     fromObject: {
-      url: `https://www.google.com/search?q=${encodeURIComponent(query)}&hl=${languageCode}&lr=lang_${languageCode}`
+      url: `https://www.bing.com/search?q=${encodeURIComponent(query)}&setLang=${languageCode}&cc=${countryCode}`
     }
   });
 
@@ -29,24 +29,24 @@ export class GoogleService {
   constructor(private http: HttpClient) { }
 
   /**
-   * Get number of search results on Google.
+   * Get number of search results on Bing.
    * @param query Search query.
-   * @param languageCode Language code, see [Google Web Interface and Search Language Codes](https://sites.google.com/site/tomihasa/google-language-codes).
+   * @param languageCode Language code, see [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes).
+   * @param countryCode Country code, see [Country codes](https://docs.microsoft.com/en-us/rest/api/cognitiveservices/bing-web-api-v7-reference#countrycodes).
    */
-  getSearchResults(query: string, languageCode: string): Observable<number> {
+  getSearchResults(query: string, languageCode: string, countryCode: string): Observable<number> {
     return Observable.create((observer: Observer<number>) => {
-      this.http.get<GoogleResponse>(this.url, { params: this.params(query, languageCode) }).subscribe(response => {
+      this.http.get<BingResponse>(this.url, { params: this.params(query, languageCode, countryCode) }).subscribe(response => {
         const parser = new DOMParser();
         const parsedContents = parser.parseFromString(response.contents, 'text/html');
-        const resultStats = parsedContents.getElementById('resultStats');
-        if (resultStats) {
+        const count = parsedContents.getElementsByClassName('sb_count');
+        if (count && count[0]) {
           const groupingSeparator = this.groupingSeparator(languageCode);
-          const localizedSearchResults = this.localizedNumberPattern(groupingSeparator).exec(resultStats.innerHTML)[0];
+          const localizedSearchResults = this.localizedNumberPattern(groupingSeparator).exec(count[0].innerHTML)[0];
           const localizedSearchResultsWithoutSeparator = localizedSearchResults.replace(new RegExp(`\\${groupingSeparator}`, 'g'), '');
           observer.next(parseInt(localizedSearchResultsWithoutSeparator));
           observer.complete();
         } else {
-          // TODO: try to get search results in page 2
           observer.error(-1);
           observer.complete();
         }

@@ -3,8 +3,9 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
 
-import { SettingsService, WordSearchResultsSource, WordTitleSource } from '../settings/settings.service';
+import { Locale, SettingsService, WordSearchResultsSource, WordTitleSource } from '../settings/settings.service';
 
+import { BingService } from './bing.service';
 import { GoogleService } from './google.service';
 import { WikipediaService } from './wikipedia.service';
 import { Word } from './word';
@@ -12,7 +13,7 @@ import { Word } from './word';
 @Injectable()
 export class GameService {
 
-  constructor(private settingsService: SettingsService, private googleService: GoogleService, private wikipediaService: WikipediaService) { }
+  constructor(private settingsService: SettingsService, private googleService: GoogleService, private bingService: BingService, private wikipediaService: WikipediaService) { }
 
   /**
    * Begin a new game.
@@ -21,11 +22,11 @@ export class GameService {
    */
   newGame(): Observable<Word[]> {
     const limit = 5;
-    const languageCode = this.settingsService.getLocale().languageCode;
+    const locale = this.settingsService.getLocale();
     return Observable.create((observer: Observer<Word[]>) => {
-      this.getRandomTitles(limit, languageCode).subscribe(titles => {
+      this.getRandomTitles(limit, locale).subscribe(titles => {
         const words: Word[] = [];
-        titles.forEach(title => this.getSearchResults(title, languageCode).subscribe(searchResults => {
+        titles.forEach(title => this.getSearchResults(title, locale).subscribe(searchResults => {
           words.push(new Word(title, searchResults));
           this.newGameStep(observer, words, limit);
         }, (err: number) => {
@@ -48,17 +49,19 @@ export class GameService {
     }
   }
 
-  private getRandomTitles(limit: number, languageCode: string) {
+  private getRandomTitles(limit: number, locale: Locale) {
     switch (this.settingsService.getWordTitleSource()) {
       case WordTitleSource.Wikipedia:
-        return this.wikipediaService.getRandomTitles(limit, languageCode);
+        return this.wikipediaService.getRandomTitles(limit, locale.languageCode);
     }
   }
 
-  private getSearchResults(title: string, languageCode: string) {
+  private getSearchResults(title: string, locale: Locale) {
     switch (this.settingsService.getWordSearchResultsSource()) {
       case WordSearchResultsSource.Google:
-        return this.googleService.getSearchResults(title, languageCode);
+        return this.googleService.getSearchResults(title, locale.languageCode);
+      case WordSearchResultsSource.Bing:
+        return this.bingService.getSearchResults(title, locale.languageCode, locale.countryCode)
     }
   }
 
