@@ -9,14 +9,14 @@
   <div class="form-group">
     <label for="wordTitleSource" l10nTranslate>Source for Words</label>
     <select class="form-control" id="wordTitleSource" name="wordTitleSource" [(ngModel)]="wordTitleSource">
-      <option *ngFor="let source of wordTitleSources" [ngValue]="source" [selected]="wordTitleSource == source">{{source}}</option>
+      <option *ngFor="let source of wordTitleSources" [ngValue]="source" [selected]="wordTitleSource == source" l10nTranslate>{{source}}</option>
     </select>
   </div>
 
   <div class="form-group">
     <label for="wordSearchResultsSource" l10nTranslate>Source for Search Results</label>
     <select class="form-control" id="wordSearchResultsSource" name="wordSearchResultsSource" [(ngModel)]="wordSearchResultsSource">
-      <option *ngFor="let source of wordSearchResultsSources" [ngValue]="source" [selected]="wordSearchResultsSource == source">{{source}}</option>
+      <option *ngFor="let source of wordSearchResultsSources" [ngValue]="source" [selected]="wordSearchResultsSource == source" l10nTranslate>{{source}}</option>
     </select>
   </div>
 </div>

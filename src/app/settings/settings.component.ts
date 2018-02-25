@@ -20,7 +20,7 @@ export class SettingsComponent {
   }
 
   get wordTitleSources() {
-    return Object.keys(WordTitleSource);
+    return Object.values(WordTitleSource);
   }
   get wordTitleSource() {
     return this.settingsService.getWordTitleSource();
@@ -30,7 +30,7 @@ export class SettingsComponent {
   }
 
   get wordSearchResultsSources() {
-    return Object.keys(WordSearchResultsSource);
+    return Object.values(WordSearchResultsSource);
   }
   get wordSearchResultsSource() {
     return this.settingsService.getWordSearchResultsSource();

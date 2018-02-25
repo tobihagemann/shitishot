@@ -24,7 +24,7 @@ export class GameService {
     const limit = 5;
     const locale = this.settingsService.getLocale();
     return Observable.create((observer: Observer<Word[]>) => {
-      this.getRandomTitles(limit, locale).subscribe(titles => {
+      this.getTitles(limit, locale).subscribe(titles => {
         const words: Word[] = [];
         titles.forEach(title => this.getSearchResults(title, locale).subscribe(searchResults => {
           words.push(new Word(title, searchResults));
@@ -35,7 +35,7 @@ export class GameService {
           this.newGameStep(observer, words, limit);
         }));
       }, (err: number) => {
-        console.error('Unable to get random titles');
+        console.error('Unable to get titles');
         observer.error(-1);
         observer.complete();
       });
@@ -49,10 +49,14 @@ export class GameService {
     }
   }
 
-  private getRandomTitles(limit: number, locale: Locale) {
+  private getTitles(limit: number, locale: Locale) {
     switch (this.settingsService.getWordTitleSource()) {
-      case WordTitleSource.Wikipedia:
+      case WordTitleSource.WikipediaMostViewed:
+        return this.wikipediaService.getMostViewedTitles(limit, locale.languageCode);
+      case WordTitleSource.WikipediaRandom:
         return this.wikipediaService.getRandomTitles(limit, locale.languageCode);
+      default:
+        return this.wikipediaService.getMostViewedTitles(limit, locale.languageCode);
     }
   }
 
@@ -62,6 +66,8 @@ export class GameService {
         return this.googleService.getSearchResults(title, locale.languageCode);
       case WordSearchResultsSource.Bing:
         return this.bingService.getSearchResults(title, locale.languageCode, locale.countryCode)
+      default:
+        return this.googleService.getSearchResults(title, locale.languageCode);
     }
   }
 

@@ -1,17 +1,18 @@
 import { Injectable } from '@angular/core';
 
-import { LocaleService } from 'angular-l10n';
+import { LocaleService, TranslationService } from 'angular-l10n';
 
 import { LocalStorage } from '../shared/localstorage.decorator';
 
 export interface Locale {
-  text: string;
   languageCode: string;
   countryCode: string;
+  text: string;
 }
 
 export enum WordTitleSource {
-  Wikipedia = 'Wikipedia'
+  WikipediaMostViewed = 'Wikipedia (Most Viewed)',
+  WikipediaRandom = 'Wikipedia (Random)'
 }
 
 export enum WordSearchResultsSource {
@@ -23,15 +24,15 @@ export enum WordSearchResultsSource {
 export class SettingsService {
 
   private locales: Locale[] = [
-    { text: 'Deutsch', languageCode: 'de', countryCode: 'DE' },
-    { text: 'English', languageCode: 'en', countryCode: 'US' }
+    { languageCode: 'de', countryCode: 'DE', text: 'Deutsch' },
+    { languageCode: 'en', countryCode: 'US', text: 'English' }
   ];
   private locale: Locale;
 
-  @LocalStorage(WordTitleSource.Wikipedia) private wordTitleSource: WordTitleSource;
+  @LocalStorage(WordTitleSource.WikipediaMostViewed) private wordTitleSource: WordTitleSource;
   @LocalStorage(WordSearchResultsSource.Google) private wordSearchResultsSource: WordSearchResultsSource;
 
-  constructor(private localeService: LocaleService) {
+  constructor(private localeService: LocaleService, translationService: TranslationService) {
     this.locale = this.locales.find(language => language.languageCode == this.localeService.getCurrentLanguage());
   }
 
