@@ -4,12 +4,23 @@
  */
 export function LocalStorage(defaultValue = null) {
   return function (target: any, key: string) {
+    const privateProperty = `_${key}`;
     Object.defineProperty(target, key, {
       configurable: false,
       get: function () {
-        return JSON.parse(localStorage.getItem(key)) || defaultValue;
+        if (this[privateProperty]) {
+          return this[privateProperty];
+        }
+        const value = JSON.parse(localStorage.getItem(key));
+        if (value) {
+          this[privateProperty] = value;
+          return this[privateProperty];
+        } else {
+          return defaultValue;
+        }
       },
       set: function (value) {
+        this[privateProperty] = value;
         localStorage.setItem(key, JSON.stringify(value));
       }
     });

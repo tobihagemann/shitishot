@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, ModuleWithProviders } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { L10nConfig, LocalizationModule, ProviderType } from 'angular-l10n';
@@ -20,9 +20,6 @@ const l10nConfig: L10nConfig = {
 };
 
 @NgModule({
-  providers: [
-    SettingsService
-  ],
   declarations: [
     SettingsComponent
   ],
@@ -33,4 +30,19 @@ const l10nConfig: L10nConfig = {
     SettingsRoutingModule
   ]
 })
-export class SettingsModule { }
+export class SettingsModule {
+
+  static forRoot(): ModuleWithProviders {
+    return {
+      ngModule: SettingsModule,
+      providers: [SettingsService]
+    };
+  }
+
+  static forChild(): ModuleWithProviders {
+    return {
+      ngModule: SettingsModule
+    };
+  }
+
+}
