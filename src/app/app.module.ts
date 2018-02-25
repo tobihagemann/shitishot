@@ -46,9 +46,9 @@ export function initL10n(l10nLoader: L10nLoader): Function {
     HttpClientModule,
     LocalizationModule.forRoot(l10nConfig),
     NgbModule.forRoot(),
+    AppRoutingModule,
     NavModule,
-    SettingsModule.forRoot(),
-    AppRoutingModule
+    SettingsModule.forRoot()
   ],
   bootstrap: [AppComponent]
 })
