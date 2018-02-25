@@ -37,21 +37,20 @@ export class WikipediaService {
    */
   getRandomTitles(limit: number, languageCode: string): Observable<string[]> {
     return Observable.create((observer: Observer<string[]>) => {
-      this.http.get<WikipediaResponse>(this.url(languageCode), { params: this.params(limit) })
-        .subscribe(response => {
-          const titles: string[] = [];
-          response.query.random.forEach(random => titles.push(random.title));
-          observer.next(titles);
-          observer.complete();
-        }, (err: HttpErrorResponse) => {
-          if (err.error instanceof Error) {
-            console.error('An error occurred:', err.error.message);
-          } else {
-            console.error(`Backend returned code ${err.status}, body was: ${err.error}`);
-          }
-          observer.error(err.status);
-          observer.complete();
-        });
+      this.http.get<WikipediaResponse>(this.url(languageCode), { params: this.params(limit) }).subscribe(response => {
+        const titles: string[] = [];
+        response.query.random.forEach(random => titles.push(random.title));
+        observer.next(titles);
+        observer.complete();
+      }, (err: HttpErrorResponse) => {
+        if (err.error instanceof Error) {
+          console.error('An error occurred:', err.error.message);
+        } else {
+          console.error(`Backend returned code ${err.status}, body was: ${err.error}`);
+        }
+        observer.error(err.status);
+        observer.complete();
+      });
     });
   }
 

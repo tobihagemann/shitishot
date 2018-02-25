@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 
-import { SettingsService } from '../settings/settings.service';
 import { LocalStorage } from '../shared/localstorage.decorator';
 
 import { GameService } from './game.service';
@@ -29,18 +28,16 @@ export class GameComponent {
   private dragOverTitleIndex = -1;
   private dragEnterLeaveCounter = 0;
 
-  constructor(private settingsService: SettingsService, private gameService: GameService) {
+  constructor(private gameService: GameService) {
     // https://github.com/timruffles/ios-html5-drag-drop-shim/issues/77#issuecomment-261772175
     window.addEventListener('touchmove', () => { });
   }
 
   newGame() {
     this.loadingGame = true;
-    const language = this.settingsService.getLocale().languageCode;
-    this.gameService.newGame(5, language)
-      .subscribe(words => this.initGame(words), (err: number) => {
-        // TODO: proper error handling
-      }, () => this.loadingGame = false);
+    this.gameService.newGame().subscribe(words => this.initGame(words), (err: number) => {
+      // TODO: proper error handling
+    }, () => this.loadingGame = false);
   }
 
   initGame(words: Word[]) {

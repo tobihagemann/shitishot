@@ -35,31 +35,30 @@ export class GoogleService {
    */
   getSearchResults(query: string, languageCode: string): Observable<number> {
     return Observable.create((observer: Observer<number>) => {
-      this.http.get<GoogleResponse>(this.url, { params: this.params(languageCode, query) })
-        .subscribe(response => {
-          const parser = new DOMParser();
-          const parsedContents = parser.parseFromString(response.contents, 'text/html');
-          const resultStats = parsedContents.getElementById('resultStats');
-          if (resultStats) {
-            const groupingSeparator = this.groupingSeparator(languageCode);
-            const localizedSearchResults = this.localizedNumberPattern(groupingSeparator).exec(resultStats.innerHTML)[0];
-            const localizedSearchResultsWithoutSeparator = localizedSearchResults.replace(new RegExp(`\\${groupingSeparator}`, 'g'), '');
-            observer.next(parseInt(localizedSearchResultsWithoutSeparator));
-            observer.complete();
-          } else {
-            // TODO: try to get search results in page 2
-            observer.error(-1);
-            observer.complete();
-          }
-        }, (err: HttpErrorResponse) => {
-          if (err.error instanceof Error) {
-            console.error('An error occurred:', err.error.message);
-          } else {
-            console.error(`Backend returned code ${err.status}, body was: ${err.error}`);
-          }
-          observer.error(err.status);
+      this.http.get<GoogleResponse>(this.url, { params: this.params(languageCode, query) }).subscribe(response => {
+        const parser = new DOMParser();
+        const parsedContents = parser.parseFromString(response.contents, 'text/html');
+        const resultStats = parsedContents.getElementById('resultStats');
+        if (resultStats) {
+          const groupingSeparator = this.groupingSeparator(languageCode);
+          const localizedSearchResults = this.localizedNumberPattern(groupingSeparator).exec(resultStats.innerHTML)[0];
+          const localizedSearchResultsWithoutSeparator = localizedSearchResults.replace(new RegExp(`\\${groupingSeparator}`, 'g'), '');
+          observer.next(parseInt(localizedSearchResultsWithoutSeparator));
           observer.complete();
-        });
+        } else {
+          // TODO: try to get search results in page 2
+          observer.error(-1);
+          observer.complete();
+        }
+      }, (err: HttpErrorResponse) => {
+        if (err.error instanceof Error) {
+          console.error('An error occurred:', err.error.message);
+        } else {
+          console.error(`Backend returned code ${err.status}, body was: ${err.error}`);
+        }
+        observer.error(err.status);
+        observer.complete();
+      });
     });
   }
 

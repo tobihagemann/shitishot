@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { Locale, SettingsService } from './settings.service';
+import { Locale, SettingsService, WordSearchResultsSource, WordTitleSource } from './settings.service';
 
 @Component({
   selector: 'app-settings',
@@ -17,6 +17,26 @@ export class SettingsComponent {
   }
   set currentLocale(locale: Locale) {
     this.settingsService.setLocale(locale);
+  }
+
+  get wordTitleSources() {
+    return Object.keys(WordTitleSource);
+  }
+  get wordTitleSource() {
+    return this.settingsService.getWordTitleSource();
+  }
+  set wordTitleSource(source: WordTitleSource) {
+    this.settingsService.setWordTitleSource(source);
+  }
+
+  get wordSearchResultsSources() {
+    return Object.keys(WordSearchResultsSource);
+  }
+  get wordSearchResultsSource() {
+    return this.settingsService.getWordSearchResultsSource();
+  }
+  set wordSearchResultsSource(source: WordSearchResultsSource) {
+    this.settingsService.setWordSearchResultsSource(source);
   }
 
   constructor(private settingsService: SettingsService) { }
