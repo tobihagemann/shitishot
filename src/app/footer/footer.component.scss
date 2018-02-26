@@ -1,0 +1,12 @@
+@import "variables";
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+
+.site-footer {
+  bottom: 0;
+  height: $footer-height;
+  line-height: $line-height-base;
+  position: absolute;
+  width: 100%;
+}

@@ -3,7 +3,8 @@ import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
   { path: '', loadChildren: './game/game.module#GameModule' },
-  { path: 'settings', loadChildren: './settings/settings.module#SettingsModule' }
+  { path: 'settings', loadChildren: './settings/settings.module#SettingsModule' },
+  { path: 'impressum', loadChildren: './impressum/impressum.module#ImpressumModule' }
 ];
 
 @NgModule({

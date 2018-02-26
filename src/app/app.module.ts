@@ -4,6 +4,8 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { L10nConfig, L10nLoader, LocalizationModule, ProviderType, StorageStrategy } from 'angular-l10n';
 
+import { FooterModule } from './footer/footer.module';
+import { ImpressumModule } from './impressum/impressum.module';
 import { NavModule } from './nav/nav.module';
 import { SettingsModule } from './settings/settings.module';
 
@@ -21,7 +23,8 @@ const l10nConfig: L10nConfig = {
   },
   translation: {
     providers: [
-      { type: ProviderType.Static, prefix: './assets/locale-' }
+      { type: ProviderType.Static, prefix: './assets/locale-' },
+      { type: ProviderType.Static, prefix: './assets/locale-footer-' }
     ],
     caching: true,
     missingValue: 'No key'
@@ -45,6 +48,8 @@ export function initL10n(l10nLoader: L10nLoader): Function {
     HttpClientModule,
     LocalizationModule.forRoot(l10nConfig),
     AppRoutingModule,
+    FooterModule,
+    ImpressumModule,
     NavModule,
     SettingsModule.forRoot()
   ],
