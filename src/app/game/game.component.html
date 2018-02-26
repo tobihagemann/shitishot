@@ -19,7 +19,7 @@
     <div class="card-group">
       <div *ngFor="let title of titles; index as i" class="card d-flex flex-row flex-sm-column">
         <div *ngIf="results.length == 0" class="card-body card-body-title" [class.grabbable]="title != null" [class.card-body-dragover]="dragOverTitleIndex == i &amp;&amp; dragOverTitleIndex != draggedTitleIndex" [class.card-body-dragged]="draggedTitleIndex == i &amp;&amp; draggedTitle == title" [draggable]="title != null" (dragstart)="onTitleDragStart($event, i)" (dragenter)="onTitleDragEnter($event)" (dragover)="onTitleDragOver($event, i)" (dragleave)="onTitleDragLeave()" (dragend)="onTitleDragEnd()">
-          <p class="card-text card-text-title">{{title}}</p>
+          <p class="card-text card-text-title">{{title || '&nbsp;'}}</p>
         </div>
         <div *ngIf="results.length > 0 &amp;&amp; results[i]" class="card-body" [class.bg-success]="results[i]">
           <p class="card-text text-white">
