@@ -53,7 +53,7 @@ export class GameComponent {
   drawNextTitle() {
     if (this.remainingTitles.length > 0) {
       this.nextTitle = this.remainingTitles.pop();
-      this.remainingTitles = this.remainingTitles; // persist reminaing titles
+      this.remainingTitles = this.remainingTitles; // persist remaining titles
     } else {
       this.nextTitle = null;
     }
@@ -64,8 +64,7 @@ export class GameComponent {
       this.titles[index] = title;
       return;
     }
-    const foo = this.moveTitles(title, index, direction);
-    if (!foo) {
+    if (!this.moveTitles(title, index, direction)) {
       this.moveTitles(title, index, -direction);
     }
   }
