@@ -13,9 +13,22 @@
   }
 }
 
-.card-active {
-  background-color: rgba($primary, .03);
-  color: color-yiq(rgba($primary, .03));
+.card-body-title {
+  @include media-breakpoint-down(sm) {
+    overflow: hidden;
+  }
+}
+
+.card-text-title {
+  @include media-breakpoint-down(sm) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  @include media-breakpoint-up(sm) {
+    min-height: 3rem * $line-height-base;
+  }
 }
 
 .card-footer-searchresults {
@@ -26,9 +39,13 @@
   }
 }
 
-.card-highlight {
+.card-body-dragover {
   background-color: $secondary;
   color: $white;
+}
+
+.card-body-dragged {
+  background-color: $light;
 }
 
 .btn-show-results {

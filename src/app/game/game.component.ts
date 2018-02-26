@@ -128,6 +128,8 @@ export class GameComponent {
 
   onNextTitleDragEnd() {
     const didDropOverTitle = this.dragOverTitleIndex != -1;
+    this.draggedTitle = null;
+    this.draggedTitleIndex = -1;
     this.dragOverTitleIndex = -1;
     this.dragEnterLeaveCounter = 0;
     this.titles = this.titles; // persist titles
@@ -173,6 +175,8 @@ export class GameComponent {
   }
 
   onTitleDragEnd() {
+    this.draggedTitle = null;
+    this.draggedTitleIndex = -1;
     this.dragOverTitleIndex = -1;
     this.dragEnterLeaveCounter = 0;
     this.titles = this.titles; // persist titles
