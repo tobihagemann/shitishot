@@ -14,13 +14,13 @@
 }
 
 .card-body-title {
-  @include media-breakpoint-down(sm) {
+  @include media-breakpoint-only(xs) {
     overflow: hidden;
   }
 }
 
 .card-text-title {
-  @include media-breakpoint-down(sm) {
+  @include media-breakpoint-only(xs) {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -32,7 +32,7 @@
 }
 
 .card-footer-searchresults {
-  @include media-breakpoint-down(sm) {
+  @include media-breakpoint-only(xs) {
     border-left: $card-border-width solid $card-border-color;
     border-top: none;
     @include border-left-radius(0);
