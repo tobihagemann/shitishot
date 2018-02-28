@@ -14,7 +14,7 @@ export class GoogleService {
   // https://stackoverflow.com/a/25761750/1759462
   private groupingSeparator = (language: string) => (12345).toLocaleString(language).match(/12(.*)345/)[1];
   // https://stackoverflow.com/a/16148273/1759462
-  private localizedNumberPattern = (groupingSeparator: string) => new RegExp(`\\d{1,3}(${groupingSeparator}\\d{3})*`);
+  private localizedNumberPattern = (groupingSeparator: string) => new RegExp(`\\d{1,3}(${groupingSeparator}\\d{3})*`, 'g');
 
   constructor(private allOriginsService: AllOriginsService) { }
 
@@ -36,14 +36,36 @@ export class GoogleService {
           observer.next(parseInt(localizedSearchResultsWithoutSeparator));
           observer.complete();
         } else {
-          // TODO: try to get search results in page 2
-          observer.error(-1);
-          observer.complete();
+          this.getSearchResultsFromSecondPage(query, languageCode, observer);
         }
       }, (err: number) => {
         observer.error(err);
         observer.complete();
       });
+    });
+  }
+
+  private getSearchResultsFromSecondPage(query: string, languageCode: string, observer: Observer<number>) {
+    const url = `${this.url(query, languageCode)}&start=10`; // get page 2 directly
+    this.allOriginsService.getContents(url).subscribe(contents => {
+      const parser = new DOMParser();
+      const parsedContents = parser.parseFromString(contents, 'text/html');
+      const resultStats = parsedContents.getElementById('resultStats');
+      if (resultStats) {
+        const groupingSeparator = this.groupingSeparator(languageCode);
+        const localizedNumberPattern = this.localizedNumberPattern(groupingSeparator);
+        localizedNumberPattern.exec(resultStats.innerHTML); // skip first number because it's the page number
+        const localizedSearchResults = localizedNumberPattern.exec(resultStats.innerHTML)[0]; // second number is actually the number of search results
+        const localizedSearchResultsWithoutSeparator = localizedSearchResults.replace(new RegExp(`\\${groupingSeparator}`, 'g'), '');
+        observer.next(parseInt(localizedSearchResultsWithoutSeparator));
+        observer.complete();
+      } else {
+        observer.error(-1);
+        observer.complete();
+      }
+    }, (err: number) => {
+      observer.error(err);
+      observer.complete();
     });
   }
 
