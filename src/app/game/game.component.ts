@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { LocalStorage } from '../shared/localstorage.decorator';
 
@@ -10,7 +10,7 @@ import { Word } from './word';
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.scss']
 })
-export class GameComponent {
+export class GameComponent implements OnInit {
 
   @LocalStorage([]) words: Word[];
   @LocalStorage() sortedWords: Word[];
@@ -31,6 +31,12 @@ export class GameComponent {
   constructor(private gameService: GameService) {
     // https://github.com/timruffles/ios-html5-drag-drop-shim/issues/77#issuecomment-261772175
     window.addEventListener('touchmove', () => { });
+  }
+
+  ngOnInit() {
+    if (this.words.length == 0) {
+      this.newGame();
+    }
   }
 
   newGame() {
