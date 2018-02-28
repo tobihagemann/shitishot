@@ -12,7 +12,7 @@ export class BingService {
   private url = (query: string, languageCode: string, countryCode: string) => `https://www.bing.com/search?q=${encodeURIComponent(query)}&setLang=${languageCode}&cc=${countryCode}`;
 
   // https://stackoverflow.com/a/25761750/1759462
-  private groupingSeparator = (language: string) => (12345).toLocaleString(language).match(/12(.*)345/)[1];
+  private groupingSeparator = (languageCode: string) => (12345).toLocaleString(languageCode).match(/12(.*)345/)[1];
   // https://stackoverflow.com/a/16148273/1759462
   private localizedNumberPattern = (groupingSeparator: string) => new RegExp(`\\d{1,3}(${groupingSeparator}\\d{3})*`);
 
