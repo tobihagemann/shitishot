@@ -160,7 +160,11 @@ export class GameComponent {
       this.titles[fixedIndex] = this.draggedTitleIndex != fixedIndex ? fixedTitle : null;
     });
     this.dragOverTitleIndex = index;
-    this.updateTitle(this.draggedTitle, index, -1); // TODO: set preferred direction
+    const targetRect = event.target.getBoundingClientRect();
+    const direction = window.innerWidth >= 576
+      ? (targetRect.right - event.clientX < event.clientX - targetRect.left ? -1 : 1)
+      : (targetRect.bottom - event.clientY < event.clientY - targetRect.top ? -1 : 1);
+    this.updateTitle(this.draggedTitle, index, direction);
   }
 
   onTitleDragLeave() {
