@@ -1,7 +1,13 @@
 html {
-  font-size: $font-size-sm;
+  font-size: 14px;
 
   @include media-breakpoint-up(md) {
-    font-size: $font-size-base;
+    font-size: 16px;
   }
+}
+
+.blockquote {
+  border-left: $border-width * 4 solid $border-color;
+  font-size: $font-size-base;
+  padding: 0 $spacer;
 }

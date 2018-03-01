@@ -1,24 +1,31 @@
-<div class="mb-4">
-  <div class="form-group">
-    <label for="language" l10nTranslate>Language</label>
-    <select class="form-control" id="language" name="language" [(ngModel)]="currentLocale">
-      <option *ngFor="let locale of locales" [ngValue]="locale" [selected]="currentLocale == locale">{{locale.text}}</option>
-    </select>
-  </div>
-
-  <div class="form-group">
-    <label for="wordTitleSource" l10nTranslate>Source for Words</label>
-    <select class="form-control" id="wordTitleSource" name="wordTitleSource" [(ngModel)]="wordTitleSource">
-      <option *ngFor="let source of wordTitleSources" [ngValue]="source" [selected]="wordTitleSource == source" l10nTranslate>{{source}}</option>
-    </select>
-  </div>
-
-  <div class="form-group">
-    <label for="wordSearchResultsSource" l10nTranslate>Source for Search Results</label>
-    <select class="form-control" id="wordSearchResultsSource" name="wordSearchResultsSource" [(ngModel)]="wordSearchResultsSource">
-      <option *ngFor="let source of wordSearchResultsSources" [ngValue]="source" [selected]="wordSearchResultsSource == source" l10nTranslate>{{source}}</option>
-    </select>
-  </div>
+<div class="form-group">
+  <label for="language" l10nTranslate>Language</label>
+  <select class="form-control" id="language" name="language" [(ngModel)]="currentLocale">
+    <option *ngFor="let locale of locales" [ngValue]="locale" [selected]="currentLocale == locale">{{locale.text}}</option>
+  </select>
 </div>
 
-<button type="button" class="btn btn-outline-secondary" routerLink="/" l10nTranslate>Back</button>
+<div class="form-group">
+  <label for="wordTitleSource" l10nTranslate>Source for Words</label>
+  <select class="form-control" id="wordTitleSource" name="wordTitleSource" [(ngModel)]="wordTitleSource">
+    <option *ngFor="let source of wordTitleSources" [ngValue]="source" [selected]="wordTitleSource == source" l10nTranslate>{{source}}</option>
+  </select>
+</div>
+
+<div class="form-group">
+  <label for="wordSearchResultsSource" l10nTranslate>Source for Search Results</label>
+  <select class="form-control" id="wordSearchResultsSource" name="wordSearchResultsSource" [(ngModel)]="wordSearchResultsSource">
+    <option *ngFor="let source of wordSearchResultsSources" [ngValue]="source" [selected]="wordSearchResultsSource == source" l10nTranslate>{{source}}</option>
+  </select>
+</div>
+
+<div class="mb-3">
+  <p class="mb-2" l10nTranslate>Instructions</p>
+  <blockquote class="blockquote">
+    <p class="mb-1" l10nTranslate>Instructions Text</p>
+    <footer class="blockquote-footer">
+      Ralf Kabelka in
+      <cite l10nTranslate>NEO MAGAZIN ROYALE Episode 92</cite>
+    </footer>
+  </blockquote>
+</div>
