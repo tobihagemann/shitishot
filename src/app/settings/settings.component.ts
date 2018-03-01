@@ -13,10 +13,10 @@ export class SettingsComponent {
     return this.settingsService.getLocales();
   }
   get currentLocale() {
-    return this.settingsService.getLocale();
+    return this.settingsService.getCurrentLocale();
   }
   set currentLocale(locale: Locale) {
-    this.settingsService.setLocale(locale);
+    this.settingsService.setCurrentLocale(locale);
   }
 
   get wordTitleSources() {

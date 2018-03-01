@@ -22,7 +22,7 @@ export class GameService {
    */
   newGame(): Observable<Word[]> {
     const limit = 5;
-    const locale = this.settingsService.getLocale();
+    const locale = this.settingsService.getCurrentLocale();
     return Observable.create((observer: Observer<Word[]>) => {
       this.getTitles(limit, locale).subscribe(titles => {
         const words: Word[] = [];

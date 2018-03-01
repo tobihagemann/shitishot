@@ -27,25 +27,29 @@ export class SettingsService {
     { languageCode: 'de', countryCode: 'DE', text: 'Deutsch' },
     { languageCode: 'en', countryCode: 'US', text: 'English' }
   ];
-  private locale: Locale;
+  private currentLocale: Locale;
 
   @LocalStorage(WordTitleSource.WikipediaMostViewed) private wordTitleSource: WordTitleSource;
   @LocalStorage(WordSearchResultsSource.Google) private wordSearchResultsSource: WordSearchResultsSource;
 
   constructor(private localeService: LocaleService, translationService: TranslationService) {
-    this.locale = this.locales.find(language => language.languageCode == this.localeService.getCurrentLanguage());
+    this.currentLocale = this.getLocale(this.localeService.getCurrentLanguage());
   }
 
   getLocales() {
     return this.locales;
   }
 
-  getLocale() {
-    return this.locale;
+  getLocale(languageCode: string) {
+    return this.locales.find(locale => locale.languageCode == languageCode);
   }
 
-  setLocale(locale: Locale) {
-    this.locale = locale;
+  getCurrentLocale() {
+    return this.currentLocale;
+  }
+
+  setCurrentLocale(locale: Locale) {
+    this.currentLocale = locale;
     this.localeService.setDefaultLocale(locale.languageCode, locale.countryCode);
   }
 
