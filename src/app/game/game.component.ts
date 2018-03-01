@@ -143,6 +143,10 @@ export class GameComponent implements OnInit {
     }
   }
 
+  onNextTitleDrop(event) {
+    event.preventDefault();
+  }
+
   // Drag & Drop – Title
 
   onTitleDragStart(event, index: number) {
@@ -189,6 +193,10 @@ export class GameComponent implements OnInit {
     this.dragOverTitleIndex = -1;
     this.dragEnterLeaveCounter = 0;
     this.titles = this.titles; // persist titles
+  }
+
+  onTitleDrop(event) {
+    event.preventDefault();
   }
 
 }

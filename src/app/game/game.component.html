@@ -8,7 +8,7 @@
 <div *ngIf="!loadingGame">
   <div *ngIf="words.length > 0" class="mb-4">
     <div *ngIf="results.length == 0" class="d-flex justify-content-center mb-4">
-      <div *ngIf="nextTitle" class="card card-next grabbable" draggable="true" (dragstart)="onNextTitleDragStart($event)" (dragenter)="onNextTitleDragEnter($event)" (dragover)="onNextTitleDragOver($event)" (dragleave)="onNextTitleDragLeave()" (dragend)="onNextTitleDragEnd()">
+      <div *ngIf="nextTitle" class="card card-next grabbable" draggable="true" (dragstart)="onNextTitleDragStart($event)" (dragenter)="onNextTitleDragEnter($event)" (dragover)="onNextTitleDragOver($event)" (dragleave)="onNextTitleDragLeave()" (dragend)="onNextTitleDragEnd()" (drop)="onNextTitleDrop($event)">
         <div class="card-body">
           <p class="card-text">{{nextTitle}}</p>
         </div>
@@ -18,7 +18,7 @@
 
     <div class="card-group">
       <div *ngFor="let title of titles; index as i" class="card d-flex flex-row flex-sm-column">
-        <div *ngIf="results.length == 0" class="card-body card-body-title" [class.grabbable]="title != null" [class.card-body-dragover]="dragOverTitleIndex == i &amp;&amp; dragOverTitleIndex != draggedTitleIndex" [class.card-body-dragged]="draggedTitleIndex == i &amp;&amp; draggedTitle == title" [draggable]="title != null" (dragstart)="onTitleDragStart($event, i)" (dragenter)="onTitleDragEnter($event)" (dragover)="onTitleDragOver($event, i)" (dragleave)="onTitleDragLeave()" (dragend)="onTitleDragEnd()">
+        <div *ngIf="results.length == 0" class="card-body card-body-title" [class.grabbable]="title != null" [class.card-body-dragover]="dragOverTitleIndex == i &amp;&amp; dragOverTitleIndex != draggedTitleIndex" [class.card-body-dragged]="draggedTitleIndex == i &amp;&amp; draggedTitle == title" [draggable]="title != null" (dragstart)="onTitleDragStart($event, i)" (dragenter)="onTitleDragEnter($event)" (dragover)="onTitleDragOver($event, i)" (dragleave)="onTitleDragLeave()" (dragend)="onTitleDragEnd()" (drop)="onTitleDrop($event)">
           <p class="card-text card-text-title">{{title || '&nbsp;'}}</p>
         </div>
         <div *ngIf="results.length > 0 &amp;&amp; results[i]" class="card-body" [class.bg-success]="results[i]">
