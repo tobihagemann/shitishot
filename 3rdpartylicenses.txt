@@ -71,27 +71,27 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
-@angular/common@5.2.3
+@angular/common@5.2.7
 MIT
 MIT
 
-@angular/core@5.2.3
+@angular/core@5.2.7
 MIT
 MIT
 
-@angular/forms@5.2.3
+@angular/forms@5.2.7
 MIT
 MIT
 
-@angular/platform-browser@5.2.3
+@angular/platform-browser@5.2.7
 MIT
 MIT
 
-@angular/router@5.2.3
+@angular/router@5.2.7
 MIT
 MIT
 
-angular-l10n@4.1.4
+angular-l10n@4.1.5
 MIT
 The MIT License (MIT)
 
