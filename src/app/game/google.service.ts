@@ -9,7 +9,7 @@ import { AllOriginsService } from './allorigins.service';
 export class GoogleService {
 
   // Since I couldn't find an API that isn't deprecated or doesn't have ridiculous limitations, we're scraping this bad boy.
-  private url = (query: string, languageCode: string) => `https://www.google.com/search?q=${encodeURIComponent(query)}&hl=${languageCode}&lr=lang_${languageCode}`;
+  private url = (query: string, languageCode: string) => `https://www.google.com/search?q=${encodeURIComponent(query.toLowerCase()).replace(/%20/g, '+')}&hl=${languageCode}`;
 
   // https://stackoverflow.com/a/25761750/1759462
   private groupingSeparator = (languageCode: string) => (12345).toLocaleString(languageCode).match(/12(.*)345/)[1];
