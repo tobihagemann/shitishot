@@ -1,6 +1,7 @@
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 
 import { L10nConfig, LocalizationModule, ProviderType } from 'angular-l10n';
+import { ClipboardModule } from 'ngx-clipboard';
 
 import { SettingsModule } from '../settings/settings.module';
 import { SharedModule } from '../shared/shared.module';
@@ -35,6 +36,7 @@ const l10nConfig: L10nConfig = {
   ],
   imports: [
     LocalizationModule.forChild(l10nConfig),
+    ClipboardModule,
     SharedModule,
     GameRoutingModule,
     SettingsModule.forChild()

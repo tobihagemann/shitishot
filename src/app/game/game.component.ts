@@ -1,7 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
+
+import { Subscription } from 'rxjs/Subscription';
 
 import { LocalStorage } from '../shared/localstorage.decorator';
 
+import { Game } from './game';
 import { GameService } from './game.service';
 import { Word } from './word';
 
@@ -12,7 +17,9 @@ import { Word } from './word';
 })
 export class GameComponent implements OnInit {
 
-  @LocalStorage([]) words: Word[];
+  readonly limit = 5;
+
+  @LocalStorage() game: Game;
   @LocalStorage() sortedWords: Word[];
   @LocalStorage() remainingTitles: string[];
   @LocalStorage() nextTitle: string;
@@ -21,6 +28,7 @@ export class GameComponent implements OnInit {
   @LocalStorage([]) results: boolean[];
 
   loadingGame = false;
+  private loadingGameSubscription: Subscription;
 
   private fixedTitles: string[];
   private draggedTitle: string;
@@ -28,29 +36,61 @@ export class GameComponent implements OnInit {
   private dragOverTitleIndex = -1;
   private dragEnterLeaveCounter = 0;
 
-  constructor(private gameService: GameService) {
+  url = () => `${window.location.href}#${this.wrapFragment(this.game.languageCode, this.game.words.map(word => word.title))}`;
+  private _urlIsCopied: boolean;
+  get urlIsCopied() {
+    return this._urlIsCopied;
+  }
+  private urlIsCopiedTimeoutId: number;
+  set urlIsCopied(urlIsCopied) {
+    this._urlIsCopied = urlIsCopied;
+    clearTimeout(this.urlIsCopiedTimeoutId);
+    if (urlIsCopied) {
+      this.urlIsCopiedTimeoutId = setTimeout(() => this.urlIsCopied = false, 3000);
+    }
+  }
+
+  constructor(private route: ActivatedRoute, private location: Location, private gameService: GameService) {
     // https://github.com/timruffles/ios-html5-drag-drop-shim/issues/77#issuecomment-261772175
     window.addEventListener('touchmove', () => { });
   }
 
   ngOnInit() {
-    if (this.words.length == 0) {
+    if (!this.game && !window.location.hash) {
       this.newGame();
+    }
+    this.route.fragment.subscribe(fragment => this.handleFragment(fragment));
+  }
+
+  handleFragment(fragment: string) {
+    this.location.replaceState('');
+    if (fragment) {
+      const unwrappedFragment = this.unwrapFragment(fragment);
+      if (unwrappedFragment) {
+        const languageCode = unwrappedFragment['l'];
+        const titles = unwrappedFragment['w'] ? unwrappedFragment['w'].split(',') : null;
+        if (titles) {
+          this.newGame(languageCode, titles);
+        }
+      }
     }
   }
 
-  newGame() {
+  newGame(languageCode: string = null, titles: string[] = null) {
     this.loadingGame = true;
-    this.gameService.newGame().subscribe(words => this.initGame(words), (err: number) => {
+    if (this.loadingGameSubscription) {
+      this.loadingGameSubscription.unsubscribe();
+    }
+    this.loadingGameSubscription = this.gameService.newGame(this.limit, languageCode, titles).subscribe(game => this.initGame(game), (err: number) => {
       // TODO: proper error handling
     }, () => this.loadingGame = false);
   }
 
-  initGame(words: Word[]) {
-    this.words = words;
-    this.sortedWords = words.slice(0).sort((word1, word2) => word1.searchResults - word2.searchResults);
-    this.remainingTitles = words.map(word => word.title);
-    this.titles = new Array(words.length).fill(null);
+  initGame(game: Game) {
+    this.game = game;
+    this.sortedWords = game.words.slice(0).sort((word1, word2) => word1.searchResults - word2.searchResults);
+    this.remainingTitles = game.words.map(word => word.title);
+    this.titles = new Array(game.words.length).fill(null);
     this.searchResults = this.sortedWords.map(word => word.searchResults);
     this.results = [];
     this.drawNextTitle();
@@ -197,6 +237,29 @@ export class GameComponent implements OnInit {
 
   onTitleDrop(event) {
     event.preventDefault();
+  }
+
+  // URL Fragment Utilities
+
+  unwrapFragment(fragment: string): { [key: string]: string } {
+    // https://stackoverflow.com/a/5647103/1759462
+    return fragment
+      .split('&')
+      .map(el => el.split('='))
+      .reduce((pre, cur) => { pre[cur[0]] = decodeURIComponent(cur[1]); return pre; }, {});
+  }
+
+  wrapFragment(languageCode: string, titles: string[]): string {
+    const fragment: { [key: string]: string } = {};
+    if (languageCode) {
+      fragment['l'] = encodeURIComponent(languageCode);
+    }
+    if (titles) {
+      fragment['w'] = titles.map(title => encodeURIComponent(title)).join(',');
+    }
+    return Object.entries(fragment)
+      .map(query => `${query[0]}=${query[1]}`)
+      .join('&');
   }
 
 }

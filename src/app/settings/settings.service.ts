@@ -41,7 +41,7 @@ export class SettingsService {
   }
 
   getLocale(languageCode: string) {
-    return this.locales.find(locale => locale.languageCode == languageCode);
+    return this.locales.find(locale => locale.languageCode == languageCode) || this.currentLocale;
   }
 
   getCurrentLocale() {
