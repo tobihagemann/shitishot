@@ -1,7 +1,8 @@
 {
-  "New Game": "Neues Spiel",
   "Loading Game": "Spiel wird geladen…",
   "Show Results": "Ergebnisse zeigen",
+  "New Game": "Neues Spiel",
+  "Custom Game": "Eigenes Spiel",
   "Copy URL": "URL kopieren",
-  "Copied": "Kopiert!"
+  "Copied URL": "URL kopiert!"
 }
