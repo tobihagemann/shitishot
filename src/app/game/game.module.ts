@@ -3,16 +3,14 @@ import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { L10nConfig, LocalizationModule, ProviderType } from 'angular-l10n';
 import { ClipboardModule } from 'ngx-clipboard';
 
+import { SearchResultsModule } from '../search-results/search-results.module';
 import { SettingsModule } from '../settings/settings.module';
 import { SharedModule } from '../shared/shared.module';
+import { TitlesModule } from '../titles/titles.module';
 
-import { AllOriginsService } from './allorigins.service';
-import { BingService } from './bing.service';
 import { GameComponent } from './game.component';
 import { GameRoutingModule } from './game-routing.module';
 import { GameService } from './game.service';
-import { GoogleService } from './google.service';
-import { WikipediaService } from './wikipedia.service';
 
 const l10nConfig: L10nConfig = {
   translation: {
@@ -25,11 +23,7 @@ const l10nConfig: L10nConfig = {
 
 @NgModule({
   providers: [
-    GameService,
-    AllOriginsService,
-    BingService,
-    GoogleService,
-    WikipediaService
+    GameService
   ],
   declarations: [
     GameComponent
@@ -39,7 +33,9 @@ const l10nConfig: L10nConfig = {
     ClipboardModule,
     SharedModule,
     GameRoutingModule,
-    SettingsModule.forChild()
+    SearchResultsModule,
+    SettingsModule.forChild(),
+    TitlesModule
   ]
 })
 export class GameModule { }

@@ -4,18 +4,17 @@ import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
 import 'rxjs/add/operator/finally';
 
-import { Locale, SettingsService, WordSearchResultsSource, WordTitleSource } from '../settings/settings.service';
+import { Locale, SettingsService } from '../settings/settings.service';
 
-import { BingService } from './bing.service';
 import { Game } from './game';
-import { GoogleService } from './google.service';
-import { WikipediaService } from './wikipedia.service';
 import { Word } from './word';
+import { TitlesService } from '../titles/titles.service';
+import { SearchResultsService } from '../search-results/search-results.service';
 
 @Injectable()
 export class GameService {
 
-  constructor(private settingsService: SettingsService, private googleService: GoogleService, private bingService: BingService, private wikipediaService: WikipediaService) { }
+  constructor(private settingsService: SettingsService, private titlesService: TitlesService, private searchResultsService: SearchResultsService) { }
 
   /**
    * Begin a new game.
@@ -43,7 +42,8 @@ export class GameService {
       // Get more titles if necessary and process them.
       const getTitlesLimit = titles ? limit - titles.length : limit;
       if (getTitlesLimit > 0) {
-        this.getTitles(getTitlesLimit, locale).subscribe(titles => this.newGameStep(locale, titles, words, limit, observer), (err: number) => {
+        const source = this.settingsService.getTitlesSource();
+        this.titlesService.getTitles(source, getTitlesLimit, locale.languageCode).subscribe(titles => this.newGameStep(locale, titles, words, limit, observer), (err: number) => {
           console.error('Unable to get titles');
           observer.error(-1);
           observer.complete();
@@ -53,7 +53,8 @@ export class GameService {
   }
 
   private newGameStep(locale: Locale, titles: string[], words: { [index: number]: Word }, limit: number, observer: Observer<Game>) {
-    titles.forEach((title, index) => this.getSearchResults(title, locale).finally(() => {
+    const source = this.settingsService.getSearchResultsSource();
+    titles.forEach((title, index) => this.searchResultsService.getSearchResults(source, title, locale.languageCode, locale.countryCode).finally(() => {
       if (Object.keys(words).length == limit) {
         observer.next(new Game(locale.languageCode, Object.values(words)));
         observer.complete();
@@ -64,28 +65,6 @@ export class GameService {
       console.error(`Unable to get number of search results for: ${title}`);
       words[index] = new Word(title, -1);
     }));
-  }
-
-  private getTitles(limit: number, locale: Locale) {
-    switch (this.settingsService.getWordTitleSource()) {
-      case WordTitleSource.WikipediaMostViewed:
-        return this.wikipediaService.getMostViewedTitles(limit, locale.languageCode);
-      case WordTitleSource.WikipediaRandom:
-        return this.wikipediaService.getRandomTitles(limit, locale.languageCode);
-      default:
-        return this.wikipediaService.getMostViewedTitles(limit, locale.languageCode);
-    }
-  }
-
-  private getSearchResults(title: string, locale: Locale) {
-    switch (this.settingsService.getWordSearchResultsSource()) {
-      case WordSearchResultsSource.Google:
-        return this.googleService.getSearchResults(title, locale.languageCode);
-      case WordSearchResultsSource.Bing:
-        return this.bingService.getSearchResults(title, locale.languageCode, locale.countryCode)
-      default:
-        return this.googleService.getSearchResults(title, locale.languageCode);
-    }
   }
 
 }

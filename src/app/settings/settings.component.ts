@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 
-import { Locale, SettingsService, WordSearchResultsSource, WordTitleSource } from './settings.service';
+import { SearchResultsSource } from '../search-results/source.enum';
+import { TitlesSource } from '../titles/source.enum';
+
+import { Locale, SettingsService } from './settings.service';
 
 @Component({
   selector: 'app-settings',
@@ -19,24 +22,24 @@ export class SettingsComponent {
     this.settingsService.setCurrentLocale(locale);
   }
 
-  get wordTitleSources() {
-    return Object.values(WordTitleSource);
+  get titlesSources() {
+    return Object.values(TitlesSource);
   }
-  get wordTitleSource() {
-    return this.settingsService.getWordTitleSource();
+  get titlesSource() {
+    return this.settingsService.getTitlesSource();
   }
-  set wordTitleSource(source: WordTitleSource) {
-    this.settingsService.setWordTitleSource(source);
+  set titlesSource(source: TitlesSource) {
+    this.settingsService.setTitlesSource(source);
   }
 
-  get wordSearchResultsSources() {
-    return Object.values(WordSearchResultsSource);
+  get searchResultsSources() {
+    return Object.values(SearchResultsSource);
   }
-  get wordSearchResultsSource() {
-    return this.settingsService.getWordSearchResultsSource();
+  get searchResultsSource() {
+    return this.settingsService.getSearchResultsSource();
   }
-  set wordSearchResultsSource(source: WordSearchResultsSource) {
-    this.settingsService.setWordSearchResultsSource(source);
+  set searchResultsSource(source: SearchResultsSource) {
+    this.settingsService.setSearchResultsSource(source);
   }
 
   constructor(private settingsService: SettingsService) { }

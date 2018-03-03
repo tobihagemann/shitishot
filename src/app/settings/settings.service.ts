@@ -3,21 +3,13 @@ import { Injectable } from '@angular/core';
 import { LocaleService, TranslationService } from 'angular-l10n';
 
 import { LocalStorage } from '../shared/localstorage.decorator';
+import { TitlesSource } from '../titles/source.enum';
+import { SearchResultsSource } from '../search-results/source.enum';
 
 export interface Locale {
   languageCode: string;
   countryCode: string;
   text: string;
-}
-
-export enum WordTitleSource {
-  WikipediaMostViewed = 'Wikipedia (Most Viewed)',
-  WikipediaRandom = 'Wikipedia (Random)'
-}
-
-export enum WordSearchResultsSource {
-  Google = 'Google',
-  Bing = 'Bing'
 }
 
 @Injectable()
@@ -29,8 +21,8 @@ export class SettingsService {
   ];
   private currentLocale: Locale;
 
-  @LocalStorage(WordTitleSource.WikipediaMostViewed) private wordTitleSource: WordTitleSource;
-  @LocalStorage(WordSearchResultsSource.Google) private wordSearchResultsSource: WordSearchResultsSource;
+  @LocalStorage(TitlesSource.WikipediaMostViewed) private titlesSource: TitlesSource;
+  @LocalStorage(SearchResultsSource.Google) private searchResultsSource: SearchResultsSource;
 
   constructor(private localeService: LocaleService, translationService: TranslationService) {
     this.currentLocale = this.getLocale(this.localeService.getCurrentLanguage());
@@ -53,20 +45,20 @@ export class SettingsService {
     this.localeService.setDefaultLocale(locale.languageCode, locale.countryCode);
   }
 
-  getWordTitleSource() {
-    return this.wordTitleSource;
+  getTitlesSource() {
+    return this.titlesSource;
   }
 
-  setWordTitleSource(source: WordTitleSource) {
-    this.wordTitleSource = source;
+  setTitlesSource(source: TitlesSource) {
+    this.titlesSource = source;
   }
 
-  getWordSearchResultsSource() {
-    return this.wordSearchResultsSource;
+  getSearchResultsSource() {
+    return this.searchResultsSource;
   }
 
-  setWordSearchResultsSource(source: WordSearchResultsSource) {
-    this.wordSearchResultsSource = source;
+  setSearchResultsSource(source: SearchResultsSource) {
+    this.searchResultsSource = source;
   }
 
 }
