@@ -31,7 +31,7 @@ export class GameService {
       ? this.settingsService.getLocale(languageCode)
       : this.settingsService.getCurrentLocale();
     return Observable.create((observer: Observer<Game>) => {
-      const words: Word[] = [];
+      const words: { [index: number]: Word } = {};
       // Truncate titles if the number of titles is beyond the limit.
       if (titles && titles.length > limit) {
         titles.length = limit;
@@ -52,17 +52,17 @@ export class GameService {
     });
   }
 
-  private newGameStep(locale: Locale, titles: string[], words: Word[], limit: number, observer: Observer<Game>) {
-    titles.forEach(title => this.getSearchResults(title, locale).finally(() => {
-      if (words.length == limit) {
-        observer.next(new Game(locale.languageCode, words));
+  private newGameStep(locale: Locale, titles: string[], words: { [index: number]: Word }, limit: number, observer: Observer<Game>) {
+    titles.forEach((title, index) => this.getSearchResults(title, locale).finally(() => {
+      if (Object.keys(words).length == limit) {
+        observer.next(new Game(locale.languageCode, Object.values(words)));
         observer.complete();
       }
     }).subscribe(searchResults => {
-      words.push(new Word(title, searchResults));
+      words[index] = new Word(title, searchResults);
     }, (err: number) => {
       console.error(`Unable to get number of search results for: ${title}`);
-      words.push(new Word(title, -1));
+      words[index] = new Word(title, -1);
     }));
   }
 

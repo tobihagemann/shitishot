@@ -98,7 +98,7 @@ export class GameComponent implements OnInit {
 
   drawNextTitle() {
     if (this.remainingTitles.length > 0) {
-      this.nextTitle = this.remainingTitles.pop();
+      this.nextTitle = this.remainingTitles.splice(0, 1)[0];
       this.remainingTitles = this.remainingTitles; // persist remaining titles
     } else {
       this.nextTitle = null;
