@@ -4,12 +4,12 @@ import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
 import 'rxjs/add/operator/finally';
 
+import { SearchResultsService } from '../search-results/search-results.service';
 import { Locale, SettingsService } from '../settings/settings.service';
+import { TitlesService } from '../titles/titles.service';
 
 import { Game } from './game';
 import { Word } from './word';
-import { TitlesService } from '../titles/titles.service';
-import { SearchResultsService } from '../search-results/search-results.service';
 
 @Injectable()
 export class GameService {
@@ -19,16 +19,13 @@ export class GameService {
   /**
    * Begin a new game.
    * @param limit Limit how many words will be returned. Defaults to 5 if limit is negative.
-   * @param languageCode Language code, see [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). If `null`, current language will be used.
    * @param titles Titles that should be used. If `null`, titles will be loaded from the source that's set in the settings. If the number of titles is below the limit, additional titles will be loaded from the source. If the number of titles is beyond the limit, only the titles up to the limit will be used.
    */
-  newGame(limit: number, languageCode: string = null, titles: string[] = null): Observable<Game> {
+  newGame(limit: number, titles: string[] = null): Observable<Game> {
     if (limit < 0) {
       limit = 5;
     }
-    const locale = languageCode
-      ? this.settingsService.getLocale(languageCode)
-      : this.settingsService.getCurrentLocale();
+    const locale = this.settingsService.getCurrentLocale();
     return Observable.create((observer: Observer<Game>) => {
       const words: { [index: number]: Word } = {};
       // Truncate titles if the number of titles is beyond the limit.
@@ -37,13 +34,13 @@ export class GameService {
       }
       // Process titles that should be used.
       if (titles) {
-        this.newGameStep(locale, titles, words, limit, observer);
+        this.newGameStep(limit, titles, locale, words, observer);
       }
       // Get more titles if necessary and process them.
       const getTitlesLimit = titles ? limit - titles.length : limit;
       if (getTitlesLimit > 0) {
         const source = this.settingsService.getTitlesSource();
-        this.titlesService.getTitles(source, getTitlesLimit, locale.languageCode).subscribe(titles => this.newGameStep(locale, titles, words, limit, observer), (err: number) => {
+        this.titlesService.getTitles(source, getTitlesLimit, locale.languageCode).subscribe(titles => this.newGameStep(limit, titles, locale, words, observer), (err: number) => {
           console.error('Unable to get titles');
           observer.error(-1);
           observer.complete();
@@ -52,9 +49,9 @@ export class GameService {
     });
   }
 
-  private newGameStep(locale: Locale, titles: string[], words: { [index: number]: Word }, limit: number, observer: Observer<Game>) {
+  private newGameStep(limit: number, titles: string[], locale: Locale, words: { [index: number]: Word }, observer: Observer<Game>) {
     const source = this.settingsService.getSearchResultsSource();
-    titles.forEach((title, index) => this.searchResultsService.getSearchResults(source, title, locale.languageCode, locale.countryCode).finally(() => {
+    titles.forEach((title, index) => this.searchResultsService.getSearchResults(source, title, locale.languageCode).finally(() => {
       if (Object.keys(words).length == limit) {
         observer.next(new Game(locale.languageCode, Object.values(words)));
         observer.complete();

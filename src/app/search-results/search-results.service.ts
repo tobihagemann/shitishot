@@ -16,14 +16,13 @@ export class SearchResultsService {
    * @param source Source for search results.
    * @param title Search title.
    * @param languageCode Language code.
-   * @param countryCode Country code.
    */
-  getSearchResults(source: SearchResultsSource, title: string, languageCode: string, countryCode: string): Observable<number> {
+  getSearchResults(source: SearchResultsSource, title: string, languageCode: string): Observable<number> {
     switch (source) {
       case SearchResultsSource.Google:
         return this.googleService.getSearchResults(title, languageCode);
       case SearchResultsSource.Bing:
-        return this.bingService.getSearchResults(title, languageCode, countryCode)
+        return this.bingService.getSearchResults(title, languageCode)
       default:
         return this.googleService.getSearchResults(title, languageCode);
     }

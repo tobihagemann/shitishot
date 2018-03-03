@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
   { path: '', loadChildren: './game/game.module#GameModule' },
+  { path: 'custom', loadChildren: './custom/custom.module#CustomModule' },
   { path: 'settings', loadChildren: './settings/settings.module#SettingsModule' },
   { path: 'impressum', loadChildren: './impressum/impressum.module#ImpressumModule' }
 ];

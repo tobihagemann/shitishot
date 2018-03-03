@@ -1,0 +1,22 @@
+<form *ngIf="words.length > 0" class="form" (ngSubmit)="playGame()" #customGameForm="ngForm">
+  <div *ngFor="let word of words; index as i" class="form-group">
+    <label for="title-{{i}}">
+      {{i + 1}}.
+      <span l10nTranslate>Title</span>
+    </label>
+    <input type="text" class="form-control mb-2" id="title-{{i}}" name="title-{{i}}" [(ngModel)]="word.title" (ngModelChange)="onTitleChange(i, word.title)" required>
+    <p *ngIf="word.searchResults == -1" class="small text-muted">&nbsp;</p>
+    <p *ngIf="word.searchResults != -1" class="small text-muted" l10nDecimal>{{word.searchResults}}</p>
+  </div>
+
+  <div class="d-flex justify-content-between">
+    <button type="submit" class="btn btn-primary mb-2" [disabled]="!customGameForm.form.valid" l10nTranslate>
+      <span class="fas fa-play fa-fw"></span>
+      <span l10nTranslate>Play Game</span>
+    </button>
+    <button type="button" class="btn btn-outline-secondary mb-2" (click)="reset()" l10nTranslate>
+      <span class="fas fa-times-circle fa-fw"></span>
+      <span l10nTranslate>Reset</span>
+    </button>
+  </div>
+</form>

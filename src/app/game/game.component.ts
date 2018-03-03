@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { Subscription } from 'rxjs/Subscription';
 
@@ -36,7 +36,7 @@ export class GameComponent implements OnInit {
   private dragOverTitleIndex = -1;
   private dragEnterLeaveCounter = 0;
 
-  url = () => `${window.location.href}#${this.wrapFragment(this.game.languageCode, this.game.words.map(word => word.title))}`;
+  url = () => `${window.location.href}#${this.wrapFragment(this.game.words.map(word => word.title))}`;
   private _urlIsCopied: boolean;
   get urlIsCopied() {
     return this._urlIsCopied;
@@ -50,7 +50,7 @@ export class GameComponent implements OnInit {
     }
   }
 
-  constructor(private route: ActivatedRoute, private location: Location, private gameService: GameService) {
+  constructor(private route: ActivatedRoute, private router: Router, private location: Location, private gameService: GameService) {
     // https://github.com/timruffles/ios-html5-drag-drop-shim/issues/77#issuecomment-261772175
     window.addEventListener('touchmove', () => { });
   }
@@ -67,21 +67,20 @@ export class GameComponent implements OnInit {
     if (fragment) {
       const unwrappedFragment = this.unwrapFragment(fragment);
       if (unwrappedFragment) {
-        const languageCode = unwrappedFragment['l'];
-        const titles = unwrappedFragment['w'] ? unwrappedFragment['w'].split(',') : null;
+        const titles = unwrappedFragment['t'] ? unwrappedFragment['t'].split(',') : null;
         if (titles) {
-          this.newGame(languageCode, titles);
+          this.newGame(titles);
         }
       }
     }
   }
 
-  newGame(languageCode: string = null, titles: string[] = null) {
+  newGame(titles: string[] = null) {
     this.loadingGame = true;
     if (this.loadingGameSubscription) {
       this.loadingGameSubscription.unsubscribe();
     }
-    this.loadingGameSubscription = this.gameService.newGame(this.limit, languageCode, titles).subscribe(game => this.initGame(game), (err: number) => {
+    this.loadingGameSubscription = this.gameService.newGame(this.limit, titles).subscribe(game => this.initGame(game), (err: number) => {
       // TODO: proper error handling
     }, () => this.loadingGame = false);
   }
@@ -134,6 +133,12 @@ export class GameComponent implements OnInit {
       results.push(this.sortedWords[index].title == title);
     });
     this.results = results;
+  }
+
+  customGame() {
+    this.router.navigate(['custom'], {
+      fragment: this.wrapFragment(this.game.words.map(word => word.title))
+    });
   }
 
   // Drag & Drop – Next Title
@@ -249,13 +254,10 @@ export class GameComponent implements OnInit {
       .reduce((pre, cur) => { pre[cur[0]] = decodeURIComponent(cur[1]); return pre; }, {});
   }
 
-  wrapFragment(languageCode: string, titles: string[]): string {
+  wrapFragment(titles: string[]): string {
     const fragment: { [key: string]: string } = {};
-    if (languageCode) {
-      fragment['l'] = encodeURIComponent(languageCode);
-    }
     if (titles) {
-      fragment['w'] = titles.map(title => encodeURIComponent(title)).join(',');
+      fragment['t'] = titles.map(title => encodeURIComponent(title)).join(',');
     }
     return Object.entries(fragment)
       .map(query => `${query[0]}=${query[1]}`)

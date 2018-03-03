@@ -6,7 +6,7 @@
 </div>
 
 <div *ngIf="!loadingGame">
-  <div *ngIf="game" class="mb-4">
+  <div *ngIf="game" class="mb-4 mb-sm-5">
     <div *ngIf="results.length == 0" class="d-flex justify-content-center mb-4">
       <div *ngIf="nextTitle" class="card card-next grabbable" draggable="true" (dragstart)="onNextTitleDragStart($event)" (dragenter)="onNextTitleDragEnter($event)" (dragover)="onNextTitleDragOver($event)" (dragleave)="onNextTitleDragLeave()" (dragend)="onNextTitleDragEnd()" (drop)="onNextTitleDrop($event)">
         <div class="card-body">
@@ -41,13 +41,22 @@
     </div>
   </div>
 
-  <div class="d-flex justify-content-between">
-    <button type="button" class="btn" [ngClass]="{'btn-outline-secondary': !urlIsCopied, 'btn-success': urlIsCopied}" ngxClipboard [cbContent]="url()" (cbOnSuccess)="urlIsCopied = true">
-      <span *ngIf="!urlIsCopied" class="fas fa-copy fa-fw"></span>
-      <span *ngIf="urlIsCopied" class="fas fa-check fa-fw"></span>
-      <span *ngIf="!urlIsCopied" l10nTranslate>Copy URL</span>
-      <span *ngIf="urlIsCopied" l10nTranslate>Copied</span>
+  <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center">
+    <div class="d-flex justify-content-center">
+      <button *ngIf="game" type="button" class="btn mr-2 mb-2" [ngClass]="{'btn-outline-secondary': !urlIsCopied, 'btn-success': urlIsCopied}" ngxClipboard [cbContent]="url()" (cbOnSuccess)="urlIsCopied = true">
+        <span *ngIf="!urlIsCopied" class="fas fa-share-square fa-fw"></span>
+        <span *ngIf="urlIsCopied" class="fas fa-check fa-fw"></span>
+        <span *ngIf="!urlIsCopied" l10nTranslate>Copy URL</span>
+        <span *ngIf="urlIsCopied" l10nTranslate>Copied URL</span>
+      </button>
+      <button type="button" class="btn btn-outline-secondary mb-2" (click)="customGame()">
+        <span class="fas fa-edit fa-fw"></span>
+        <span l10nTranslate>Custom Game</span>
+      </button>
+    </div>
+    <button type="button" class="btn btn-outline-secondary mb-2" (click)="newGame()" l10nTranslate>
+      <span class="fas fa-play fa-fw"></span>
+      <span l10nTranslate>New Game</span>
     </button>
-    <button type="button" class="btn btn-outline-secondary" (click)="newGame()" l10nTranslate>New Game</button>
   </div>
 </div>

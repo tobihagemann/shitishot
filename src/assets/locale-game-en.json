@@ -1,7 +1,8 @@
 {
-  "New Game": "New Game",
   "Loading Game": "Loading Game…",
   "Show Results": "Show Results",
+  "New Game": "New Game",
+  "Custom Game": "Custom Game",
   "Copy URL": "Copy URL",
-  "Copied": "Copied!"
+  "Copied URL": "Copied URL!"
 }
