@@ -59,20 +59,26 @@ export class GameComponent implements OnInit {
     if (!this.game && !window.location.hash) {
       this.newGame();
     }
-    this.route.fragment.subscribe(fragment => this.handleFragment(fragment));
+    this.route.fragment.subscribe(fragment => {
+      const titles = this.getTitlesFromFragment(fragment);
+      if (titles) {
+        this.newGame(titles);
+      }
+    });
   }
 
-  handleFragment(fragment: string) {
+  getTitlesFromFragment(fragment: string) {
     this.location.replaceState('');
     if (fragment) {
       const unwrappedFragment = this.unwrapFragment(fragment);
       if (unwrappedFragment) {
         const titles = unwrappedFragment['t'] ? unwrappedFragment['t'].split(',') : null;
         if (titles) {
-          this.newGame(titles);
+          return titles;
         }
       }
     }
+    return null;
   }
 
   newGame(titles: string[] = null) {

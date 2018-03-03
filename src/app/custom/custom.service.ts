@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
+import { Observer } from 'rxjs/Observer';
 
 import { SettingsService } from '../settings/settings.service';
 import { SearchResultsService } from '../search-results/search-results.service';
@@ -15,9 +16,18 @@ export class CustomService {
    * @param title Search title.
    */
   getSearchResults(title: string): Observable<number> {
-    const source = this.settingsService.getSearchResultsSource();
-    const locale = this.settingsService.getCurrentLocale();
-    return this.searchResultsService.getSearchResults(source, title, locale.languageCode);
+    return Observable.create((observer: Observer<number>) => {
+      const source = this.settingsService.getSearchResultsSource();
+      const locale = this.settingsService.getCurrentLocale();
+      this.searchResultsService.getSearchResults(source, title, locale.languageCode).subscribe(searchResults => {
+        observer.next(searchResults);
+        observer.complete();
+      }, (err: number) => {
+        console.error(`Unable to get number of search results for: ${title}`);
+        observer.error(err);
+        observer.complete();
+      });
+    });
   }
 
 }

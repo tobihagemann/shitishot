@@ -34,13 +34,13 @@ export class GameService {
       }
       // Process titles that should be used.
       if (titles) {
-        this.newGameStep(limit, titles, locale, words, observer);
+        this.processTitles(limit, titles, locale, words, observer);
       }
       // Get more titles if necessary and process them.
       const getTitlesLimit = titles ? limit - titles.length : limit;
       if (getTitlesLimit > 0) {
         const source = this.settingsService.getTitlesSource();
-        this.titlesService.getTitles(source, getTitlesLimit, locale.languageCode).subscribe(titles => this.newGameStep(limit, titles, locale, words, observer), (err: number) => {
+        this.titlesService.getTitles(source, getTitlesLimit, locale.languageCode).subscribe(titles => this.processTitles(limit, titles, locale, words, observer), (err: number) => {
           console.error('Unable to get titles');
           observer.error(-1);
           observer.complete();
@@ -49,7 +49,7 @@ export class GameService {
     });
   }
 
-  private newGameStep(limit: number, titles: string[], locale: Locale, words: { [index: number]: Word }, observer: Observer<Game>) {
+  private processTitles(limit: number, titles: string[], locale: Locale, words: { [index: number]: Word }, observer: Observer<Game>) {
     const source = this.settingsService.getSearchResultsSource();
     titles.forEach((title, index) => this.searchResultsService.getSearchResults(source, title, locale.languageCode).finally(() => {
       if (Object.keys(words).length == limit) {

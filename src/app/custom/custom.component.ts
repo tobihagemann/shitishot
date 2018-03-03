@@ -27,20 +27,35 @@ export class CustomComponent implements OnInit {
   constructor(private route: ActivatedRoute, private router: Router, private location: Location, private customService: CustomService) { }
 
   ngOnInit() {
-    if (!window.location.hash) {
-      this.initWords();
-    }
-    this.route.fragment.subscribe(fragment => this.handleFragment(fragment));
+    this.route.fragment.subscribe(fragment => this.initWords(this.getTitlesFromFragment(fragment)));
   }
 
   initWords(titles: string[] = null) {
-    const limit = titles ? titles.length : this.limit;
     this.resetWords();
-    for (let index = 0; index < limit; index++) {
-      const title = titles ? titles[index] : '';
-      this.addWord(new Word(title, -1));
-      this.titleObservers[index].next(title);
+    var indexOffset = 0;
+    // Truncate titles if the number of titles is beyond the limit.
+    if (titles && titles.length > this.limit) {
+      titles.length = this.limit;
     }
+    // Process titles that should be used.
+    if (titles) {
+      this.processTitles(titles, indexOffset);
+      indexOffset += titles.length;
+    }
+    // Fill with empty titles if necessary and process them.
+    const emptyTitlesLimit = titles ? this.limit - titles.length : this.limit;
+    if (emptyTitlesLimit > 0) {
+      const emptyTitles = new Array(emptyTitlesLimit).fill('');
+      this.processTitles(emptyTitles, indexOffset);
+      indexOffset += emptyTitlesLimit;
+    }
+  }
+
+  processTitles(titles: string[], indexOffset: number) {
+    titles.forEach((title, index) => {
+      this.addWord(new Word(title, -1));
+      this.titleObservers[indexOffset + index].next(title);
+    });
   }
 
   resetWords() {
@@ -57,24 +72,25 @@ export class CustomComponent implements OnInit {
       .distinctUntilChanged()
       .subscribe(title => {
         if (title.length > 0) {
-          this.customService.getSearchResults(title).subscribe(searchResults => word.searchResults = searchResults);
+          this.customService.getSearchResults(title).subscribe(searchResults => word.searchResults = searchResults, (err: number) => word.searchResults = -1);
         } else {
           word.searchResults = -1;
         }
       }));
   }
 
-  handleFragment(fragment: string) {
+  getTitlesFromFragment(fragment: string) {
     this.location.replaceState('custom');
     if (fragment) {
       const unwrappedFragment = this.unwrapFragment(fragment);
       if (unwrappedFragment) {
         const titles = unwrappedFragment['t'] ? unwrappedFragment['t'].split(',') : null;
         if (titles) {
-          this.initWords(titles);
+          return titles;
         }
       }
     }
+    return null;
   }
 
   onTitleChange(index: number, title: string) {
