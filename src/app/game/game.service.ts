@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
+import 'rxjs/add/operator/finally';
 
 import { Locale, SettingsService, WordSearchResultsSource, WordTitleSource } from '../settings/settings.service';
 
@@ -52,16 +53,16 @@ export class GameService {
   }
 
   private newGameStep(locale: Locale, titles: string[], words: Word[], limit: number, observer: Observer<Game>) {
-    titles.forEach(title => this.getSearchResults(title, locale).subscribe(searchResults => {
-      words.push(new Word(title, searchResults));
-    }, (err: number) => {
-      console.error(`Unable to get number of search results for: ${title}`);
-      words.push(new Word(title, -1));
-    }, () => {
+    titles.forEach(title => this.getSearchResults(title, locale).finally(() => {
       if (words.length == limit) {
         observer.next(new Game(locale.languageCode, words));
         observer.complete();
       }
+    }).subscribe(searchResults => {
+      words.push(new Word(title, searchResults));
+    }, (err: number) => {
+      console.error(`Unable to get number of search results for: ${title}`);
+      words.push(new Word(title, -1));
     }));
   }
 
