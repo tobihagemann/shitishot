@@ -16,7 +16,7 @@ export class AllOriginsService {
   private url = 'https://ssl.setolabs.com/allorigins/get';
   private params = (url: string) => new HttpParams({
     fromObject: {
-      url: url
+      url: encodeURIComponent(url)
     }
   });
 
