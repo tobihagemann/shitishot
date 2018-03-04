@@ -13,27 +13,23 @@
   }
 }
 
-.card-text-next {
+.card-text-height {
   @include media-breakpoint-up(sm) {
     min-height: 3rem * $line-height-base;
   }
 }
 
-.card-body-title {
+.card-body-single-line {
   @include media-breakpoint-only(xs) {
     overflow: hidden;
   }
 }
 
-.card-text-title {
+.card-text-single-line {
   @include media-breakpoint-only(xs) {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-  }
-
-  @include media-breakpoint-up(sm) {
-    min-height: 3rem * $line-height-base;
   }
 }
 
