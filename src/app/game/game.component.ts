@@ -87,11 +87,11 @@ export class GameComponent implements OnInit {
     }
     const progressObserver = new Subscriber<number>(progress => this.loadingGameProgress = progress);
     this.loadingGameSubscription = this.gameService.newGame(this.limit, titles, progressObserver).finally(() => {
-      this.loadingGame = false;
       this.loadingGameProgress = -1;
+      this.loadingGame = false;
     }).subscribe(game => this.initGame(game), (err: number) => {
       // TODO: proper error handling
-    }, () => this.loadingGame = false);
+    });
   }
 
   initGame(game: Game) {

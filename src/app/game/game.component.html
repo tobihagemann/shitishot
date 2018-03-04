@@ -4,7 +4,7 @@
     <span l10nTranslate>Loading Game</span>
   </p>
   <p>
-    <ngb-progressbar type="success" [striped]="loadingGameProgress == -1" [animated]="loadingGameProgress == -1" [max]="limit" [value]="loadingGameProgress == -1 ? limit : loadingGameProgress"></ngb-progressbar>
+    <ngb-progressbar type="success" [striped]="loadingGameProgress == -1" [animated]="loadingGameProgress == -1" [max]="limit" [value]="loadingGameProgress == -1 ? limit : loadingGameProgress">{{loadingGameProgress != -1 ? loadingGameProgress + '/' + limit : ''}}</ngb-progressbar>
   </p>
 </div>
 
