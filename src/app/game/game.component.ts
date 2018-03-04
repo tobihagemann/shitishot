@@ -56,12 +56,9 @@ export class GameComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (!this.game && !window.location.hash) {
-      this.newGame();
-    }
     this.route.fragment.subscribe(fragment => {
       const titles = this.getTitlesFromFragment(fragment);
-      if (titles) {
+      if (titles || !this.game) {
         this.newGame(titles);
       }
     });

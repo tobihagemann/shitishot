@@ -28,19 +28,24 @@ export class GameService {
     const locale = this.settingsService.getCurrentLocale();
     return Observable.create((observer: Observer<Game>) => {
       const words: { [index: number]: Word } = {};
+      var indexOffset = 0;
       // Truncate titles if the number of titles is beyond the limit.
       if (titles && titles.length > limit) {
         titles.length = limit;
       }
       // Process titles that should be used.
       if (titles) {
-        this.processTitles(limit, titles, locale, words, observer);
+        this.processTitles(limit, titles, indexOffset, locale, words, observer);
+        indexOffset += titles.length;
       }
       // Get more titles if necessary and process them.
       const getTitlesLimit = titles ? limit - titles.length : limit;
       if (getTitlesLimit > 0) {
         const source = this.settingsService.getTitlesSource();
-        this.titlesService.getTitles(source, getTitlesLimit, locale.languageCode).subscribe(titles => this.processTitles(limit, titles, locale, words, observer), (err: number) => {
+        this.titlesService.getTitles(source, getTitlesLimit, locale.languageCode).subscribe(titles => {
+          this.processTitles(limit, titles, indexOffset, locale, words, observer);
+          indexOffset += titles.length;
+        }, (err: number) => {
           console.error('Unable to get titles');
           observer.error(-1);
           observer.complete();
@@ -49,7 +54,7 @@ export class GameService {
     });
   }
 
-  private processTitles(limit: number, titles: string[], locale: Locale, words: { [index: number]: Word }, observer: Observer<Game>) {
+  private processTitles(limit: number, titles: string[], indexOffset: number, locale: Locale, words: { [index: number]: Word }, observer: Observer<Game>) {
     const source = this.settingsService.getSearchResultsSource();
     titles.forEach((title, index) => this.searchResultsService.getSearchResults(source, title, locale.languageCode).finally(() => {
       if (Object.keys(words).length == limit) {
@@ -57,10 +62,10 @@ export class GameService {
         observer.complete();
       }
     }).subscribe(searchResults => {
-      words[index] = new Word(title, searchResults);
+      words[indexOffset + index] = new Word(title, searchResults);
     }, (err: number) => {
       console.error(`Unable to get number of search results for: ${title}`);
-      words[index] = new Word(title, -1);
+      words[indexOffset + index] = new Word(title, -1);
     }));
   }
 
