@@ -11,7 +11,7 @@
     <div *ngIf="results.length == 0" class="d-flex justify-content-center mb-4">
       <div *ngIf="nextTitle" class="card card-next grabbable" draggable="true" (dragstart)="onNextTitleDragStart($event)" (dragenter)="onNextTitleDragEnter($event)" (dragover)="onNextTitleDragOver($event)" (dragleave)="onNextTitleDragLeave()" (dragend)="onNextTitleDragEnd()" (drop)="onNextTitleDrop($event)">
         <div class="card-body">
-          <p class="card-text">{{nextTitle}}</p>
+          <p class="card-text card-text-next">{{nextTitle}}</p>
         </div>
       </div>
       <button *ngIf="!nextTitle" class="btn btn-success btn-lg btn-show-results" (click)="showResults()" l10nTranslate>Show Results</button>
@@ -35,7 +35,7 @@
             <span class="fas fa-check fa-fw"></span> {{sortedWords[i].title}}
           </p>
         </div>
-        <div class="card-footer card-footer-searchresults d-flex align-items-center">
+        <div class="card-footer card-footer-search-results d-flex align-items-center">
           <small class="text-muted" l10nDecimal>{{searchResults[i]}}</small>
         </div>
       </div>

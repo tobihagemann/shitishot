@@ -13,6 +13,12 @@
   }
 }
 
+.card-text-next {
+  @include media-breakpoint-up(sm) {
+    min-height: 3rem * $line-height-base;
+  }
+}
+
 .card-body-title {
   @include media-breakpoint-only(xs) {
     overflow: hidden;
@@ -31,7 +37,7 @@
   }
 }
 
-.card-footer-searchresults {
+.card-footer-search-results {
   @include media-breakpoint-only(xs) {
     border-left: $card-border-width solid $card-border-color;
     border-top: none;
