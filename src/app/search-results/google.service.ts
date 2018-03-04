@@ -9,7 +9,7 @@ import { AllOriginsService } from './allorigins.service';
 export class GoogleService {
 
   // Since I couldn't find an API that isn't deprecated or doesn't have ridiculous limitations, we're scraping this bad boy.
-  private url = (query: string, languageCode: string) => `https://www.google.com/search?q=${encodeURIComponent(query.toLowerCase()).replace(/%20/g, '+')}&hl=${languageCode}`;
+  private url = (query: string, languageCode: string) => `https://www.google.com/search?q=${encodeURIComponent(query.trim().replace(/\s\s+/g, ' ').toLowerCase()).replace(/%20/g, '+')}&hl=${languageCode}`;
 
   constructor(private allOriginsService: AllOriginsService) { }
 

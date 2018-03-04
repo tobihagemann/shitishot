@@ -9,7 +9,7 @@ import { AllOriginsService } from './allorigins.service';
 export class BingService {
 
   // Since I couldn't find an API that isn't deprecated or doesn't have ridiculous limitations, we're scraping this bad boy.
-  private url = (query: string, languageCode: string) => `https://www.bing.com/search?q=${encodeURIComponent(query.toLowerCase()).replace(/%20/g, '+')}&setLang=${languageCode}`;
+  private url = (query: string, languageCode: string) => `https://www.bing.com/search?q=${encodeURIComponent(query.trim().replace(/\s\s+/g, ' ').toLowerCase()).replace(/%20/g, '+')}&setLang=${languageCode}`;
 
   constructor(private allOriginsService: AllOriginsService) { }
 
