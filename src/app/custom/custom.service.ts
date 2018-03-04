@@ -25,7 +25,6 @@ export class CustomService {
       }, (err: number) => {
         console.error(`Unable to get number of search results for: ${title}`);
         observer.error(err);
-        observer.complete();
       });
     });
   }

@@ -31,11 +31,9 @@ export class BingService {
           observer.complete();
         } else {
           observer.error(-1);
-          observer.complete();
         }
       }, (err: number) => {
         observer.error(err);
-        observer.complete();
       });
     });
   }

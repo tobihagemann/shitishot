@@ -34,7 +34,6 @@ export class GoogleService {
         }
       }, (err: number) => {
         observer.error(err);
-        observer.complete();
       });
     });
   }
@@ -54,11 +53,9 @@ export class GoogleService {
         observer.complete();
       } else {
         observer.error(-1);
-        observer.complete();
       }
     }, (err: number) => {
       observer.error(err);
-      observer.complete();
     });
   }
 

@@ -48,7 +48,6 @@ export class GameService {
         }, (err: number) => {
           console.error('Unable to get titles');
           observer.error(-1);
-          observer.complete();
         });
       }
     });

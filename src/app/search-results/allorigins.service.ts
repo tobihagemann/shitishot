@@ -38,7 +38,6 @@ export class AllOriginsService {
           console.error(`Backend returned code ${err.status}, body was: ${err.error}`);
         }
         observer.error(err.status);
-        observer.complete();
       });
     });
   }
