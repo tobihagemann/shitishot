@@ -71,11 +71,12 @@ export class CustomComponent implements OnInit {
       .debounceTime(1000)
       .distinctUntilChanged()
       .subscribe(title => {
-        if (title.length > 0) {
-          this.customService.getSearchResults(title).subscribe(searchResults => word.searchResults = searchResults, (err: number) => word.searchResults = -1);
-        } else {
-          word.searchResults = -1;
-        }
+        // Deactivated fetching search results because it created too many requests. :(
+        // if (title.length > 0) {
+        //   this.customService.getSearchResults(title).subscribe(searchResults => word.searchResults = searchResults, (err: number) => word.searchResults = -1);
+        // } else {
+        //   word.searchResults = -1;
+        // }
       }));
   }
 
