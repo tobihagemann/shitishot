@@ -29,7 +29,7 @@ export class GameComponent implements OnInit {
   @LocalStorage([]) results: boolean[];
 
   loadingGame = false;
-  loadingGameProgress: string;
+  loadingGameProgress = -1;
   private loadingGameSubscription: Subscription;
 
   private fixedTitles: string[];
@@ -85,10 +85,10 @@ export class GameComponent implements OnInit {
     if (this.loadingGameSubscription) {
       this.loadingGameSubscription.unsubscribe();
     }
-    const progressObserver = new Subscriber<number>(progress => this.loadingGameProgress = `(${progress}/${this.limit})`);
+    const progressObserver = new Subscriber<number>(progress => this.loadingGameProgress = progress);
     this.loadingGameSubscription = this.gameService.newGame(this.limit, titles, progressObserver).finally(() => {
       this.loadingGame = false;
-      this.loadingGameProgress = null;
+      this.loadingGameProgress = -1;
     }).subscribe(game => this.initGame(game), (err: number) => {
       // TODO: proper error handling
     }, () => this.loadingGame = false);
