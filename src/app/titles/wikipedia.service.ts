@@ -4,6 +4,8 @@ import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http'
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
 
+import { LocalStorage } from '../shared/localstorage.decorator';
+
 interface WikipediaResponse {
   query: {
     mostviewed: [{
@@ -44,8 +46,8 @@ export class WikipediaService {
     }
   });
 
-  private cachedMostViewedTitles: { [languageCode: string]: string[] } = {};
-  private cachedRandomTitles: { [languageCode: string]: string[] } = {};
+  @LocalStorage({}, 'wikipediaMostViewedTitles') private mostViewedTitles: { [languageCode: string]: string[] };
+  @LocalStorage({}, 'wikipediaRandomTitles') private randomTitles: { [languageCode: string]: string[] };
 
   constructor(private http: HttpClient) { }
 
@@ -55,25 +57,26 @@ export class WikipediaService {
    * @param languageCode Language code, see [List of Wikipedias](https://en.wikipedia.org/wiki/List_of_Wikipedias).
    */
   getMostViewedTitles(limit: number, languageCode: string): Observable<string[]> {
-    if (!this.cachedMostViewedTitles[languageCode]) {
-      this.cachedMostViewedTitles[languageCode] = [];
+    if (!this.mostViewedTitles[languageCode]) {
+      this.mostViewedTitles[languageCode] = [];
     }
     return Observable.create((observer: Observer<string[]>) => {
       const complete = () => {
         const titles: string[] = [];
         for (let index = 0; index < limit; index++) {
-          titles.push(this.cachedMostViewedTitles[languageCode].splice(0, 1)[0]);
+          titles.push(this.mostViewedTitles[languageCode].splice(0, 1)[0]);
         }
+        this.mostViewedTitles = this.mostViewedTitles; // persist most viewed titles
         observer.next(titles);
         observer.complete();
       }
-      if (this.cachedMostViewedTitles[languageCode].length >= limit) {
+      if (this.mostViewedTitles[languageCode].length >= limit) {
         complete();
       } else {
         this.http.get<WikipediaResponse>(this.url(languageCode), { params: this.pvimparams }).subscribe(response => {
           response.query.mostviewed.forEach(mostviewed => {
             if (mostviewed.ns == 0 && this.validateTitle(mostviewed.title)) {
-              this.cachedMostViewedTitles[languageCode].push(mostviewed.title);
+              this.mostViewedTitles[languageCode].push(mostviewed.title);
             }
           });
           complete();
@@ -95,25 +98,26 @@ export class WikipediaService {
    * @param languageCode Language code, see [List of Wikipedias](https://en.wikipedia.org/wiki/List_of_Wikipedias).
    */
   getRandomTitles(limit: number, languageCode: string): Observable<string[]> {
-    if (!this.cachedRandomTitles[languageCode]) {
-      this.cachedRandomTitles[languageCode] = [];
+    if (!this.randomTitles[languageCode]) {
+      this.randomTitles[languageCode] = [];
     }
     return Observable.create((observer: Observer<string[]>) => {
       const complete = () => {
         const titles: string[] = [];
         for (let index = 0; index < limit; index++) {
-          titles.push(this.cachedRandomTitles[languageCode].splice(0, 1)[0]);
+          titles.push(this.randomTitles[languageCode].splice(0, 1)[0]);
         }
+        this.randomTitles = this.randomTitles; // persist random titles
         observer.next(titles);
         observer.complete();
       }
-      if (this.cachedRandomTitles[languageCode].length >= limit) {
+      if (this.randomTitles[languageCode].length >= limit) {
         complete();
       } else {
         this.http.get<WikipediaResponse>(this.url(languageCode), { params: this.rnparams }).subscribe(response => {
           response.query.random.forEach(random => {
             if (this.validateTitle(random.title)) {
-              this.cachedRandomTitles[languageCode].push(random.title);
+              this.randomTitles[languageCode].push(random.title);
             }
           });
           complete();
