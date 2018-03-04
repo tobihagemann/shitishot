@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 
+import { Subscriber } from 'rxjs/Subscriber';
 import { Subscription } from 'rxjs/Subscription';
 
 import { LocalStorage } from '../shared/localstorage.decorator';
@@ -28,6 +29,7 @@ export class GameComponent implements OnInit {
   @LocalStorage([]) results: boolean[];
 
   loadingGame = false;
+  loadingGameProgress: string;
   private loadingGameSubscription: Subscription;
 
   private fixedTitles: string[];
@@ -83,7 +85,11 @@ export class GameComponent implements OnInit {
     if (this.loadingGameSubscription) {
       this.loadingGameSubscription.unsubscribe();
     }
-    this.loadingGameSubscription = this.gameService.newGame(this.limit, titles).subscribe(game => this.initGame(game), (err: number) => {
+    const progressObserver = new Subscriber<number>(progress => this.loadingGameProgress = `(${progress}/${this.limit})`);
+    this.loadingGameSubscription = this.gameService.newGame(this.limit, titles, progressObserver).finally(() => {
+      this.loadingGame = false;
+      this.loadingGameProgress = null;
+    }).subscribe(game => this.initGame(game), (err: number) => {
       // TODO: proper error handling
     }, () => this.loadingGame = false);
   }

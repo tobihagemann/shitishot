@@ -20,8 +20,9 @@ export class GameService {
    * Begin a new game.
    * @param limit Limit how many words will be returned. Defaults to 5 if limit is negative.
    * @param titles Titles that should be used. If `null`, titles will be loaded from the source that's set in the settings. If the number of titles is below the limit, additional titles will be loaded from the source. If the number of titles is beyond the limit, only the titles up to the limit will be used.
+   * @param progressObserver Progress observer, calls next for each word until the limit is reached.
    */
-  newGame(limit: number, titles: string[] = null): Observable<Game> {
+  newGame(limit: number, titles: string[] = null, progressObserver: Observer<number> = null): Observable<Game> {
     if (limit < 0) {
       limit = 5;
     }
@@ -35,7 +36,7 @@ export class GameService {
       }
       // Process titles that should be used.
       if (titles) {
-        this.processTitles(limit, titles, indexOffset, locale, words, observer);
+        this.processTitles(limit, titles, indexOffset, locale, words, observer, progressObserver);
         indexOffset += titles.length;
       }
       // Get more titles if necessary and process them.
@@ -43,7 +44,7 @@ export class GameService {
       if (getTitlesLimit > 0) {
         const source = this.settingsService.getTitlesSource();
         this.titlesService.getTitles(source, getTitlesLimit, locale.languageCode).subscribe(titles => {
-          this.processTitles(limit, titles, indexOffset, locale, words, observer);
+          this.processTitles(limit, titles, indexOffset, locale, words, observer, progressObserver);
           indexOffset += titles.length;
         }, (err: number) => {
           console.error('Unable to get titles');
@@ -53,10 +54,18 @@ export class GameService {
     });
   }
 
-  private processTitles(limit: number, titles: string[], indexOffset: number, locale: Locale, words: { [index: number]: Word }, observer: Observer<Game>) {
+  private processTitles(limit: number, titles: string[], indexOffset: number, locale: Locale, words: { [index: number]: Word }, observer: Observer<Game>, progressObserver: Observer<number> = null) {
+    var progress = indexOffset;
     const source = this.settingsService.getSearchResultsSource();
     titles.forEach((title, index) => this.searchResultsService.getSearchResults(source, title, locale.languageCode).finally(() => {
+      if (progressObserver) {
+        progress++;
+        progressObserver.next(progress);
+      }
       if (Object.keys(words).length == limit) {
+        if (progressObserver) {
+          progressObserver.complete();
+        }
         observer.next(new Game(locale.languageCode, Object.values(words)));
         observer.complete();
       }
