@@ -108,7 +108,7 @@ export class CustomComponent implements OnInit {
     this.initWords();
   }
 
-  // URL Fragment Utilities
+  // URL Fragment
 
   unwrapFragment(fragment: string): { [key: string]: string } {
     // https://stackoverflow.com/a/5647103/1759462

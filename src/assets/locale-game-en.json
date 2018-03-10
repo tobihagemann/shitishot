@@ -4,5 +4,20 @@
   "New Game": "New Game",
   "Custom Game": "Custom Game",
   "Copy URL": "Copy URL",
-  "Copied URL": "Copied URL!"
+  "Tutorial Step - Next Title": "Drag this word and drop it below. Guess how many hits this word generates in a search engine.",
+  "Tutorial Step - Sort Titles": "The words can be rearranged. Drag all words from the top and rank them.",
+  "Tutorial Step - Show Results": "Put the words in the final order and press here to show the results.",
+  "Tutorial Step - Evaluate Results - 0": "No matches! Better luck next game.",
+  "Tutorial Step - Evaluate Results - 1": "One match! But that's about it.",
+  "Tutorial Step - Evaluate Results - 2": "Two matches! Pew, pew.",
+  "Tutorial Step - Evaluate Results - 3": "Three matches! All good things come in threes. But five is better.",
+  "Tutorial Step - Evaluate Results - 4": "Four matches! Wait. This shouldn't be possible. What?",
+  "Tutorial Step - Evaluate Results - 5": "Booyah! The shit is hot!",
+  "Tutorial Step - New Game": "Start a game with new words.",
+  "Tutorial Step - Custom Game": "Or create a game with your own words.",
+  "Tutorial Step - Copy URL": "And share the game with the words from the current round. Have fun!",
+  "Skip Tutorial": "Skip Tutorial",
+  "Close": "Close",
+  "Next": "Next",
+  "Finish Tutorial": "Finish Tutorial"
 }

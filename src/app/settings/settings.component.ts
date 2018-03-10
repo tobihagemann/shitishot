@@ -42,6 +42,25 @@ export class SettingsComponent {
     this.settingsService.setSearchResultsSource(source);
   }
 
+  private _tutorialIsReset: boolean;
+  get tutorialIsReset() {
+    return this._tutorialIsReset;
+  }
+  private tutorialIsResetTimeoutId: number;
+  set tutorialIsReset(tutorialIsReset) {
+    this._tutorialIsReset = tutorialIsReset;
+    clearTimeout(this.tutorialIsResetTimeoutId);
+    if (tutorialIsReset) {
+      this.tutorialIsResetTimeoutId = setTimeout(() => this.tutorialIsReset = false, 3000);
+    }
+  }
+
   constructor(private settingsService: SettingsService) { }
+
+  resetTutorial() {
+    localStorage.removeItem('showTutorial');
+    localStorage.removeItem('tutorialState');
+    this.tutorialIsReset = true;
+  }
 
 }

@@ -10,11 +10,11 @@ export function LocalStorage(defaultValue = null, key: string = null) {
     Object.defineProperty(target, propertyName, {
       configurable: false,
       get: function () {
-        if (this[privateProperty]) {
+        if (this[privateProperty] != null) {
           return this[privateProperty];
         }
         const value = JSON.parse(localStorage.getItem(key));
-        if (value) {
+        if (value != null) {
           this[privateProperty] = value;
           return this[privateProperty];
         } else {

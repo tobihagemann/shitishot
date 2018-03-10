@@ -29,3 +29,13 @@
     </footer>
   </blockquote>
 </div>
+
+<div class="mb-3">
+  <p class="mb-2" l10nTranslate>Tutorial</p>
+  <button type="button" class="btn" [ngClass]="{'btn-outline-secondary': !tutorialIsReset, 'btn-success': tutorialIsReset}" (click)="resetTutorial()">
+    <span *ngIf="!tutorialIsReset" class="fas fa-times-circle fa-fw"></span>
+    <span *ngIf="tutorialIsReset" class="fas fa-check fa-fw"></span>
+    <span l10nTranslate>Reset Tutorial</span>
+    <span l10nTranslate></span>
+  </button>
+</div>

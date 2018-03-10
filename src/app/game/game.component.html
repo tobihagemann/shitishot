@@ -11,15 +11,15 @@
 <div *ngIf="!loadingGame">
   <div *ngIf="game" class="mb-4 mb-sm-5">
     <div *ngIf="results.length == 0" class="d-flex justify-content-center mb-4">
-      <div *ngIf="nextTitle" class="card card-next grabbable" draggable="true" (dragstart)="onNextTitleDragStart($event)" (dragenter)="onNextTitleDragEnter($event)" (dragover)="onNextTitleDragOver($event)" (dragleave)="onNextTitleDragLeave()" (dragend)="onNextTitleDragEnd()" (drop)="onNextTitleDrop($event)">
+      <div *ngIf="nextTitle" class="card card-next grabbable" draggable="true" (dragstart)="onNextTitleDragStart($event)" (dragenter)="onNextTitleDragEnter($event)" (dragover)="onNextTitleDragOver($event)" (dragleave)="onNextTitleDragLeave()" (dragend)="onNextTitleDragEnd()" (drop)="onNextTitleDrop($event)" [placement]="nextTitlePopoverPlacement()" [ngbPopover]="nextTitlePopoverContent" #nextTitlePopover="ngbPopover">
         <div class="card-body">
           <p class="card-text card-text-height">{{nextTitle}}</p>
         </div>
       </div>
-      <button *ngIf="!nextTitle" class="btn btn-success btn-lg btn-show-results" (click)="showResults()" l10nTranslate>Show Results</button>
+      <button *ngIf="!nextTitle" class="btn btn-success btn-lg btn-show-results" (click)="showResults()" [placement]="showResultsPopoverPlacement()" [ngbPopover]="showResultsPopoverContent" #showResultsPopover="ngbPopover" l10nTranslate>Show Results</button>
     </div>
 
-    <div class="card-group">
+    <div class="card-group" [placement]="titlesPopoverPlacement()" [ngbPopover]="titlesPopoverContent()" #titlesPopover="ngbPopover">
       <div *ngFor="let title of titles; index as i" class="card d-flex flex-row flex-sm-column">
         <div *ngIf="results.length == 0" class="card-body card-body-single-line" [class.grabbable]="title != null" [class.card-body-dragover]="dragOverTitleIndex == i &amp;&amp; dragOverTitleIndex != draggedTitleIndex" [class.card-body-dragged]="draggedTitleIndex == i &amp;&amp; draggedTitle == title" [draggable]="title != null" (dragstart)="onTitleDragStart($event, i)" (dragenter)="onTitleDragEnter($event)" (dragover)="onTitleDragOver($event, i)" (dragleave)="onTitleDragLeave()" (dragend)="onTitleDragEnd()" (drop)="onTitleDrop($event)">
           <p class="card-text card-text-height card-text-single-line">{{title || '&nbsp;'}}</p>
@@ -46,20 +46,78 @@
 
   <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center">
     <div class="d-flex justify-content-center">
-      <button *ngIf="game" type="button" class="btn mr-2 mb-2" [ngClass]="{'btn-outline-secondary': !urlIsCopied, 'btn-success': urlIsCopied}" ngxClipboard [cbContent]="url()" (cbOnSuccess)="urlIsCopied = true">
+      <button *ngIf="game" type="button" class="btn mr-2 mb-2" [ngClass]="{'btn-outline-secondary': !urlIsCopied, 'btn-success': urlIsCopied}" ngxClipboard [cbContent]="url()" (cbOnSuccess)="urlIsCopied = true" placement="right" [ngbPopover]="copyURLPopoverContent" #copyURLPopover="ngbPopover">
         <span *ngIf="!urlIsCopied" class="fas fa-share-square fa-fw"></span>
         <span *ngIf="urlIsCopied" class="fas fa-check fa-fw"></span>
-        <span *ngIf="!urlIsCopied" l10nTranslate>Copy URL</span>
-        <span *ngIf="urlIsCopied" l10nTranslate>Copied URL</span>
+        <span l10nTranslate>Copy URL</span>
       </button>
-      <button type="button" class="btn btn-outline-secondary mb-2" (click)="customGame()">
+      <button type="button" class="btn btn-outline-secondary mb-2" (click)="customGame()" [placement]="customGamePopoverPlacement()" [ngbPopover]="customGamePopoverContent" #customGamePopover="ngbPopover">
         <span class="fas fa-edit fa-fw"></span>
         <span l10nTranslate>Custom Game</span>
       </button>
     </div>
-    <button type="button" class="btn btn-outline-secondary mb-2" (click)="newGame()" l10nTranslate>
+    <button type="button" class="btn btn-outline-secondary mb-2" (click)="newGame()" [placement]="newGamePopoverPlacement()" [ngbPopover]="newGamePopoverContent" #newGamePopover="ngbPopover">
       <span class="fas fa-play fa-fw"></span>
       <span l10nTranslate>New Game</span>
     </button>
   </div>
 </div>
+
+<ng-template #nextTitlePopoverContent>
+  <p class="mb-2" l10nTranslate>Tutorial Step - Next Title</p>
+  <button type="button" class="btn btn-secondary btn-sm" (click)="finishTutorial()" l10nTranslate>Skip Tutorial</button>
+</ng-template>
+
+<ng-template #sortTitlesPopoverContent>
+  <p class="mb-2" l10nTranslate>Tutorial Step - Sort Titles</p>
+  <button type="button" class="btn btn-secondary btn-sm" (click)="finishSortTitlesTutorialState()" l10nTranslate>Close</button>
+</ng-template>
+
+<ng-template #showResultsPopoverContent>
+  <p class="mb-0" l10nTranslate>Tutorial Step - Show Results</p>
+</ng-template>
+
+<ng-template #evaluateResultsPopoverContent0>
+  <p class="mb-2" l10nTranslate>Tutorial Step - Evaluate Results - 0</p>
+  <button type="button" class="btn btn-secondary btn-sm" (click)="finishEvaluateResultsTutorialState()" l10nTranslate>Next</button>
+</ng-template>
+
+<ng-template #evaluateResultsPopoverContent1>
+  <p class="mb-2" l10nTranslate>Tutorial Step - Evaluate Results - 1</p>
+  <button type="button" class="btn btn-secondary btn-sm" (click)="finishEvaluateResultsTutorialState()" l10nTranslate>Next</button>
+</ng-template>
+
+<ng-template #evaluateResultsPopoverContent2>
+  <p class="mb-2" l10nTranslate>Tutorial Step - Evaluate Results - 2</p>
+  <button type="button" class="btn btn-secondary btn-sm" (click)="finishEvaluateResultsTutorialState()" l10nTranslate>Next</button>
+</ng-template>
+
+<ng-template #evaluateResultsPopoverContent3>
+  <p class="mb-2" l10nTranslate>Tutorial Step - Evaluate Results - 3</p>
+  <button type="button" class="btn btn-secondary btn-sm" (click)="finishEvaluateResultsTutorialState()" l10nTranslate>Next</button>
+</ng-template>
+
+<ng-template #evaluateResultsPopoverContent4>
+  <p class="mb-2" l10nTranslate>Tutorial Step - Evaluate Results - 4</p>
+  <button type="button" class="btn btn-secondary btn-sm" (click)="finishEvaluateResultsTutorialState()" l10nTranslate>Next</button>
+</ng-template>
+
+<ng-template #evaluateResultsPopoverContent5>
+  <p class="mb-2" l10nTranslate>Tutorial Step - Evaluate Results - 5</p>
+  <button type="button" class="btn btn-secondary btn-sm" (click)="finishEvaluateResultsTutorialState()" l10nTranslate>Next</button>
+</ng-template>
+
+<ng-template #newGamePopoverContent>
+  <p class="mb-2" l10nTranslate>Tutorial Step - New Game</p>
+  <button type="button" class="btn btn-secondary btn-sm" (click)="finishNewGameTutorialState()" l10nTranslate>Next</button>
+</ng-template>
+
+<ng-template #customGamePopoverContent>
+  <p class="mb-2" l10nTranslate>Tutorial Step - Custom Game</p>
+  <button type="button" class="btn btn-secondary btn-sm" (click)="finishCustomGameTutorialState()" l10nTranslate>Next</button>
+</ng-template>
+
+<ng-template #copyURLPopoverContent>
+  <p class="mb-2" l10nTranslate>Tutorial Step - Copy URL</p>
+  <button type="button" class="btn btn-secondary btn-sm" (click)="finishCopyURLTutorialState()" l10nTranslate>Finish Tutorial</button>
+</ng-template>
