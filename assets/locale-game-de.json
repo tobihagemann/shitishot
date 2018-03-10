@@ -4,5 +4,20 @@
   "New Game": "Neues Spiel",
   "Custom Game": "Eigenes Spiel",
   "Copy URL": "URL kopieren",
-  "Copied URL": "URL kopiert!"
+  "Tutorial Step - Next Title": "Ziehe diesen Begriff nach unten und rate, wie viele Treffer dieser Begriff bei einer Suchmaschine erzeugen.",
+  "Tutorial Step - Sort Titles": "Die Begriffe lassen sich nachträglich umsortieren. Ziehe alle Begriffe nach unten und ordne sie ein.",
+  "Tutorial Step - Show Results": "Bringe die Begriffe in die endgültige Reihenfolge und drücke hier, um die Ergebnisse anzuzeigen.",
+  "Tutorial Step - Evaluate Results - 0": "Kein Treffer! Tja, mal verliert man, mal gewinnen die anderen.",
+  "Tutorial Step - Evaluate Results - 1": "Ein Treffer! Aber mehr auch nicht.",
+  "Tutorial Step - Evaluate Results - 2": "Zwei Treffer! Pew, pew.",
+  "Tutorial Step - Evaluate Results - 3": "Drei Treffer! Aller guten Dinge sind drei. Besser sind aber fünf.",
+  "Tutorial Step - Evaluate Results - 4": "Vier Treffer! Moment mal. Dieses Ergebnis ist gar nicht möglich. Hä?",
+  "Tutorial Step - Evaluate Results - 5": "Volltreffer! Der Scheiß ist heiß!",
+  "Tutorial Step - New Game": "Starte ein Spiel mit neuen Begriffen.",
+  "Tutorial Step - Custom Game": "Oder erstelle ein Spiel mit eigenen Begriffen.",
+  "Tutorial Step - Copy URL": "Und teile das Spiel mit den Begriffen aus der aktuellen Runde. Viel Spaß!",
+  "Skip Tutorial": "Tutorial überspringen",
+  "Close": "Schließen",
+  "Next": "Weiter",
+  "Finish Tutorial": "Tutorial abschließen"
 }
