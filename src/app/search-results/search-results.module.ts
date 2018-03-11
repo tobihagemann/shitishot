@@ -5,13 +5,15 @@ import { AllOriginsService } from './allorigins.service';
 import { BingService } from './bing.service';
 import { GoogleService } from './google.service';
 import { SearchResultsService } from './search-results.service';
+import { YandexService } from './yandex.service';
 
 @NgModule({
   providers: [
     AllOriginsService,
     BingService,
     GoogleService,
-    SearchResultsService
+    SearchResultsService,
+    YandexService
   ],
   imports: [
     CommonModule

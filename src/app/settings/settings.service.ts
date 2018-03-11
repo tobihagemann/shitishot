@@ -22,7 +22,7 @@ export class SettingsService {
   private currentLocale: Locale;
 
   @LocalStorage(TitlesSource.WikipediaMostViewed) private titlesSource: TitlesSource;
-  @LocalStorage(SearchResultsSource.Google) private searchResultsSource: SearchResultsSource;
+  @LocalStorage(SearchResultsSource.Yandex) private searchResultsSource: SearchResultsSource;
 
   constructor(private localeService: LocaleService, translationService: TranslationService) {
     this.currentLocale = this.getLocale(this.localeService.getCurrentLanguage());
