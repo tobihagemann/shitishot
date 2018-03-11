@@ -9,7 +9,7 @@ import { LocalStorage } from '../shared/localstorage.decorator';
 interface WikipediaResponse {
   query: {
     mostviewed: [{
-      ns: number,
+      ns: number;
       title: string;
     }];
     random: [{
