@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParameterCodec, HttpParams } from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
@@ -16,8 +16,9 @@ export class AllOriginsService {
   private url = 'https://ssl.setolabs.com/allorigins/get';
   private params = (url: string) => new HttpParams({
     fromObject: {
-      url: encodeURIComponent(url)
-    }
+      url: url
+    },
+    encoder: new CustomHttpUrlEncodingCodec()
   });
 
   constructor(private http: HttpClient) { }
@@ -40,6 +41,26 @@ export class AllOriginsService {
         observer.error(err.status);
       });
     });
+  }
+
+}
+
+class CustomHttpUrlEncodingCodec implements HttpParameterCodec {
+
+  encodeKey(key: string): string {
+    return encodeURIComponent(key);
+  }
+
+  encodeValue(value: string): string {
+    return encodeURIComponent(value);
+  }
+
+  decodeKey(key: string): string {
+    return decodeURIComponent(key);
+  }
+
+  decodeValue(value: string): string {
+    return decodeURIComponent(value);
   }
 
 }

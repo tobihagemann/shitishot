@@ -23,7 +23,7 @@ export class YandexService {
   private url = 'https://ssl.setolabs.com/yandex/search';
   private params = (query: string) => new HttpParams({
     fromObject: {
-      query: encodeURIComponent(query.trim().replace(/\s\s+/g, ' ').toLowerCase()).replace(/%20/g, '+')
+      query: query.trim().replace(/\s\s+/g, ' ').replace(/\s/g, '+').toLowerCase()
     }
   });
 
