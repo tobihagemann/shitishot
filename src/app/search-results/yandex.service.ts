@@ -8,11 +8,15 @@ interface YandexResponse {
   yandexsearch: {
     response: {
       found: [{
-        _attributes: {
-          priority: string;
-        };
         _text: number;
-      }]
+      }];
+      results: {
+        grouping: {
+          'found-docs': [{
+            _text: number;
+          }];
+        };
+      };
     }
   };
 }
@@ -37,7 +41,10 @@ export class YandexService {
   getSearchResults(query: string): Observable<number> {
     return Observable.create((observer: Observer<number>) => {
       this.http.get<YandexResponse>(this.url, { params: this.params(query) }).subscribe(response => {
-        if (response.yandexsearch && response.yandexsearch.response && response.yandexsearch.response.found[0] && response.yandexsearch.response.found[0]._text) {
+        if (response.yandexsearch && response.yandexsearch.response && response.yandexsearch.response.results && response.yandexsearch.response.results.grouping && response.yandexsearch.response.results.grouping["found-docs"] && response.yandexsearch.response.results.grouping["found-docs"][0] && response.yandexsearch.response.results.grouping["found-docs"][0]._text) {
+          observer.next(response.yandexsearch.response.results.grouping["found-docs"][0]._text);
+          observer.complete();
+        } else if (response.yandexsearch && response.yandexsearch.response && response.yandexsearch.response.found && response.yandexsearch.response.found[0] && response.yandexsearch.response.found[0]._text) {
           observer.next(response.yandexsearch.response.found[0]._text);
           observer.complete();
         } else {
