@@ -1,3 +1,5 @@
+<ngb-alert *ngIf="alertMessage" type="danger" (close)="alertMessage = null">{{alertMessage}}</ngb-alert>
+
 <div *ngIf="loadingGame">
   <p class="text-center">
     <span class="fas fa-fire"></span>

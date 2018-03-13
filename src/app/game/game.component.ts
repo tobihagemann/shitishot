@@ -32,6 +32,8 @@ export class GameComponent implements OnInit {
   @LocalStorage() searchResults: number[];
   @LocalStorage([]) results: boolean[];
 
+  alertMessage: string;
+
   loadingGame = false;
   loadingGameProgress = -1;
   private loadingGameSubscription: Subscription;
@@ -117,8 +119,9 @@ export class GameComponent implements OnInit {
         this.tutorialState = TutorialState.NextTitle;
         this.openCurrentTutorialPopover()
       }
-    }).subscribe(game => this.initGame(game), (err: number) => {
-      // TODO: proper error handling
+    }).subscribe(game => this.initGame(game), (error: Error) => {
+      this.alertMessage = error.message;
+      this.resetGame();
     });
   }
 
@@ -130,6 +133,16 @@ export class GameComponent implements OnInit {
     this.searchResults = this.sortedWords.map(word => word.searchResults);
     this.results = [];
     this.drawNextTitle();
+  }
+
+  resetGame() {
+    this.game = null;
+    this.sortedWords = null;
+    this.remainingTitles = null;
+    this.nextTitle = null;
+    this.titles = null;
+    this.searchResults = null;
+    this.results = null;
   }
 
   drawNextTitle() {

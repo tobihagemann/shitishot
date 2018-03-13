@@ -79,15 +79,13 @@ export class WikipediaService {
               this.mostViewedTitles[languageCode].push(mostviewed.title);
             }
           });
-          complete();
-        }, (err: HttpErrorResponse) => {
-          if (err.error instanceof Error) {
-            console.error('An error occurred:', err.error.message);
+          if (this.mostViewedTitles[languageCode].length < limit) {
+            console.error('Insufficient most viewed titles:', this.mostViewedTitles[languageCode].length);
+            observer.error(new WikipediaError('Unable to load most viewed titles'));
           } else {
-            console.error(`Backend returned code ${err.status}, body was: ${err.error}`);
+            complete();
           }
-          observer.error(err.status);
-        });
+        }, (error: HttpErrorResponse) => observer.error(this.handleHttpErrorResponse(error)));
       }
     });
   }
@@ -120,15 +118,13 @@ export class WikipediaService {
               this.randomTitles[languageCode].push(random.title);
             }
           });
-          complete();
-        }, (err: HttpErrorResponse) => {
-          if (err.error instanceof Error) {
-            console.error('An error occurred:', err.error.message);
+          if (this.randomTitles[languageCode].length < limit) {
+            console.error('Insufficient random titles:', this.randomTitles[languageCode].length);
+            observer.error(new WikipediaError('Unable to load random titles'));
           } else {
-            console.error(`Backend returned code ${err.status}, body was: ${err.error}`);
+            complete();
           }
-          observer.error(err.status);
-        });
+        }, (error: HttpErrorResponse) => observer.error(this.handleHttpErrorResponse(error)));
       }
     });
   }
@@ -137,4 +133,21 @@ export class WikipediaService {
     return title != 'Hauptseite' && title != 'Main Page';
   }
 
+  private handleHttpErrorResponse(error: HttpErrorResponse) {
+    if (error.error instanceof Error) {
+      console.error('An error occurred:', error.error.message);
+      return new WikipediaError(`An error occurred: ${error.error.message}`);
+    } else {
+      console.error(`Backend returned code ${error.status}, body was: ${error.error}`);
+      return new WikipediaError(`Backend returned code ${error.status}`);
+    }
+  }
+
+}
+
+class WikipediaError extends Error {
+  constructor(message: string) {
+    super(`[Wikipedia] ${message}`);
+    Object.setPrototypeOf(this, WikipediaError.prototype);
+  }
 }

@@ -6,6 +6,9 @@ import { Observer } from 'rxjs/Observer';
 
 interface AllOriginsResponse {
   contents: string;
+  status: {
+    http_code: number;
+  }
 }
 
 @Injectable()
@@ -30,37 +33,50 @@ export class AllOriginsService {
   getContents(url: string): Observable<string> {
     return Observable.create((observer: Observer<string>) => {
       this.http.get<AllOriginsResponse>(this.url, { params: this.params(url) }).subscribe(response => {
-        observer.next(response.contents);
-        observer.complete();
-      }, (err: HttpErrorResponse) => {
-        if (err.error instanceof Error) {
-          console.error('An error occurred:', err.error.message);
+        if (response.contents) {
+          observer.next(response.contents);
+          observer.complete();
+        } else if (response.status && response.status.http_code) {
+          observer.error(new AllOriginsError('Unable to load contents', response.status.http_code));
         } else {
-          console.error(`Backend returned code ${err.status}, body was: ${err.error}`);
+          observer.error(new AllOriginsError('Unable to load contents'));
         }
-        observer.error(err.status);
-      });
+      }, (error: HttpErrorResponse) => observer.error(this.handleHttpErrorResponse(error)));
     });
+  }
+
+  private handleHttpErrorResponse(error: HttpErrorResponse) {
+    if (error.error instanceof Error) {
+      console.error('An error occurred:', error.error.message);
+      return new AllOriginsError(`An error occurred: ${error.error.message}`);
+    } else {
+      console.error(`Backend returned code ${error.status}, body was: ${error.error}`);
+      return new AllOriginsError(`Backend returned code ${error.status}`);
+    }
   }
 
 }
 
-class CustomHttpUrlEncodingCodec implements HttpParameterCodec {
+export class AllOriginsError extends Error {
+  httpCode: number;
+  constructor(message: string, httpCode: number = -1) {
+    super(`[AllOrigins] ${message}`);
+    Object.setPrototypeOf(this, AllOriginsError.prototype);
+    this.httpCode = httpCode;
+  }
+}
 
+class CustomHttpUrlEncodingCodec implements HttpParameterCodec {
   encodeKey(key: string): string {
     return encodeURIComponent(key);
   }
-
   encodeValue(value: string): string {
     return encodeURIComponent(value);
   }
-
   decodeKey(key: string): string {
     return decodeURIComponent(key);
   }
-
   decodeValue(value: string): string {
     return decodeURIComponent(value);
   }
-
 }

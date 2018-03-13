@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
 
-import { AllOriginsService } from './allorigins.service';
+import { AllOriginsError, AllOriginsService } from './allorigins.service';
 
 @Injectable()
 export class BingService {
@@ -30,12 +31,26 @@ export class BingService {
           observer.next(parseInt(searchResultsWithoutSeparators));
           observer.complete();
         } else {
-          observer.error(-1);
+          observer.error(new BingError('Unable to load search results'));
         }
-      }, (err: number) => {
-        observer.error(err);
-      });
+      }, (error: AllOriginsError) => observer.error(this.handleAllOriginsError(error)));
     });
   }
 
+  private handleAllOriginsError(error: AllOriginsError) {
+    if (error.httpCode == -1) {
+      return error;
+    } else {
+      console.error(`Backend returned code ${error.httpCode}`);
+      return new BingError(`Backend returned code ${error.httpCode}`);
+    }
+  }
+
+}
+
+class BingError extends Error {
+  constructor(message: string) {
+    super(`[Bing] ${message}`);
+    Object.setPrototypeOf(this, BingError.prototype);
+  }
 }

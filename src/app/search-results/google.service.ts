@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
 
-import { AllOriginsService } from './allorigins.service';
+import { AllOriginsError, AllOriginsService } from './allorigins.service';
 
 @Injectable()
 export class GoogleService {
@@ -32,9 +33,7 @@ export class GoogleService {
         } else {
           this.getSearchResultsFromSecondPage(query, languageCode, observer);
         }
-      }, (err: number) => {
-        observer.error(err);
-      });
+      }, (error: AllOriginsError) => observer.error(this.handleAllOriginsError(error)));
     });
   }
 
@@ -52,11 +51,25 @@ export class GoogleService {
         observer.next(parseInt(searchResultsWithoutSeparator));
         observer.complete();
       } else {
-        observer.error(-1);
+        observer.error(new GoogleError('Unable to load search results'));
       }
-    }, (err: number) => {
-      observer.error(err);
-    });
+    }, (error: AllOriginsError) => observer.error(this.handleAllOriginsError(error)));
   }
 
+  private handleAllOriginsError(error: AllOriginsError) {
+    if (error.httpCode == -1) {
+      return error;
+    } else {
+      console.error(`Backend returned code ${error.httpCode}`);
+      return new GoogleError(`Backend returned code ${error.httpCode}`);
+    }
+  }
+
+}
+
+class GoogleError extends Error {
+  constructor(message: string) {
+    super(`[Google] ${message}`);
+    Object.setPrototypeOf(this, GoogleError.prototype);
+  }
 }

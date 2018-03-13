@@ -73,7 +73,7 @@ export class CustomComponent implements OnInit {
       .subscribe(title => {
         // Deactivated fetching search results because it created too many requests. :(
         // if (title.length > 0) {
-        //   this.customService.getSearchResults(title).subscribe(searchResults => word.searchResults = searchResults, (err: number) => word.searchResults = -1);
+        //   this.customService.getSearchResults(title).subscribe(searchResults => word.searchResults = searchResults, (error: Error) => word.searchResults = -1);
         // } else {
         //   word.searchResults = -1;
         // }

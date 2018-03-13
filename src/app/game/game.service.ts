@@ -46,9 +46,9 @@ export class GameService {
         this.titlesService.getTitles(source, getTitlesLimit, locale.languageCode).subscribe(titles => {
           this.processTitles(limit, titles, indexOffset, locale, words, observer, progressObserver);
           indexOffset += titles.length;
-        }, (err: number) => {
+        }, (error: Error) => {
           console.error('Unable to get titles');
-          observer.error(-1);
+          observer.error(error);
         });
       }
     });
@@ -71,9 +71,10 @@ export class GameService {
       }
     }).subscribe(searchResults => {
       words[indexOffset + index] = new Word(title, searchResults);
-    }, (err: number) => {
-      console.error(`Unable to get number of search results for: ${title}`);
+    }, (error: Error) => {
       words[indexOffset + index] = new Word(title, -1);
+      console.error(`Unable to get number of search results for: ${title}`);
+      observer.error(error);
     }));
   }
 

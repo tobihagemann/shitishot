@@ -34,9 +34,8 @@ export class YandexService {
   constructor(private http: HttpClient) { }
 
   /**
-  * Get number of search results on Google.
+  * Get number of search results on Yandex.
   * @param query Search query.
-  * @param languageCode Language code, see [Google Web Interface and Search Language Codes](https://sites.google.com/site/tomihasa/google-language-codes).
   */
   getSearchResults(query: string): Observable<number> {
     return Observable.create((observer: Observer<number>) => {
@@ -48,17 +47,28 @@ export class YandexService {
           observer.next(response.yandexsearch.response.found[0]._text);
           observer.complete();
         } else {
-          observer.error(-1);
+          observer.error(new YandexError('Unable to load search results'));
         }
-      }, (err: HttpErrorResponse) => {
-        if (err.error instanceof Error) {
-          console.error('An error occurred:', err.error.message);
-        } else {
-          console.error(`Backend returned code ${err.status}, body was: ${err.error}`);
-        }
-        observer.error(err.status);
-      });
+      }, (error: HttpErrorResponse) => observer.error(this.handleHttpErrorResponse(error)));
     });
   }
 
+
+  private handleHttpErrorResponse(error: HttpErrorResponse) {
+    if (error.error instanceof Error) {
+      console.error('An error occurred:', error.error.message);
+      return new YandexError(`An error occurred: ${error.error.message}`);
+    } else {
+      console.error(`Backend returned code ${error.status}, body was: ${error.error}`);
+      return new YandexError(`Backend returned code ${error.status}`);
+    }
+  }
+
+}
+
+class YandexError extends Error {
+  constructor(message: string) {
+    super(`[Yandex] ${message}`);
+    Object.setPrototypeOf(this, YandexError.prototype);
+  }
 }

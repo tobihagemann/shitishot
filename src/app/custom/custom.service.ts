@@ -22,9 +22,9 @@ export class CustomService {
       this.searchResultsService.getSearchResults(source, title, locale.languageCode).subscribe(searchResults => {
         observer.next(searchResults);
         observer.complete();
-      }, (err: number) => {
+      }, (error: Error) => {
         console.error(`Unable to get number of search results for: ${title}`);
-        observer.error(err);
+        observer.error(error);
       });
     });
   }
