@@ -25,7 +25,9 @@ const l10nConfig: L10nConfig = {
   translation: {
     providers: [
       { type: ProviderType.Static, prefix: './assets/locale-' },
-      { type: ProviderType.Static, prefix: './assets/locale-footer-' }
+      { type: ProviderType.Static, prefix: './assets/locale-footer-' },
+      { type: ProviderType.Static, prefix: './assets/locale-titles-' },
+      { type: ProviderType.Static, prefix: './assets/locale-search-results-' }
     ],
     caching: true,
     missingValue: 'No key'

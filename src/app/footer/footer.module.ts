@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 import { L10nConfig, LocalizationModule, ProviderType } from 'angular-l10n';
+import { SettingsModule } from '../settings/settings.module';
 
 import { FooterComponent } from './footer.component';
 
@@ -22,7 +23,8 @@ const l10nConfig: L10nConfig = {
   imports: [
     CommonModule,
     RouterModule,
-    LocalizationModule.forChild(l10nConfig)
+    LocalizationModule.forChild(l10nConfig),
+    SettingsModule
   ],
   exports: [
     FooterComponent

@@ -12,7 +12,9 @@ import { SettingsService } from './settings.service';
 const l10nConfig: L10nConfig = {
   translation: {
     providers: [
-      { type: ProviderType.Static, prefix: './assets/locale-settings-' }
+      { type: ProviderType.Static, prefix: './assets/locale-settings-' },
+      { type: ProviderType.Static, prefix: './assets/locale-titles-' },
+      { type: ProviderType.Static, prefix: './assets/locale-search-results-' }
     ],
     missingValue: 'No key'
   }

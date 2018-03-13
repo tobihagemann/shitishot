@@ -8,8 +8,10 @@
       <a href="https://www.youtube.com/watch?v=upm6SfYuGX4" target="_blank">Der Scheiß ist heiß</a>
       <span l10nTranslate>on</span>
       <a href="https://www.zdf.de/comedy/neo-magazin-mit-jan-boehmermann/" target="_blank">NEO MAGAZIN ROYALE</a>
+      •
+      <a routerLink="/impressum">Impressum</a>
     </p>
-    <p class="text-muted small">
+    <p class="text-muted small mb-2">
       <span l10nTranslate>Made with</span>
       <a href="https://angular.io" target="_blank">Angular</a>
       <span l10nTranslate>and</span>
@@ -20,8 +22,13 @@
       •
       <span l10nTranslate>Source Code at</span>
       <a href="https://github.com/tobihagemann/shitishot" target="_blank">GitHub</a>
+    </p>
+    <p class="text-muted small">
+      <span l10nTranslate>Titles Source</span>:
+      <span l10nTranslate>{{getTitlesSource()}}</span>
       •
-      <a routerLink="/impressum">Impressum</a>
+      <span l10nTranslate>Search Results Source</span>:
+      <span l10nTranslate>{{getSearchResultsSource()}}</span>
     </p>
   </div>
 </footer>
