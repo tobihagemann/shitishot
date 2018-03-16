@@ -1,11 +1,15 @@
+import { SearchResultsSource } from "../search-results/source.enum";
+
 import { Word } from "./word";
 
 export class Game {
-  languageCode: string;
   words: Word[];
+  languageCode: string;
+  searchResultsSource: SearchResultsSource
 
-  constructor(languageCode: string, words: Word[]) {
-    this.languageCode = languageCode;
+  constructor(words: Word[], languageCode: string, searchResultsSource: SearchResultsSource) {
     this.words = words;
+    this.languageCode = languageCode;
+    this.searchResultsSource = searchResultsSource;
   }
 }

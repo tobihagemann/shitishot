@@ -7,6 +7,8 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { NgbPopover, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 
+import { SearchResultsSource } from '../search-results/source.enum';
+import { Fragment } from '../shared/fragment';
 import { LocalStorage } from '../shared/localstorage.decorator';
 
 import { Game } from './game';
@@ -44,7 +46,7 @@ export class GameComponent implements OnInit {
   private dragOverTitleIndex = -1;
   private dragEnterLeaveCounter = 0;
 
-  url = () => `${window.location.href}#${this.wrapFragment(this.game.words.map(word => word.title))}`;
+  url = () => `${window.location.href}#${Fragment.createFromGame(this.game).toString()}`;
   private _urlIsCopied: boolean;
   get urlIsCopied() {
     return this._urlIsCopied;
@@ -83,36 +85,23 @@ export class GameComponent implements OnInit {
 
   ngOnInit() {
     this.route.fragment.subscribe(fragment => {
-      const titles = this.getTitlesFromFragment(fragment);
-      if (titles || !this.game) {
-        this.newGame(titles);
+      const fragmentObj = Fragment.createFromFragment(fragment);
+      this.location.replaceState('');
+      if (fragmentObj.titles || !this.game) {
+        this.newGame(fragmentObj.titles, fragmentObj.languageCode, fragmentObj.source);
       } else if (this.showTutorial) {
         this.openCurrentTutorialPopover();
       }
     });
   }
 
-  getTitlesFromFragment(fragment: string) {
-    this.location.replaceState('');
-    if (fragment) {
-      const unwrappedFragment = this.unwrapFragment(fragment);
-      if (unwrappedFragment) {
-        const titles = unwrappedFragment['t'] ? unwrappedFragment['t'].split(',') : null;
-        if (titles) {
-          return titles;
-        }
-      }
-    }
-    return null;
-  }
-
-  newGame(titles: string[] = null) {
+  newGame(titles?: string[], languageCode?: string, source?: SearchResultsSource) {
     this.loadingGame = true;
     if (this.loadingGameSubscription) {
       this.loadingGameSubscription.unsubscribe();
     }
     const progressObserver = new Subscriber<number>(progress => this.loadingGameProgress = progress);
-    this.loadingGameSubscription = this.gameService.newGame(this.limit, titles, progressObserver).finally(() => {
+    this.loadingGameSubscription = this.gameService.newGame(this.limit, titles, languageCode, source, progressObserver).finally(() => {
       this.loadingGameProgress = -1;
       this.loadingGame = false;
       if (this.showTutorial) {
@@ -191,7 +180,7 @@ export class GameComponent implements OnInit {
 
   customGame() {
     this.router.navigate(['custom'], {
-      fragment: this.wrapFragment(this.game.words.map(word => word.title))
+      fragment: new Fragment(this.game.words.map(word => word.title)).toString()
     });
   }
 
@@ -300,26 +289,6 @@ export class GameComponent implements OnInit {
 
   onTitleDrop(event) {
     event.preventDefault();
-  }
-
-  // URL Fragment
-
-  unwrapFragment(fragment: string): { [key: string]: string } {
-    // https://stackoverflow.com/a/5647103/1759462
-    return fragment
-      .split('&')
-      .map(el => el.split('='))
-      .reduce((pre, cur) => { pre[cur[0]] = decodeURIComponent(cur[1]); return pre; }, {});
-  }
-
-  wrapFragment(titles: string[]): string {
-    const fragment: { [key: string]: string } = {};
-    if (titles) {
-      fragment['t'] = titles.map(title => encodeURIComponent(title)).join(',');
-    }
-    return Object.entries(fragment)
-      .map(query => `${query[0]}=${query[1]}`)
-      .join('&');
   }
 
   // Tutorial

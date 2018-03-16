@@ -3,7 +3,7 @@
  * @param defaultValue Getter returns `defaultValue` if local storage doesn't contain anything yet.
  * @param key Key for local storage item. If null, it'll be the same as the property name.
  */
-export function LocalStorage(defaultValue = null, key: string = null) {
+export function LocalStorage(defaultValue?: any, key?: string) {
   return function (target: any, propertyName: string) {
     key = key || propertyName;
     const privateProperty = `_${propertyName}`;

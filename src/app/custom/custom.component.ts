@@ -9,6 +9,7 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 
 import { Word } from '../game/word';
+import { Fragment } from '../shared/fragment';
 
 import { CustomService } from './custom.service';
 
@@ -27,10 +28,14 @@ export class CustomComponent implements OnInit {
   constructor(private route: ActivatedRoute, private router: Router, private location: Location, private customService: CustomService) { }
 
   ngOnInit() {
-    this.route.fragment.subscribe(fragment => this.initWords(this.getTitlesFromFragment(fragment)));
+    this.route.fragment.subscribe(fragment => {
+      const fragmentObj = Fragment.createFromFragment(fragment);
+      this.location.replaceState('');
+      this.initWords(fragmentObj.titles);
+    });
   }
 
-  initWords(titles: string[] = null) {
+  initWords(titles?: string[]) {
     this.resetWords();
     var indexOffset = 0;
     // Truncate titles if the number of titles is beyond the limit.
@@ -80,52 +85,18 @@ export class CustomComponent implements OnInit {
       }));
   }
 
-  getTitlesFromFragment(fragment: string) {
-    this.location.replaceState('custom');
-    if (fragment) {
-      const unwrappedFragment = this.unwrapFragment(fragment);
-      if (unwrappedFragment) {
-        const titles = unwrappedFragment['t'] ? unwrappedFragment['t'].split(',') : null;
-        if (titles) {
-          return titles;
-        }
-      }
-    }
-    return null;
-  }
-
   onTitleChange(index: number, title: string) {
     this.titleObservers[index].next(title);
   }
 
   playGame() {
     this.router.navigate([''], {
-      fragment: this.wrapFragment(this.words.map(word => word.title))
+      fragment: new Fragment(this.words.map(word => word.title)).toString()
     });
   }
 
   reset() {
     this.initWords();
-  }
-
-  // URL Fragment
-
-  unwrapFragment(fragment: string): { [key: string]: string } {
-    // https://stackoverflow.com/a/5647103/1759462
-    return fragment
-      .split('&')
-      .map(el => el.split('='))
-      .reduce((pre, cur) => { pre[cur[0]] = decodeURIComponent(cur[1]); return pre; }, {});
-  }
-
-  wrapFragment(titles: string[]): string {
-    const fragment: { [key: string]: string } = {};
-    if (titles) {
-      fragment['t'] = titles.map(title => encodeURIComponent(title)).join(',');
-    }
-    return Object.entries(fragment)
-      .map(query => `${query[0]}=${query[1]}`)
-      .join('&');
   }
 
 }
