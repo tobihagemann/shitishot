@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { L10nResolver } from '../shared/l10n-resolver.service';
-import { SharedModule } from '../shared/shared.module';
 
 import { CustomComponent } from './custom.component';
 
@@ -15,7 +14,8 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes), SharedModule],
+  providers: [L10nResolver],
+  imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
 export class CustomRoutingModule { }

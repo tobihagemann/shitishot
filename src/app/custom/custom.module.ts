@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { L10nConfig, LocalizationModule, ProviderType } from 'angular-l10n';
 
 import { SearchResultsModule } from '../search-results/search-results.module';
-import { SharedModule } from '../shared/shared.module';
 
 import { CustomRoutingModule } from './custom-routing.module';
 import { CustomComponent } from './custom.component';
@@ -27,9 +27,9 @@ const l10nConfig: L10nConfig = {
     CustomComponent
   ],
   imports: [
+    CommonModule,
     FormsModule,
     LocalizationModule.forChild(l10nConfig),
-    SharedModule,
     CustomRoutingModule,
     SearchResultsModule
   ]

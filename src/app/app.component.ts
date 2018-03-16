@@ -12,7 +12,7 @@ export class AppComponent {
   constructor(private titleService: Title, private translationService: TranslationService) { }
 
   ngOnInit() {
-    this.translationService.translationChanged().subscribe(() => this.titleService.setTitle(this.translationService.translate('Title')));
+    this.translationService.translationChanged().subscribe(() => this.titleService.setTitle(this.translationService.translate('The Shit Is Hot')));
   }
 
 }

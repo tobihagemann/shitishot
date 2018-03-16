@@ -1,9 +1,8 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { L10nConfig, LocalizationModule, ProviderType } from 'angular-l10n';
-
-import { SharedModule } from '../shared/shared.module';
 
 import { SettingsRoutingModule } from './settings-routing.module';
 import { SettingsComponent } from './settings.component';
@@ -25,9 +24,9 @@ const l10nConfig: L10nConfig = {
     SettingsComponent
   ],
   imports: [
+    CommonModule,
     FormsModule,
     LocalizationModule.forChild(l10nConfig),
-    SharedModule,
     SettingsRoutingModule
   ]
 })

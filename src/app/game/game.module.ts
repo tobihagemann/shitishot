@@ -1,4 +1,5 @@
-import { NgModule, APP_INITIALIZER } from '@angular/core';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 import { L10nConfig, LocalizationModule, ProviderType } from 'angular-l10n';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -6,7 +7,6 @@ import { ClipboardModule } from 'ngx-clipboard';
 
 import { SearchResultsModule } from '../search-results/search-results.module';
 import { SettingsModule } from '../settings/settings.module';
-import { SharedModule } from '../shared/shared.module';
 import { TitlesModule } from '../titles/titles.module';
 
 import { GameComponent } from './game.component';
@@ -30,10 +30,10 @@ const l10nConfig: L10nConfig = {
     GameComponent
   ],
   imports: [
+    CommonModule,
     LocalizationModule.forChild(l10nConfig),
     NgbModule,
     ClipboardModule,
-    SharedModule,
     GameRoutingModule,
     SearchResultsModule,
     SettingsModule.forChild(),
