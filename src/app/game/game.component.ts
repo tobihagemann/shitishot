@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { NgbPopover, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 
 import { SearchResultsSource } from '../search-results/source.enum';
+import { SettingsService } from '../settings/settings.service';
 import { Fragment } from '../shared/fragment';
 import { LocalStorage } from '../shared/localstorage.decorator';
 
@@ -77,7 +78,7 @@ export class GameComponent implements OnInit {
   @ViewChild('evaluateResultsPopoverContent4') evaluateResultsPopoverContent4: TemplateRef<any>;
   @ViewChild('evaluateResultsPopoverContent5') evaluateResultsPopoverContent5: TemplateRef<any>;
 
-  constructor(private route: ActivatedRoute, private router: Router, private location: Location, private popoverConfig: NgbPopoverConfig, private gameService: GameService) {
+  constructor(private route: ActivatedRoute, private router: Router, private location: Location, private popoverConfig: NgbPopoverConfig, private settingsService: SettingsService, private gameService: GameService) {
     popoverConfig.triggers = '';
     // https://github.com/timruffles/ios-html5-drag-drop-shim/issues/77#issuecomment-261772175
     window.addEventListener('touchmove', () => { });
@@ -289,6 +290,22 @@ export class GameComponent implements OnInit {
 
   onTitleDrop(event) {
     event.preventDefault();
+  }
+
+  // Custom Game - Notice
+
+  gameSettingsAreDifferent() {
+    const languageCodeDiffers = this.settingsService.getLocale(this.game.languageCode) != this.settingsService.getCurrentLocale();
+    const sourceDiffers = this.game.source != this.settingsService.getSearchResultsSource();
+    return languageCodeDiffers || sourceDiffers;
+  }
+
+  getLanguage() {
+    return this.settingsService.getLocale(this.game.languageCode).text;
+  }
+
+  getSearchResultsSource() {
+    return this.game.source;
   }
 
   // Tutorial

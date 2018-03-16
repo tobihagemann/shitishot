@@ -5,11 +5,11 @@ import { Word } from "./word";
 export class Game {
   words: Word[];
   languageCode: string;
-  searchResultsSource: SearchResultsSource
+  source: SearchResultsSource
 
-  constructor(words: Word[], languageCode: string, searchResultsSource: SearchResultsSource) {
+  constructor(words: Word[], languageCode: string, source: SearchResultsSource) {
     this.words = words;
     this.languageCode = languageCode;
-    this.searchResultsSource = searchResultsSource;
+    this.source = source;
   }
 }

@@ -7,7 +7,7 @@ export class Fragment {
   source: SearchResultsSource;
 
   static createFromGame(game: Game) {
-    return new Fragment(game.words.map(word => word.title), game.languageCode, game.searchResultsSource);
+    return new Fragment(game.words.map(word => word.title), game.languageCode, game.source);
   }
 
   static createFromFragment(fragment?: string) {

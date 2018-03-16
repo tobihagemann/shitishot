@@ -44,6 +44,24 @@
         </div>
       </div>
     </div>
+
+    <div *ngIf="results.length > 0 &amp;&amp; gameSettingsAreDifferent()" class="mt-sm-3">
+      <p class="text-center text-muted small mb-2">
+        <span l10nTranslate>Custom Game - Notice - 1</span>
+      </p>
+      <p class="text-center text-muted small mb-2">
+        <span l10nTranslate>Language</span>:
+        <span>{{getLanguage()}}</span>
+        •
+        <span l10nTranslate>Search Results Source</span>:
+        <span>{{getSearchResultsSource()}}</span>
+      </p>
+      <p class="text-center text-muted small mb-2">
+        <span l10nTranslate>Custom Game - Notice - 2</span>
+        <a routerLink="/settings" l10nTranslate>Custom Game - Notice - 3</a>
+        <span l10nTranslate>Custom Game - Notice - 4</span>
+      </p>
+    </div>
   </div>
 
   <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center">
