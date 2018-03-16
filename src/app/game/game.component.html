@@ -47,19 +47,19 @@
 
     <div *ngIf="results.length > 0 &amp;&amp; gameSettingsAreDifferent()" class="mt-sm-3">
       <p class="text-center text-muted small mb-2">
-        <span l10nTranslate>Custom Game - Notice - 1</span>
+        <span l10nTranslate>Different Game Settings - 1</span>
       </p>
       <p class="text-center text-muted small mb-2">
         <span l10nTranslate>Language</span>:
-        <span>{{getLanguage()}}</span>
+        <span>{{getCurrentGameLanguage()}}</span>
         •
         <span l10nTranslate>Search Results Source</span>:
-        <span>{{getSearchResultsSource()}}</span>
+        <span>{{getCurrentGameSource()}}</span>
       </p>
       <p class="text-center text-muted small mb-2">
-        <span l10nTranslate>Custom Game - Notice - 2</span>
-        <a routerLink="/settings" l10nTranslate>Custom Game - Notice - 3</a>
-        <span l10nTranslate>Custom Game - Notice - 4</span>
+        <span l10nTranslate>Different Game Settings - 2</span>
+        <a routerLink="/settings" l10nTranslate>Different Game Settings - 3</a>
+        <span l10nTranslate>Different Game Settings - 4</span>
       </p>
     </div>
   </div>

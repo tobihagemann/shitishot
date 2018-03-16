@@ -292,7 +292,7 @@ export class GameComponent implements OnInit {
     event.preventDefault();
   }
 
-  // Custom Game - Notice
+  // Different Game Settings
 
   gameSettingsAreDifferent() {
     const languageCodeDiffers = this.settingsService.getLocale(this.game.languageCode) != this.settingsService.getCurrentLocale();
@@ -300,11 +300,11 @@ export class GameComponent implements OnInit {
     return languageCodeDiffers || sourceDiffers;
   }
 
-  getLanguage() {
+  getCurrentGameLanguage() {
     return this.settingsService.getLocale(this.game.languageCode).text;
   }
 
-  getSearchResultsSource() {
+  getCurrentGameSource() {
     return this.game.source;
   }
 
