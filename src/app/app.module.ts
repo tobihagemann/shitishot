@@ -1,6 +1,7 @@
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
+import { UrlSerializer } from '@angular/router';
 
 import { L10nConfig, L10nLoader, LocalizationModule, ProviderType, StorageStrategy } from 'angular-l10n';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -8,6 +9,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FooterModule } from './footer/footer.module';
 import { NavModule } from './nav/nav.module';
 import { SettingsModule } from './settings/settings.module';
+import { CustomUrlSerializer } from './shared/custom-url-serializer';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -40,7 +42,8 @@ export function initL10n(l10nLoader: L10nLoader): Function {
 @NgModule({
   providers: [
     Title,
-    { provide: APP_INITIALIZER, useFactory: initL10n, deps: [L10nLoader], multi: true }
+    { provide: APP_INITIALIZER, useFactory: initL10n, deps: [L10nLoader], multi: true },
+    { provide: UrlSerializer, useClass: CustomUrlSerializer }
   ],
   declarations: [
     AppComponent

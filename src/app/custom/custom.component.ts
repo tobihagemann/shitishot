@@ -90,7 +90,7 @@ export class CustomComponent implements OnInit {
   }
 
   playGame() {
-    this.router.navigate([''], {
+    this.router.navigate(['/'], {
       fragment: new Fragment(this.words.map(word => word.title)).toString()
     });
   }
