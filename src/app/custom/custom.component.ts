@@ -30,7 +30,7 @@ export class CustomComponent implements OnInit {
   ngOnInit() {
     this.route.fragment.subscribe(fragment => {
       const fragmentObj = Fragment.createFromFragment(fragment);
-      this.location.replaceState('');
+      this.location.replaceState('/custom');
       this.initWords(fragmentObj.titles);
     });
   }

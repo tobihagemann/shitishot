@@ -87,7 +87,7 @@ export class GameComponent implements OnInit {
   ngOnInit() {
     this.route.fragment.subscribe(fragment => {
       const fragmentObj = Fragment.createFromFragment(fragment);
-      this.location.replaceState('');
+      this.location.replaceState('/');
       if (fragmentObj.titles || !this.game) {
         this.newGame(fragmentObj.titles, fragmentObj.languageCode, fragmentObj.source);
       } else if (this.showTutorial) {
