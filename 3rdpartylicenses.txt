@@ -85,7 +85,7 @@ SOFTWARE.
 MIT
 MIT
 
-@ng-bootstrap/ng-bootstrap@1.0.1
+@ng-bootstrap/ng-bootstrap@1.0.2
 MIT
 The MIT License (MIT)
 
@@ -235,7 +235,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
-mobile-drag-drop@2.3.0-rc.0
+mobile-drag-drop@2.3.0-rc.1
 MIT
 MIT
 
