@@ -82,6 +82,10 @@ export class GameComponent implements OnInit {
     popoverConfig.triggers = '';
     // https://github.com/timruffles/ios-html5-drag-drop-shim/issues/77#issuecomment-261772175
     window.addEventListener('touchmove', () => { });
+    // Workaround for Firefox because it occasionally tries to navigate to a dropped title.
+    // https://stackoverflow.com/a/6756680/1759462
+    window.addEventListener('dragover', event => event.preventDefault());
+    window.addEventListener('drop', event => event.preventDefault());
   }
 
   ngOnInit() {
