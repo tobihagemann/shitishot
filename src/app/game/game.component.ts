@@ -361,7 +361,7 @@ export class GameComponent implements OnInit {
   }
 
   newGamePopoverPlacement() {
-    return window.innerWidth >= 576 ? 'left' : 'top';
+    return window.innerWidth >= 576 ? 'right' : 'top';
   }
 
   customGamePopoverPlacement() {
