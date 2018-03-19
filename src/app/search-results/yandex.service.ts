@@ -53,7 +53,6 @@ export class YandexService {
     });
   }
 
-
   private handleHttpErrorResponse(error: HttpErrorResponse) {
     if (error.error instanceof Error) {
       console.error('An error occurred:', error.error.message);
