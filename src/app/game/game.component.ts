@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { Subscriber } from 'rxjs/Subscriber';
 import { Subscription } from 'rxjs/Subscription';
+import 'rxjs/add/operator/finally';
 
 import { NgbPopover, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 
@@ -46,6 +47,7 @@ export class GameComponent implements OnInit {
   private draggedTitleIndex = -1;
   private dragOverTitleIndex = -1;
   private dragEnterLeaveCounter = 0;
+  private lastDirection = 0;
 
   url = () => `${window.location.href}#${Fragment.createFromGame(this.game).toString()}`;
   private _urlIsCopied: boolean;
@@ -151,6 +153,48 @@ export class GameComponent implements OnInit {
     }
   }
 
+  showResults() {
+    const results: boolean[] = [];
+    this.titles.forEach((title, index) => {
+      results.push(this.sortedWords[index].title == title);
+    });
+    this.results = results;
+    this.finishShowResultsTutorialState();
+  }
+
+  customGame() {
+    this.router.navigate(['custom'], {
+      fragment: new Fragment(this.game.words.map(word => word.title)).toString()
+    });
+  }
+
+  // Drag & Drop - Convenience
+
+  resetTitlesToFixedTitles() {
+    this.fixedTitles.forEach((fixedTitle, fixedIndex) => {
+      this.titles[fixedIndex] = fixedTitle;
+    });
+  }
+
+  resetTitlesToFixedTitlesExceptIndex(index: number) {
+    this.fixedTitles.forEach((fixedTitle, fixedIndex) => {
+      this.titles[fixedIndex] = index != fixedIndex ? fixedTitle : null;
+    });
+  }
+
+  targetIsInsideCursor(event) {
+    const targetRect = event.target.getBoundingClientRect();
+    return event.clientX >= targetRect.left && event.clientX <= targetRect.right
+      && event.clientY >= targetRect.top && event.clientY <= targetRect.bottom;
+  }
+
+  getDirection(event) {
+    const targetRect = event.target.getBoundingClientRect();
+    return window.innerWidth >= 576
+      ? (targetRect.right - event.clientX < event.clientX - targetRect.left ? -1 : 1)
+      : (targetRect.bottom - event.clientY < event.clientY - targetRect.top ? -1 : 1);
+  }
+
   updateTitle(title: string, index: number, direction: number) {
     if (this.titles[index] == null) {
       this.titles[index] = title;
@@ -174,21 +218,6 @@ export class GameComponent implements OnInit {
     return false;
   }
 
-  showResults() {
-    const results: boolean[] = [];
-    this.titles.forEach((title, index) => {
-      results.push(this.sortedWords[index].title == title);
-    });
-    this.results = results;
-    this.finishShowResultsTutorialState();
-  }
-
-  customGame() {
-    this.router.navigate(['custom'], {
-      fragment: new Fragment(this.game.words.map(word => word.title)).toString()
-    });
-  }
-
   // Drag & Drop – Next Title
 
   onNextTitleDragStart(event) {
@@ -210,19 +239,17 @@ export class GameComponent implements OnInit {
   onNextTitleDragOver(event) {
     event.preventDefault();
     event.dataTransfer.dropEffect = 'move';
-    this.fixedTitles.forEach((fixedTitle, fixedIndex) => {
-      this.titles[fixedIndex] = fixedTitle;
-    });
-    this.dragOverTitleIndex = -1;
+    if (this.dragOverTitleIndex != -1) {
+      this.dragOverTitleIndex = -1;
+      this.resetTitlesToFixedTitles();
+    }
   }
 
   onNextTitleDragLeave() {
     this.dragEnterLeaveCounter--;
     if (this.dragEnterLeaveCounter == 0) {
-      this.fixedTitles.forEach((fixedTitle, fixedIndex) => {
-        this.titles[fixedIndex] = fixedTitle;
-      });
       this.dragOverTitleIndex = -1;
+      this.resetTitlesToFixedTitles();
     }
   }
 
@@ -232,6 +259,7 @@ export class GameComponent implements OnInit {
     this.draggedTitleIndex = -1;
     this.dragOverTitleIndex = -1;
     this.dragEnterLeaveCounter = 0;
+    this.lastDirection = 0;
     this.titles = this.titles; // persist titles
     if (didDropOverTitle) {
       this.drawNextTitle();
@@ -263,24 +291,26 @@ export class GameComponent implements OnInit {
   onTitleDragOver(event, index: number) {
     event.preventDefault();
     event.dataTransfer.dropEffect = 'move';
-    this.fixedTitles.forEach((fixedTitle, fixedIndex) => {
-      this.titles[fixedIndex] = this.draggedTitleIndex != fixedIndex ? fixedTitle : null;
-    });
-    this.dragOverTitleIndex = index;
-    const targetRect = event.target.getBoundingClientRect();
-    const direction = window.innerWidth >= 576
-      ? (targetRect.right - event.clientX < event.clientX - targetRect.left ? -1 : 1)
-      : (targetRect.bottom - event.clientY < event.clientY - targetRect.top ? -1 : 1);
-    this.updateTitle(this.draggedTitle, index, direction);
+    if (this.targetIsInsideCursor(event)) {
+      const direction = this.getDirection(event);
+      if (index != this.dragOverTitleIndex) {
+        this.dragOverTitleIndex = index;
+        this.lastDirection = direction;
+        this.resetTitlesToFixedTitlesExceptIndex(this.draggedTitleIndex);
+        this.updateTitle(this.draggedTitle, index, this.lastDirection);
+      } else if (direction != this.lastDirection) {
+        this.lastDirection = direction;
+        this.resetTitlesToFixedTitlesExceptIndex(this.draggedTitleIndex);
+        this.updateTitle(this.draggedTitle, index, this.lastDirection);
+      }
+    }
   }
 
   onTitleDragLeave() {
     this.dragEnterLeaveCounter--;
     if (this.dragEnterLeaveCounter == 0) {
-      this.fixedTitles.forEach((fixedTitle, fixedIndex) => {
-        this.titles[fixedIndex] = fixedTitle;
-      });
       this.dragOverTitleIndex = -1;
+      this.resetTitlesToFixedTitles();
     }
   }
 
@@ -289,6 +319,7 @@ export class GameComponent implements OnInit {
     this.draggedTitleIndex = -1;
     this.dragOverTitleIndex = -1;
     this.dragEnterLeaveCounter = 0;
+    this.lastDirection = 0;
     this.titles = this.titles; // persist titles
   }
 

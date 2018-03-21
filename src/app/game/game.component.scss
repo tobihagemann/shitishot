@@ -70,3 +70,7 @@
     cursor: -webkit-grabbing;
   }
 }
+
+.droppable > * {
+  pointer-events: none;
+}
