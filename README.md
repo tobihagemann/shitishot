@@ -50,6 +50,7 @@ npm run deploy
 ```
 
 The run script `deploy` executes
+- `npm install` to ensure dependencies are installed (and in the correction version),
 - `ng build` with `prod` environment,
 - writing `shitishot.de` into `dist/CNAME` for using a custom domain (see [FAQ of angular-cli-ghpages](https://github.com/angular-schule/angular-cli-ghpages/wiki/FAQ#my-cname-file-is-deleted-on-every-publish-specific-to-github-pages-only)), and
 - `ngh` (short for `angular-cli-ghpages`) to publish the output at `dist` into the `gh-pages` branch.
@@ -59,7 +60,7 @@ The run script `deploy` executes
 "scripts": {
   "ng": "ng",
   "start": "ng serve --open --aot",
-  "deploy": "ng build --prod && echo \"shitishot.de\" > dist/CNAME && ngh",
+  "deploy": "npm install && ng build --prod && echo \"shitishot.de\" > dist/CNAME && ngh",
   "lint": "ng lint"
 }
 ```

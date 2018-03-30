@@ -7,7 +7,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --open --aot",
-    "deploy": "ng build --prod && echo \"shitishot.de\" > dist/CNAME && ngh",
+    "deploy": "npm install && ng build --prod && echo \"shitishot.de\" > dist/CNAME && ngh",
     "lint": "ng lint"
   },
   "private": true,
