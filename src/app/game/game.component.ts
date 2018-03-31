@@ -10,6 +10,7 @@ import { NgbPopover, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 
 import { SearchResultsSource } from '../search-results/source.enum';
 import { SettingsService } from '../settings/settings.service';
+import { supportsPassiveEventListener } from '../shared/feature-detection';
 import { Fragment } from '../shared/fragment';
 import { LocalStorage } from '../shared/localstorage.decorator';
 
@@ -82,8 +83,12 @@ export class GameComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private router: Router, private location: Location, private popoverConfig: NgbPopoverConfig, private settingsService: SettingsService, private gameService: GameService) {
     popoverConfig.triggers = '';
-    // https://github.com/timruffles/ios-html5-drag-drop-shim/issues/77#issuecomment-261772175
-    window.addEventListener('touchmove', () => { }, { passive: false })
+    // https://github.com/timruffles/mobile-drag-drop/issues/124
+    if (supportsPassiveEventListener()) {
+      window.addEventListener('touchmove', () => { }, { passive: false });
+    } else {
+      window.addEventListener('touchmove', () => { });
+    }
     // Workaround for Firefox because it occasionally tries to navigate to a dropped title.
     // https://stackoverflow.com/a/6756680/1759462
     window.addEventListener('dragover', event => event.preventDefault());
