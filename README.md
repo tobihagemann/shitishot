@@ -6,6 +6,8 @@ This project is inspired by the segment [Der Scheiß ist heiß](https://www.yout
 
 You can play _The Shit Is Hot_ at [shitishot.de](https://shitishot.de).
 
+More background information and reactions to the release, can be read in my [blog post](https://tobiha.de/2018/03/26/the-shit-is-hot/). It's in German since this game is inspired by a German late-night talk show.
+
 ## Made With
 
 - [Angular](https://angular.io/), project set up with [Angular CLI](https://cli.angular.io/)
@@ -19,7 +21,7 @@ Words for new games are generated via Wikipedia. Search results come from Yandex
 
 Thanks to Wikipedia's open API, it can be used purely client-side. However, the numbers of search results are (and have to be) retrieved from a backend. The server applications used are:
 
-- [Yandex Search API](https://github.com/tobihagemann/yandex-search-api)
+- [Yandex Search](https://github.com/tobihagemann/yandex-search)
 - [All Origins](https://multiverso.me/AllOrigins/)
 
 ## Install
