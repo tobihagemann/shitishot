@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
-
 import { LocaleService, TranslationService } from 'angular-l10n';
-
+import { SearchResultsSource } from '../search-results/source.enum';
 import { LocalStorage } from '../shared/localstorage.decorator';
 import { TitlesSource } from '../titles/source.enum';
-import { SearchResultsSource } from '../search-results/source.enum';
 
 export interface Locale {
   languageCode: string;
@@ -33,7 +31,7 @@ export class SettingsService {
   }
 
   getLocale(languageCode: string) {
-    return this.locales.find(locale => locale.languageCode == languageCode) || this.currentLocale;
+    return this.locales.find(locale => locale.languageCode === languageCode) || this.currentLocale;
   }
 
   getCurrentLocale() {

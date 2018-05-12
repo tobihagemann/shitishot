@@ -26,5 +26,5 @@ export function LocalStorage(defaultValue?: any, key?: string) {
         localStorage.setItem(key, JSON.stringify(value));
       }
     });
-  }
+  };
 }

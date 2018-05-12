@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
-
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-
 import { BingService } from './bing.service';
 import { GoogleService } from './google.service';
 import { SearchResultsSource } from './source.enum';
@@ -34,7 +32,7 @@ export class SearchResultsService {
 
   /**
    * Returns a new number that retains at most the first three digits of the given number and replaces the rest with zero.
-   * 
+   *
    * Examples:
    * - 1 => 1
    * - 12 => 12
@@ -42,11 +40,11 @@ export class SearchResultsService {
    * - 1234 => 1230
    * - 12345 => 12300
    * - 123456 => 123000
-   * 
+   *
    * @param value Number that will be beautified.
    */
   private beautifyNumber(value: number) {
-    var count = 0;
+    let count = 0;
     while (value > 999) {
       value = Math.floor(value / 10);
       count++;

@@ -1,9 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpErrorResponse } from '@angular/common/http';
-
 import { Observable, Observer } from 'rxjs';
-
 import { AllOriginsError, AllOriginsService } from './allorigins.service';
+
+class BingError extends Error {
+  constructor(message: string) {
+    super(`[Bing] ${message}`);
+    Object.setPrototypeOf(this, BingError.prototype);
+  }
+}
 
 @Injectable()
 export class BingService {
@@ -27,7 +31,7 @@ export class BingService {
         if (count && count[0]) {
           const searchResults = /\d{1,3}(.\d{3})*/.exec(count[0].innerHTML)[0];
           const searchResultsWithoutSeparators = searchResults.replace(/[^0-9]/g, '');
-          observer.next(parseInt(searchResultsWithoutSeparators));
+          observer.next(parseInt(searchResultsWithoutSeparators, 10));
           observer.complete();
         } else {
           observer.error(new BingError('Unable to load search results'));
@@ -37,7 +41,7 @@ export class BingService {
   }
 
   private handleAllOriginsError(error: AllOriginsError) {
-    if (error.httpCode == -1) {
+    if (error.httpCode === -1) {
       return error;
     } else {
       console.error(`Backend returned code ${error.httpCode}`);
@@ -45,11 +49,4 @@ export class BingService {
     }
   }
 
-}
-
-class BingError extends Error {
-  constructor(message: string) {
-    super(`[Bing] ${message}`);
-    Object.setPrototypeOf(this, BingError.prototype);
-  }
 }

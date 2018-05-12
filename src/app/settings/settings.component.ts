@@ -1,14 +1,11 @@
 import { Component } from '@angular/core';
-
 import { SearchResultsSource } from '../search-results/source.enum';
 import { TitlesSource } from '../titles/source.enum';
-
 import { Locale, SettingsService } from './settings.service';
 
 @Component({
   selector: 'app-settings',
-  templateUrl: './settings.component.html',
-  styleUrls: ['./settings.component.scss']
+  templateUrl: './settings.component.html'
 })
 export class SettingsComponent {
 

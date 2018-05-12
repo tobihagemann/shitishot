@@ -1,13 +1,10 @@
-import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-
 import { Observable, Observer, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-
 import { Word } from '../game/word';
 import { Fragment } from '../shared/fragment';
-
 import { CustomService } from './custom.service';
 
 @Component({
@@ -34,7 +31,7 @@ export class CustomComponent implements OnInit {
 
   initWords(titles?: string[]) {
     this.resetWords();
-    var indexOffset = 0;
+    let indexOffset = 0;
     // Truncate titles if the number of titles is beyond the limit.
     if (titles && titles.length > this.limit) {
       titles.length = this.limit;

@@ -1,13 +1,36 @@
-import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpParameterCodec, HttpParams } from '@angular/common/http';
-
+import { Injectable } from '@angular/core';
 import { Observable, Observer } from 'rxjs';
+
+class CustomHttpUrlEncodingCodec implements HttpParameterCodec {
+  encodeKey(key: string): string {
+    return encodeURIComponent(key);
+  }
+  encodeValue(value: string): string {
+    return encodeURIComponent(value);
+  }
+  decodeKey(key: string): string {
+    return decodeURIComponent(key);
+  }
+  decodeValue(value: string): string {
+    return decodeURIComponent(value);
+  }
+}
+
+export class AllOriginsError extends Error {
+  httpCode: number;
+  constructor(message: string, httpCode: number = -1) {
+    super(`[AllOrigins] ${message}`);
+    Object.setPrototypeOf(this, AllOriginsError.prototype);
+    this.httpCode = httpCode;
+  }
+}
 
 interface AllOriginsResponse {
   contents: string;
   status: {
     http_code: number;
-  }
+  };
 }
 
 @Injectable()
@@ -16,12 +39,6 @@ export class AllOriginsService {
   // https://medium.freecodecamp.org/client-side-web-scraping-with-javascript-using-jquery-and-regex-5b57a271cb86
   // https://multiverso.me/AllOrigins/
   private url = 'https://ssl.setolabs.com/allorigins/get';
-  private params = (url: string) => new HttpParams({
-    fromObject: {
-      url: url
-    },
-    encoder: new CustomHttpUrlEncodingCodec()
-  });
 
   constructor(private http: HttpClient) { }
 
@@ -31,7 +48,13 @@ export class AllOriginsService {
    */
   getContents(url: string): Observable<string> {
     return Observable.create((observer: Observer<string>) => {
-      this.http.get<AllOriginsResponse>(this.url, { params: this.params(url) }).subscribe(response => {
+      const params = new HttpParams({
+        fromObject: {
+          url: url
+        },
+        encoder: new CustomHttpUrlEncodingCodec()
+      });
+      this.http.get<AllOriginsResponse>(this.url, { params: params }).subscribe(response => {
         if (response.contents) {
           observer.next(response.contents);
           observer.complete();
@@ -54,28 +77,4 @@ export class AllOriginsService {
     }
   }
 
-}
-
-export class AllOriginsError extends Error {
-  httpCode: number;
-  constructor(message: string, httpCode: number = -1) {
-    super(`[AllOrigins] ${message}`);
-    Object.setPrototypeOf(this, AllOriginsError.prototype);
-    this.httpCode = httpCode;
-  }
-}
-
-class CustomHttpUrlEncodingCodec implements HttpParameterCodec {
-  encodeKey(key: string): string {
-    return encodeURIComponent(key);
-  }
-  encodeValue(value: string): string {
-    return encodeURIComponent(value);
-  }
-  decodeKey(key: string): string {
-    return decodeURIComponent(key);
-  }
-  decodeValue(value: string): string {
-    return decodeURIComponent(value);
-  }
 }

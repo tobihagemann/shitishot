@@ -1,11 +1,8 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-
 import { L10nConfig, LocalizationModule, ProviderType } from 'angular-l10n';
-
 import { SearchResultsModule } from '../search-results/search-results.module';
-
 import { CustomRoutingModule } from './custom-routing.module';
 import { CustomComponent } from './custom.component';
 import { CustomService } from './custom.service';

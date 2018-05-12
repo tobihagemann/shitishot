@@ -1,18 +1,14 @@
-import { Component, OnInit, QueryList, TemplateRef, ViewChild, ViewChildren } from '@angular/core';
 import { Location } from '@angular/common';
+import { Component, OnInit, QueryList, TemplateRef, ViewChild, ViewChildren } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-
+import { NgbPopover, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Subscriber, Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
-
-import { NgbPopover, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
-
 import { SearchResultsSource } from '../search-results/source.enum';
 import { SettingsService } from '../settings/settings.service';
 import { supportsPassiveEventListener } from '../shared/feature-detection';
 import { Fragment } from '../shared/fragment';
 import { LocalStorage } from '../shared/localstorage.decorator';
-
 import { Game } from './game';
 import { GameService } from './game.service';
 import { TutorialState } from './tutorial-state.enum';
@@ -49,7 +45,6 @@ export class GameComponent implements OnInit {
   private dragEnterLeaveCounter = 0;
   private lastDirection = 0;
 
-  url = () => `${window.location.href}#${Fragment.createFromGame(this.game).toString()}`;
   private _urlIsCopied: boolean;
   get urlIsCopied() {
     return this._urlIsCopied;
@@ -79,6 +74,8 @@ export class GameComponent implements OnInit {
   @ViewChild('evaluateResultsPopoverContent3') evaluateResultsPopoverContent3: TemplateRef<any>;
   @ViewChild('evaluateResultsPopoverContent4') evaluateResultsPopoverContent4: TemplateRef<any>;
   @ViewChild('evaluateResultsPopoverContent5') evaluateResultsPopoverContent5: TemplateRef<any>;
+
+  url = () => `${window.location.href}#${Fragment.createFromGame(this.game).toString()}`;
 
   constructor(private route: ActivatedRoute, private router: Router, private location: Location, private popoverConfig: NgbPopoverConfig, private settingsService: SettingsService, private gameService: GameService) {
     popoverConfig.triggers = '';
@@ -117,7 +114,7 @@ export class GameComponent implements OnInit {
       this.loadingGame = false;
       if (this.showTutorial) {
         this.tutorialState = TutorialState.NextTitle;
-        this.openCurrentTutorialPopover()
+        this.openCurrentTutorialPopover();
       }
     })).subscribe(game => this.initGame(game), (error: Error) => {
       this.alertMessage = error.message;
@@ -160,7 +157,7 @@ export class GameComponent implements OnInit {
   showResults() {
     const results: boolean[] = [];
     this.titles.forEach((title, index) => {
-      results.push(this.sortedWords[index].title == title);
+      results.push(this.sortedWords[index].title === title);
     });
     this.results = results;
     this.finishShowResultsTutorialState();
@@ -182,7 +179,7 @@ export class GameComponent implements OnInit {
 
   resetTitlesToFixedTitlesExceptIndex(index: number) {
     this.fixedTitles.forEach((fixedTitle, fixedIndex) => {
-      this.titles[fixedIndex] = index != fixedIndex ? fixedTitle : null;
+      this.titles[fixedIndex] = index !== fixedIndex ? fixedTitle : null;
     });
   }
 
@@ -212,7 +209,7 @@ export class GameComponent implements OnInit {
   moveTitles(title: string, index: number, direction: number): boolean {
     for (let i = index; i >= 0 && i < this.titles.length; i += direction) {
       if (this.titles[i] == null) {
-        for (let j = i; j != index; j -= direction) {
+        for (let j = i; j !== index; j -= direction) {
           this.titles[j] = this.titles[j - direction];
         }
         this.titles[index] = title;
@@ -243,7 +240,7 @@ export class GameComponent implements OnInit {
   onNextTitleDragOver(event) {
     event.preventDefault();
     event.dataTransfer.dropEffect = 'move';
-    if (this.dragOverTitleIndex != -1) {
+    if (this.dragOverTitleIndex !== -1) {
       this.dragOverTitleIndex = -1;
       this.resetTitlesToFixedTitles();
     }
@@ -251,14 +248,14 @@ export class GameComponent implements OnInit {
 
   onNextTitleDragLeave() {
     this.dragEnterLeaveCounter--;
-    if (this.dragEnterLeaveCounter == 0) {
+    if (this.dragEnterLeaveCounter === 0) {
       this.dragOverTitleIndex = -1;
       this.resetTitlesToFixedTitles();
     }
   }
 
   onNextTitleDragEnd() {
-    const didDropOverTitle = this.dragOverTitleIndex != -1;
+    const didDropOverTitle = this.dragOverTitleIndex !== -1;
     this.draggedTitle = null;
     this.draggedTitleIndex = -1;
     this.dragOverTitleIndex = -1;
@@ -297,12 +294,12 @@ export class GameComponent implements OnInit {
     event.dataTransfer.dropEffect = 'move';
     if (this.targetIsInsideCursor(event)) {
       const direction = this.getDirection(event);
-      if (index != this.dragOverTitleIndex) {
+      if (index !== this.dragOverTitleIndex) {
         this.dragOverTitleIndex = index;
         this.lastDirection = direction;
         this.resetTitlesToFixedTitlesExceptIndex(this.draggedTitleIndex);
         this.updateTitle(this.draggedTitle, index, this.lastDirection);
-      } else if (direction != this.lastDirection) {
+      } else if (direction !== this.lastDirection) {
         this.lastDirection = direction;
         this.resetTitlesToFixedTitlesExceptIndex(this.draggedTitleIndex);
         this.updateTitle(this.draggedTitle, index, this.lastDirection);
@@ -312,7 +309,7 @@ export class GameComponent implements OnInit {
 
   onTitleDragLeave() {
     this.dragEnterLeaveCounter--;
-    if (this.dragEnterLeaveCounter == 0) {
+    if (this.dragEnterLeaveCounter === 0) {
       this.dragOverTitleIndex = -1;
       this.resetTitlesToFixedTitles();
     }
@@ -334,8 +331,8 @@ export class GameComponent implements OnInit {
   // Different Game Settings
 
   gameSettingsAreDifferent() {
-    const languageCodeDiffers = this.settingsService.getLocale(this.game.languageCode) != this.settingsService.getCurrentLocale();
-    const sourceDiffers = this.game.source != this.settingsService.getSearchResultsSource();
+    const languageCodeDiffers = this.settingsService.getLocale(this.game.languageCode) !== this.settingsService.getCurrentLocale();
+    const sourceDiffers = this.game.source !== this.settingsService.getSearchResultsSource();
     return languageCodeDiffers || sourceDiffers;
   }
 
@@ -392,7 +389,7 @@ export class GameComponent implements OnInit {
   }
 
   titlesPopoverPlacement() {
-    return this.tutorialState == TutorialState.SortTitles ? 'top' : 'bottom';
+    return this.tutorialState === TutorialState.SortTitles ? 'top' : 'bottom';
   }
 
   showResultsPopoverPlacement() {
@@ -408,9 +405,9 @@ export class GameComponent implements OnInit {
   }
 
   titlesPopoverContent() {
-    if (this.tutorialState == TutorialState.SortTitles) {
+    if (this.tutorialState === TutorialState.SortTitles) {
       return this.sortTitlesPopoverContent;
-    } else if (this.tutorialState == TutorialState.EvaluateResults) {
+    } else if (this.tutorialState === TutorialState.EvaluateResults) {
       return this.evaluateResultsPopoverContent();
     }
   }
@@ -442,56 +439,56 @@ export class GameComponent implements OnInit {
   }
 
   finishNextTitleTutorialState() {
-    if (this.tutorialState == TutorialState.NextTitle) {
+    if (this.tutorialState === TutorialState.NextTitle) {
       this.setNextTutorialState(TutorialState.NextTitleBreak);
     }
   }
 
   finishNextTitleBreakTutorialState() {
-    if (this.tutorialState == TutorialState.NextTitleBreak) {
+    if (this.tutorialState === TutorialState.NextTitleBreak) {
       this.setNextTutorialState(TutorialState.SortTitles);
     }
   }
 
   finishSortTitlesTutorialState() {
-    if (this.tutorialState == TutorialState.SortTitles) {
+    if (this.tutorialState === TutorialState.SortTitles) {
       this.setNextTutorialState(TutorialState.SortTitlesBreak);
     }
   }
 
   finishSortTitlesBreakTutorialState() {
-    if (this.tutorialState == TutorialState.SortTitlesBreak) {
+    if (this.tutorialState === TutorialState.SortTitlesBreak) {
       this.setNextTutorialState(TutorialState.ShowResults);
     }
   }
 
   finishShowResultsTutorialState() {
-    if (this.tutorialState == TutorialState.ShowResults) {
+    if (this.tutorialState === TutorialState.ShowResults) {
       this.setNextTutorialState(TutorialState.EvaluateResults);
     }
   }
 
   finishEvaluateResultsTutorialState() {
-    if (this.tutorialState == TutorialState.EvaluateResults) {
+    if (this.tutorialState === TutorialState.EvaluateResults) {
       this.setNextTutorialState(TutorialState.NewGame);
     }
   }
 
   finishNewGameTutorialState() {
-    if (this.tutorialState == TutorialState.NewGame) {
+    if (this.tutorialState === TutorialState.NewGame) {
       this.setNextTutorialState(TutorialState.CustomGame);
     }
   }
 
   finishCustomGameTutorialState() {
-    if (this.tutorialState == TutorialState.CustomGame) {
+    if (this.tutorialState === TutorialState.CustomGame) {
       this.setNextTutorialState(TutorialState.CopyURL);
     }
   }
 
   finishCopyURLTutorialState() {
-    if (this.tutorialState == TutorialState.CopyURL) {
-      this.finishTutorial()
+    if (this.tutorialState === TutorialState.CopyURL) {
+      this.finishTutorial();
     }
   }
 

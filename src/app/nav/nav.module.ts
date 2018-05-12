@@ -1,9 +1,7 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-
 import { L10nConfig, LocalizationModule, ProviderType } from 'angular-l10n';
-
 import { NavComponent } from './nav.component';
 
 const l10nConfig: L10nConfig = {

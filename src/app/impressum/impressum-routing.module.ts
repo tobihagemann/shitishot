@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-
+import { RouterModule, Routes } from '@angular/router';
 import { ImpressumComponent } from './impressum.component';
 
 const routes: Routes = [

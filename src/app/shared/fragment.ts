@@ -1,5 +1,5 @@
-import { Game } from "../game/game";
-import { SearchResultsSource } from "../search-results/source.enum";
+import { Game } from '../game/game';
+import { SearchResultsSource } from '../search-results/source.enum';
 
 export class Fragment {
   titles: string[];

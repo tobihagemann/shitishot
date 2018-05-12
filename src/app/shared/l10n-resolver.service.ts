@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
-
 import { L10nLoader } from 'angular-l10n';
 
 @Injectable()

@@ -1,17 +1,14 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-
-import { L10nConfig, LocalizationModule, ProviderType } from 'angular-l10n';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { L10nConfig, LocalizationModule, ProviderType } from 'angular-l10n';
 import { ClipboardModule } from 'ngx-clipboard';
-
 import { SearchResultsModule } from '../search-results/search-results.module';
 import { SettingsModule } from '../settings/settings.module';
 import { TitlesModule } from '../titles/titles.module';
-
-import { GameComponent } from './game.component';
 import { GameRoutingModule } from './game-routing.module';
+import { GameComponent } from './game.component';
 import { GameService } from './game.service';
 
 const l10nConfig: L10nConfig = {

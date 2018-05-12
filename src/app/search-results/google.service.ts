@@ -1,9 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpErrorResponse } from '@angular/common/http';
-
 import { Observable, Observer } from 'rxjs';
-
 import { AllOriginsError, AllOriginsService } from './allorigins.service';
+
+class GoogleError extends Error {
+  constructor(message: string) {
+    super(`[Google] ${message}`);
+    Object.setPrototypeOf(this, GoogleError.prototype);
+  }
+}
 
 @Injectable()
 export class GoogleService {
@@ -27,7 +31,7 @@ export class GoogleService {
         if (resultStats) {
           const searchResults = /\d{1,3}(.\d{3})*/.exec(resultStats.innerHTML)[0];
           const searchResultsWithoutSeparators = searchResults.replace(/[^0-9]/g, '');
-          observer.next(parseInt(searchResultsWithoutSeparators));
+          observer.next(parseInt(searchResultsWithoutSeparators, 10));
           observer.complete();
         } else {
           this.getSearchResultsFromSecondPage(query, languageCode, observer);
@@ -47,7 +51,7 @@ export class GoogleService {
         numberPattern.exec(resultStats.innerHTML); // skip first number because it's the page number
         const searchResults = numberPattern.exec(resultStats.innerHTML)[0]; // second number is actually the number of search results
         const searchResultsWithoutSeparator = searchResults.replace(/[^0-9]/g, '');
-        observer.next(parseInt(searchResultsWithoutSeparator));
+        observer.next(parseInt(searchResultsWithoutSeparator, 10));
         observer.complete();
       } else {
         observer.error(new GoogleError('Unable to load search results'));
@@ -56,7 +60,7 @@ export class GoogleService {
   }
 
   private handleAllOriginsError(error: AllOriginsError) {
-    if (error.httpCode == -1) {
+    if (error.httpCode === -1) {
       return error;
     } else {
       console.error(`Backend returned code ${error.httpCode}`);
@@ -64,11 +68,4 @@ export class GoogleService {
     }
   }
 
-}
-
-class GoogleError extends Error {
-  constructor(message: string) {
-    super(`[Google] ${message}`);
-    Object.setPrototypeOf(this, GoogleError.prototype);
-  }
 }

@@ -3,9 +3,9 @@
  * Reference: https://github.com/WICG/EventListenerOptions/blob/gh-pages/explainer.md#feature-detection
  */
 export function supportsPassiveEventListener(): boolean {
-  var supportsPassive = false;
+  let supportsPassive = false;
   try {
-    var opts = Object.defineProperty({}, 'passive', {
+    const opts = Object.defineProperty({}, 'passive', {
       get: function () {
         supportsPassive = true;
       }

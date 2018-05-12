@@ -1,9 +1,7 @@
-import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ModuleWithProviders, NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-
 import { L10nConfig, LocalizationModule, ProviderType } from 'angular-l10n';
-
 import { SettingsRoutingModule } from './settings-routing.module';
 import { SettingsComponent } from './settings.component';
 import { SettingsService } from './settings.service';

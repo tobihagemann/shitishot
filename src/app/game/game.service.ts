@@ -1,13 +1,10 @@
 import { Injectable } from '@angular/core';
-
 import { Observable, Observer } from 'rxjs';
 import { finalize } from 'rxjs/operators';
-
 import { SearchResultsService } from '../search-results/search-results.service';
 import { SearchResultsSource } from '../search-results/source.enum';
 import { Locale, SettingsService } from '../settings/settings.service';
 import { TitlesService } from '../titles/titles.service';
-
 import { Game } from './game';
 import { Word } from './word';
 
@@ -32,7 +29,7 @@ export class GameService {
     const searchResultsSource = source || this.settingsService.getSearchResultsSource();
     return Observable.create((observer: Observer<Game>) => {
       const words: { [index: number]: Word } = {};
-      var indexOffset = 0;
+      let indexOffset = 0;
       // Truncate titles if the number of titles is beyond the limit.
       if (titles && titles.length > limit) {
         titles.length = limit;
@@ -45,10 +42,10 @@ export class GameService {
       // Get more titles if necessary and process them.
       const getTitlesLimit = titles ? limit - titles.length : limit;
       if (getTitlesLimit > 0) {
-        const source = this.settingsService.getTitlesSource();
-        this.titlesService.getTitles(source, getTitlesLimit, locale.languageCode).subscribe(titles => {
-          this.processTitles(limit, titles, locale, searchResultsSource, indexOffset, words, observer, progressObserver);
-          indexOffset += titles.length;
+        const titlesSource = this.settingsService.getTitlesSource();
+        this.titlesService.getTitles(titlesSource, getTitlesLimit, locale.languageCode).subscribe(remainingTitles => {
+          this.processTitles(limit, remainingTitles, locale, searchResultsSource, indexOffset, words, observer, progressObserver);
+          indexOffset += remainingTitles.length;
         }, (error: Error) => {
           console.error('Unable to get titles');
           observer.error(error);
@@ -58,13 +55,13 @@ export class GameService {
   }
 
   private processTitles(limit: number, titles: string[], locale: Locale, searchResultsSource: SearchResultsSource, indexOffset: number, words: { [index: number]: Word }, observer: Observer<Game>, progressObserver?: Observer<number>) {
-    var progress = indexOffset;
+    let progress = indexOffset;
     titles.forEach((title, index) => this.searchResultsService.getSearchResults(searchResultsSource, title, locale.languageCode).pipe(finalize(() => {
       if (progressObserver) {
         progress++;
         progressObserver.next(progress);
       }
-      if (Object.keys(words).length == limit) {
+      if (Object.keys(words).length === limit) {
         if (progressObserver) {
           progressObserver.complete();
         }

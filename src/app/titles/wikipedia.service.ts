@@ -1,9 +1,14 @@
-import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
-
+import { Injectable } from '@angular/core';
 import { Observable, Observer } from 'rxjs';
-
 import { LocalStorage } from '../shared/localstorage.decorator';
+
+class WikipediaError extends Error {
+  constructor(message: string) {
+    super(`[Wikipedia] ${message}`);
+    Object.setPrototypeOf(this, WikipediaError.prototype);
+  }
+}
 
 interface WikipediaResponse {
   query: {
@@ -14,39 +19,16 @@ interface WikipediaResponse {
     random: [{
       title: string;
     }];
-  }
+  };
 }
 
 @Injectable()
 export class WikipediaService {
 
-  private url = (languageCode: string) => `https://${languageCode}.wikipedia.org/w/api.php`;
-  // https://www.mediawiki.org/w/api.php?action=help&modules=query%2Bmostviewed
-  // https://www.mediawiki.org/wiki/Extension:PageViewInfo
-  private pvimparams = new HttpParams({
-    fromObject: {
-      action: 'query',
-      format: 'json',
-      list: 'mostviewed',
-      pvimlimit: '500',
-      origin: '*'
-    }
-  });
-  // https://www.mediawiki.org/w/api.php?action=help&modules=query%2Brandom
-  // https://www.mediawiki.org/wiki/API:Random
-  private rnparams = new HttpParams({
-    fromObject: {
-      action: 'query',
-      format: 'json',
-      list: 'random',
-      rnnamespace: '0',
-      rnlimit: '10',
-      origin: '*'
-    }
-  });
-
   @LocalStorage({}, 'wikipediaMostViewedTitles') private mostViewedTitles: { [languageCode: string]: string[] };
   @LocalStorage({}, 'wikipediaRandomTitles') private randomTitles: { [languageCode: string]: string[] };
+
+  private url = (languageCode: string) => `https://${languageCode}.wikipedia.org/w/api.php`;
 
   constructor(private http: HttpClient) { }
 
@@ -68,13 +50,24 @@ export class WikipediaService {
         this.mostViewedTitles = this.mostViewedTitles; // persist most viewed titles
         observer.next(titles);
         observer.complete();
-      }
+      };
       if (this.mostViewedTitles[languageCode].length >= limit) {
         complete();
       } else {
-        this.http.get<WikipediaResponse>(this.url(languageCode), { params: this.pvimparams }).subscribe(response => {
+        // https://www.mediawiki.org/w/api.php?action=help&modules=query%2Bmostviewed
+        // https://www.mediawiki.org/wiki/Extension:PageViewInfo
+        const pvimparams = new HttpParams({
+          fromObject: {
+            action: 'query',
+            format: 'json',
+            list: 'mostviewed',
+            pvimlimit: '500',
+            origin: '*'
+          }
+        });
+        this.http.get<WikipediaResponse>(this.url(languageCode), { params: pvimparams }).subscribe(response => {
           response.query.mostviewed.forEach(mostviewed => {
-            if (mostviewed.ns == 0 && this.validateTitle(mostviewed.title)) {
+            if (mostviewed.ns === 0 && this.validateTitle(mostviewed.title)) {
               this.mostViewedTitles[languageCode].push(mostviewed.title);
             }
           });
@@ -107,11 +100,23 @@ export class WikipediaService {
         this.randomTitles = this.randomTitles; // persist random titles
         observer.next(titles);
         observer.complete();
-      }
+      };
       if (this.randomTitles[languageCode].length >= limit) {
         complete();
       } else {
-        this.http.get<WikipediaResponse>(this.url(languageCode), { params: this.rnparams }).subscribe(response => {
+        // https://www.mediawiki.org/w/api.php?action=help&modules=query%2Brandom
+        // https://www.mediawiki.org/wiki/API:Random
+        const rnparams = new HttpParams({
+          fromObject: {
+            action: 'query',
+            format: 'json',
+            list: 'random',
+            rnnamespace: '0',
+            rnlimit: '10',
+            origin: '*'
+          }
+        });
+        this.http.get<WikipediaResponse>(this.url(languageCode), { params: rnparams }).subscribe(response => {
           response.query.random.forEach(random => {
             if (this.validateTitle(random.title)) {
               this.randomTitles[languageCode].push(random.title);
@@ -129,7 +134,7 @@ export class WikipediaService {
   }
 
   private validateTitle(title: string): boolean {
-    return title != 'Hauptseite' && title != 'Main Page';
+    return title !== 'Hauptseite' && title !== 'Main Page';
   }
 
   private handleHttpErrorResponse(error: HttpErrorResponse) {
@@ -142,11 +147,4 @@ export class WikipediaService {
     }
   }
 
-}
-
-class WikipediaError extends Error {
-  constructor(message: string) {
-    super(`[Wikipedia] ${message}`);
-    Object.setPrototypeOf(this, WikipediaError.prototype);
-  }
 }

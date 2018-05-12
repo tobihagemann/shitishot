@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
-
 import { Observable, Observer } from 'rxjs';
-
-import { SettingsService } from '../settings/settings.service';
 import { SearchResultsService } from '../search-results/search-results.service';
+import { SettingsService } from '../settings/settings.service';
 
 @Injectable()
 export class CustomService {

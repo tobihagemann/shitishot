@@ -1,8 +1,7 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-import { ImpressumComponent } from './impressum.component';
+import { NgModule } from '@angular/core';
 import { ImpressumRoutingModule } from './impressum-routing.module';
+import { ImpressumComponent } from './impressum.component';
 
 @NgModule({
   declarations: [
