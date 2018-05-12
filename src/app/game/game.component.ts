@@ -2,9 +2,8 @@ import { Component, OnInit, QueryList, TemplateRef, ViewChild, ViewChildren } fr
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { Subscriber } from 'rxjs/Subscriber';
-import { Subscription } from 'rxjs/Subscription';
-import 'rxjs/add/operator/finally';
+import { Subscriber, Subscription } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 
 import { NgbPopover, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 
@@ -113,14 +112,14 @@ export class GameComponent implements OnInit {
       this.loadingGameSubscription.unsubscribe();
     }
     const progressObserver = new Subscriber<number>(progress => this.loadingGameProgress = progress);
-    this.loadingGameSubscription = this.gameService.newGame(this.limit, titles, languageCode, source, progressObserver).finally(() => {
+    this.loadingGameSubscription = this.gameService.newGame(this.limit, titles, languageCode, source, progressObserver).pipe(finalize(() => {
       this.loadingGameProgress = -1;
       this.loadingGame = false;
       if (this.showTutorial) {
         this.tutorialState = TutorialState.NextTitle;
         this.openCurrentTutorialPopover()
       }
-    }).subscribe(game => this.initGame(game), (error: Error) => {
+    })).subscribe(game => this.initGame(game), (error: Error) => {
       this.alertMessage = error.message;
       this.resetGame();
     });

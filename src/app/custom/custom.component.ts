@@ -2,11 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { Observable } from 'rxjs/Observable';
-import { Observer } from 'rxjs/Observer';
-import { Subscription } from 'rxjs/Subscription';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
+import { Observable, Observer, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 import { Word } from '../game/word';
 import { Fragment } from '../shared/fragment';
@@ -73,9 +70,10 @@ export class CustomComponent implements OnInit {
     const index = this.words.length;
     this.words.push(word);
     this.titleSubscriptions.push(Observable.create((observer: Observer<string>) => this.titleObservers[index] = observer)
-      .debounceTime(1000)
-      .distinctUntilChanged()
-      .subscribe(title => {
+      .pipe(
+        debounceTime(1000),
+        distinctUntilChanged()
+      ).subscribe(title => {
         // Deactivated fetching search results because it created too many requests. :(
         // if (title.length > 0) {
         //   this.customService.getSearchResults(title).subscribe(searchResults => word.searchResults = searchResults, (error: Error) => word.searchResults = -1);

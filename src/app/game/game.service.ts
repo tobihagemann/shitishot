@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 
-import { Observable } from 'rxjs/Observable';
-import { Observer } from 'rxjs/Observer';
-import 'rxjs/add/operator/finally';
+import { Observable, Observer } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 
 import { SearchResultsService } from '../search-results/search-results.service';
 import { SearchResultsSource } from '../search-results/source.enum';
@@ -60,7 +59,7 @@ export class GameService {
 
   private processTitles(limit: number, titles: string[], locale: Locale, searchResultsSource: SearchResultsSource, indexOffset: number, words: { [index: number]: Word }, observer: Observer<Game>, progressObserver?: Observer<number>) {
     var progress = indexOffset;
-    titles.forEach((title, index) => this.searchResultsService.getSearchResults(searchResultsSource, title, locale.languageCode).finally(() => {
+    titles.forEach((title, index) => this.searchResultsService.getSearchResults(searchResultsSource, title, locale.languageCode).pipe(finalize(() => {
       if (progressObserver) {
         progress++;
         progressObserver.next(progress);
@@ -72,7 +71,7 @@ export class GameService {
         observer.next(new Game(Object.values(words), locale.languageCode, searchResultsSource));
         observer.complete();
       }
-    }).subscribe(searchResults => {
+    })).subscribe(searchResults => {
       words[indexOffset + index] = new Word(title, searchResults);
     }, (error: Error) => {
       words[indexOffset + index] = new Word(title, -1);
