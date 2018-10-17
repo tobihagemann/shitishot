@@ -109,14 +109,16 @@ export class GameComponent implements OnInit {
       this.loadingGameSubscription.unsubscribe();
     }
     const progressObserver = new Subscriber<number>(progress => this.loadingGameProgress = progress);
-    this.loadingGameSubscription = this.gameService.newGame(this.limit, titles, languageCode, source, progressObserver).pipe(finalize(() => {
-      this.loadingGameProgress = -1;
-      this.loadingGame = false;
-      if (this.showTutorial) {
-        this.tutorialState = TutorialState.NextTitle;
-        this.openCurrentTutorialPopover();
-      }
-    })).subscribe(game => this.initGame(game), (error: Error) => {
+    this.loadingGameSubscription = this.gameService.newGame(this.limit, titles, languageCode, source, progressObserver).pipe(
+      finalize(() => {
+        this.loadingGameProgress = -1;
+        this.loadingGame = false;
+        if (this.showTutorial) {
+          this.tutorialState = TutorialState.NextTitle;
+          this.openCurrentTutorialPopover();
+        }
+      })
+    ).subscribe(game => this.initGame(game), (error: Error) => {
       this.alertMessage = error.message;
       this.resetGame();
     });

@@ -66,18 +66,17 @@ export class CustomComponent implements OnInit {
   addWord(word: Word) {
     const index = this.words.length;
     this.words.push(word);
-    this.titleSubscriptions.push(Observable.create((observer: Observer<string>) => this.titleObservers[index] = observer)
-      .pipe(
-        debounceTime(1000),
-        distinctUntilChanged()
-      ).subscribe(title => {
-        // Deactivated fetching search results because it created too many requests. :(
-        // if (title.length > 0) {
-        //   this.customService.getSearchResults(title).subscribe(searchResults => word.searchResults = searchResults, (error: Error) => word.searchResults = -1);
-        // } else {
-        //   word.searchResults = -1;
-        // }
-      }));
+    this.titleSubscriptions.push(Observable.create((observer: Observer<string>) => this.titleObservers[index] = observer).pipe(
+      debounceTime(1000),
+      distinctUntilChanged()
+    ).subscribe(title => {
+      // Deactivated fetching search results because it created too many requests. :(
+      // if (title.length > 0) {
+      //   this.customService.getSearchResults(title).subscribe(searchResults => word.searchResults = searchResults, (error: Error) => word.searchResults = -1);
+      // } else {
+      //   word.searchResults = -1;
+      // }
+    }));
   }
 
   onTitleChange(index: number, title: string) {

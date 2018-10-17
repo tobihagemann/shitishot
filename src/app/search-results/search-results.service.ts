@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { defer, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { BingService } from './bing.service';
 import { GoogleService } from './google.service';
@@ -18,16 +18,20 @@ export class SearchResultsService {
    * @param languageCode Language code.
    */
   getSearchResults(source: SearchResultsSource, title: string, languageCode: string): Observable<number> {
-    switch (source) {
-      case SearchResultsSource.Yandex:
-        return this.yandexService.getSearchResults(title).pipe(map(value => this.beautifyNumber(value)));
-      case SearchResultsSource.Google:
-        return this.googleService.getSearchResults(title, languageCode).pipe(map(value => this.beautifyNumber(value)));
-      case SearchResultsSource.Bing:
-        return this.bingService.getSearchResults(title, languageCode).pipe(map(value => this.beautifyNumber(value)));
-      default:
-        return this.yandexService.getSearchResults(title).pipe(map(value => this.beautifyNumber(value)));
-    }
+    return defer(() => {
+      switch (source) {
+        case SearchResultsSource.Yandex:
+          return this.yandexService.getSearchResults(title);
+        case SearchResultsSource.Google:
+          return this.googleService.getSearchResults(title, languageCode);
+        case SearchResultsSource.Bing:
+          return this.bingService.getSearchResults(title, languageCode);
+        default:
+          return this.yandexService.getSearchResults(title);
+      }
+    }).pipe(
+      map(value => this.beautifyNumber(value))
+    );
   }
 
   /**
