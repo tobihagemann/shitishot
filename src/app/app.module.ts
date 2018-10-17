@@ -49,7 +49,7 @@ export function initL10n(l10nLoader: L10nLoader): Function {
     BrowserModule,
     HttpClientModule,
     LocalizationModule.forRoot(l10nConfig),
-    NgbModule.forRoot(),
+    NgbModule,
     AppRoutingModule,
     FooterModule,
     NavModule,
