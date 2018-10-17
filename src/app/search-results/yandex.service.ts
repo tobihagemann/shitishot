@@ -29,7 +29,7 @@ interface YandexResponse {
 @Injectable()
 export class YandexService {
 
-  private url = 'https://ssl.setolabs.com/yandex/search';
+  private url = 'https://api.shitishot.de/yandex/search';
 
   constructor(private http: HttpClient) { }
 

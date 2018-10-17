@@ -38,7 +38,7 @@ export class AllOriginsService {
 
   // https://medium.freecodecamp.org/client-side-web-scraping-with-javascript-using-jquery-and-regex-5b57a271cb86
   // https://multiverso.me/AllOrigins/
-  private url = 'https://ssl.setolabs.com/allorigins/get';
+  private url = 'https://api.shitishot.de/allorigins/get';
 
   constructor(private http: HttpClient) { }
 
