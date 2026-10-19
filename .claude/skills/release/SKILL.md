@@ -45,11 +45,11 @@ When the CI run is still in progress, wait for it with the same `gh run watch` c
 
 ## Step 2: Confirm Version and Release Notes
 
-Find the last release with `git describe --tags --abbrev=0 origin/main` and list what changed since: `git log --oneline <last-version>..main`. Read the diff behind any commit whose effect on players the subject line leaves unclear.
+Find the last release with `git describe --tags --abbrev=0 origin/main`, and list what changed since: `git log --oneline <last-version>..main`. When resuming a pushed tag, use `git describe --tags --abbrev=0 <tag>^` and `git log --oneline <last-version>..<tag>` instead. Read the diff behind any commit whose effect on players the subject line leaves unclear.
 
 **Version.** Use the provided version when there is one. Otherwise propose one: a major bump for a rebuild or a change that breaks existing share links, a minor bump when players get something new, a patch bump otherwise. The `version` in `package.json` may already name the intended version when a commit set it ahead of the release; treat it as a hint. The version must be greater than the last release, and `git tag --list <version>` must print nothing. When the version is lower than the one in `package.json`, say so in the approval text, since Step 3 lowers `package.json` to it.
 
-**Release notes.** Write one bullet per change a player would notice. Start each with a past-tense verb (Added, Changed, Fixed, Removed, Updated), end it with a period, and leave out CI, tooling, test, formatting, and refactoring changes. Earlier releases read like this:
+**Release notes.** Write one bullet per change a player of the last release would notice. Treat a fix for something introduced since then as part of the change it fixes, and leave the fix out of the notes. Start each with a past-tense verb (Added, Changed, Fixed, Removed, Updated), end it with a period, and leave out CI, tooling, test, formatting, and refactoring changes. Earlier releases read like this:
 
 ```markdown
 - Added notice to finished game if its settings differ from your own settings.
