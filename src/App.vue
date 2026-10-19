@@ -13,7 +13,7 @@ const { titlesSource } = useSettings();
     <header class="sticky top-0 z-10 border-b border-neutral-950/10 bg-white/90 backdrop-blur">
       <div class="mx-auto flex h-14 w-full max-w-3xl items-center justify-between gap-4 px-4 sm:px-6">
         <RouterLink to="/" class="flex items-center gap-2 text-lg font-semibold tracking-tight text-neutral-900">
-          <img class="size-7 shrink-0" src="/assets/logo-nav.png" srcset="/assets/logo-nav@2x.png 2x" alt="" />
+          <img class="h-7 w-auto shrink-0" src="/assets/logo-nav.png" srcset="/assets/logo-nav@2x.png 2x" width="23" height="30" alt="" />
           {{ t('app.title') }}
         </RouterLink>
         <RouterLink :to="{ name: 'settings' }" class="icon-btn icon-btn-neutral" :aria-label="t('app.settings')">
