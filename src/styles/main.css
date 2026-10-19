@@ -1,0 +1,64 @@
+@import 'tailwindcss';
+
+@theme {
+  /* Where the board switches from stacked to side-by-side columns; useBoardLayout.ts matches the same width. */
+  --breakpoint-board: 36rem;
+  --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+}
+
+@layer base {
+  html {
+    @apply antialiased;
+  }
+
+  body {
+    @apply bg-white font-sans text-neutral-900;
+  }
+}
+
+@utility btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-lg px-3 py-2.5 text-base font-semibold whitespace-nowrap outline-offset-2 focus-visible:outline-2 disabled:pointer-events-none disabled:opacity-50 sm:py-2 sm:text-sm;
+}
+
+@utility btn-primary {
+  @apply bg-red-600 text-white ring-1 ring-red-600 outline-red-600 hover:bg-red-700;
+}
+
+@utility btn-secondary {
+  @apply bg-white text-neutral-900 ring-1 ring-neutral-950/15 outline-red-600 hover:bg-neutral-50;
+}
+
+/* disabled:pointer-events-none keeps the hover background off a disabled button. */
+@utility icon-btn {
+  @apply rounded p-1 outline-red-600 outline-offset-2 focus-visible:outline-2 disabled:pointer-events-none disabled:opacity-30;
+}
+
+@utility icon-btn-accent {
+  @apply text-red-600 hover:bg-red-50;
+}
+
+@utility icon-btn-neutral {
+  @apply text-neutral-500 hover:bg-neutral-100 hover:text-neutral-700;
+}
+
+@utility field {
+  @apply w-full rounded-lg bg-white px-3 py-2.5 text-base text-neutral-900 ring-1 ring-neutral-950/15 outline-hidden placeholder:text-neutral-400 focus-visible:ring-2 focus-visible:ring-red-600 sm:py-2 sm:text-sm;
+}
+
+@utility card {
+  @apply rounded-xl bg-white p-5 ring-1 ring-neutral-950/10 sm:p-6;
+}
+
+@utility well {
+  @apply rounded-lg bg-neutral-50 p-4;
+}
+
+@utility link {
+  @apply rounded-sm font-medium text-red-600 underline underline-offset-2 outline-red-600 outline-offset-2 hover:text-red-700 focus-visible:outline-2;
+}
+
+/* reka-ui positions popover content inside its own wrapper, which would still catch taps meant for the columns a
+   tutorial hint covers (see TutorialPopover). */
+[data-reka-popper-content-wrapper]:has(> [data-tutorial]) {
+  pointer-events: none;
+}

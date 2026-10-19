@@ -1,12 +1,7 @@
-import { enableProdMode } from '@angular/core';
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { createApp } from 'vue';
+import App from './App.vue';
+import { i18n } from './i18n.js';
+import { router } from './router.js';
+import './styles/main.css';
 
-import { AppModule } from './app/app.module';
-import { environment } from './environments/environment';
-
-if (environment.production) {
-  enableProdMode();
-}
-
-platformBrowserDynamic().bootstrapModule(AppModule)
-  .catch(err => console.log(err));
+createApp(App).use(router).use(i18n).mount('#app');

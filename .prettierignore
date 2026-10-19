@@ -1,0 +1,3 @@
+# Everything in .gitignore is already ignored by Prettier; only the committed lockfile and local Claude settings need listing.
+pnpm-lock.yaml
+.claude/

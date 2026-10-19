@@ -1,0 +1,5 @@
+allowBuilds:
+  esbuild: true
+  # vue-i18n pulls in vue-demi, whose install script switches it to the Vue 3 entry; without it vue-demi
+  # throws "Vue version not found" at runtime.
+  vue-demi: true
