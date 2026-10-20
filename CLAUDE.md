@@ -9,6 +9,7 @@ A browser-only, bilingual (de/en) solo guessing game: place five Wikipedia artic
 - `src/composables/` — game state (`useGame`), drag gestures, tutorial, settings, localStorage refs.
 - `src/views/`, `src/components/<area>/` — routes and UI. `src/locales/` holds the de/en messages and the German-only legal text.
 - `tests/e2e/` — Playwright specs; `fixtures.ts` stubs every Wikimedia endpoint.
+- `brand/TheShitIsHot.icon` — the Icon Composer document that `scripts/export-icon.ts` renders every icon and logo in `public/` from.
 
 ## Commands & the merge gate
 
@@ -21,8 +22,9 @@ A browser-only, bilingual (de/en) solo guessing game: place five Wikipedia artic
 | `pnpm knip`                       | unused files, exports and dependencies                                                 |
 | `pnpm test`                       | Vitest over `src/**/*.test.ts`                                                         |
 | `pnpm e2e`                        | Playwright against `vite preview` on :28489                                            |
+| `pnpm icon`                       | re-render the icons and logos from the Icon Composer document (Mac with Xcode only)    |
 
-`pnpm e2e` serves the built `dist`, so run `pnpm build` first. CI runs every command above except `dev`, then deploys to Pages on pushes to `main`. **A non-zero exit from any of them, knip included, fails CI and blocks the deploy.**
+`pnpm e2e` serves the built `dist`, so run `pnpm build` first. CI runs every command above except `dev` and `icon`, then deploys to Pages on pushes to `main`. **A non-zero exit from any of them, knip included, fails CI and blocks the deploy.**
 
 ## Conventions
 

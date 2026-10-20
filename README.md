@@ -41,6 +41,14 @@ pnpm dev
 
 The dev server runs at http://localhost:18489.
 
+## App icon
+
+The icon's source is the Icon Composer document `brand/TheShitIsHot.icon`. It has a sky gradient fill and one glass layer per color: the outer and inner flame of Font Awesome Free's solid `fire` icon, with a ring cut out of the outer flame around the inner one.
+
+Its colors live in `icon.json` as Display P3, converted from Tailwind's oklch tokens: sky-500 to sky-700 for the fill, yellow-400 and orange-500 for the flames.
+
+`pnpm icon` renders the document through the `ictool` inside Xcode's Icon Composer, so it runs only on a Mac with Xcode installed. It writes `apple-touch-icon.png` with its corners filled, because iOS paints a transparent corner black. From the same layers drawn flat in sRGB, it writes `favicon.svg`, `favicon.ico` and the header and social logos in `public/assets`. CI never runs it and the tests only check image sizes, so re-render in the same commit as any edit to the document.
+
 ## Deploy
 
 Every push to `main` runs the quality gate in GitHub Actions and, once it passes, deploys the build to GitHub Pages at [shitishot.de](https://shitishot.de). The custom domain lives in the repository's Pages settings.
@@ -48,3 +56,5 @@ Every push to `main` runs the quality gate in GitHub Actions and, once it passes
 ## License
 
 Distributed under the MIT license. See the LICENSE file for more info.
+
+The app icon and logos are based on the "fire" icon from [Font Awesome Free](https://fontawesome.com), licensed under [CC BY 4.0](https://fontawesome.com/license/free).

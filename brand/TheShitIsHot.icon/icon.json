@@ -1,0 +1,62 @@
+{
+  "fill": {
+    "linear-gradient": ["display-p3:0.21911,0.63903,0.93148,1.00000", "display-p3:0.13031,0.40457,0.64085,1.00000"],
+    "orientation": {
+      "start": {
+        "x": 0.5,
+        "y": 0
+      },
+      "stop": {
+        "x": 0.5,
+        "y": 0.7
+      }
+    }
+  },
+  "groups": [
+    {
+      "layers": [
+        {
+          "glass": true,
+          "image-name": "inner.svg",
+          "name": "Inner",
+          "fill": {
+            "solid": "display-p3:0.94659,0.44979,0.07574,1.00000"
+          }
+        }
+      ],
+      "shadow": {
+        "kind": "neutral",
+        "opacity": 0.5
+      },
+      "specular": true,
+      "translucency": {
+        "enabled": false,
+        "value": 0.5
+      }
+    },
+    {
+      "layers": [
+        {
+          "glass": true,
+          "image-name": "outer.svg",
+          "name": "Outer",
+          "fill": {
+            "solid": "display-p3:0.95994,0.79017,0.05852,1.00000"
+          }
+        }
+      ],
+      "shadow": {
+        "kind": "neutral",
+        "opacity": 0.5
+      },
+      "specular": true,
+      "translucency": {
+        "enabled": false,
+        "value": 0.5
+      }
+    }
+  ],
+  "supported-platforms": {
+    "squares": "shared"
+  }
+}

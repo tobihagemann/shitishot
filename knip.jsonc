@@ -1,3 +1,5 @@
 {
   "$schema": "https://unpkg.com/knip@6/schema-jsonc.json",
+  // `pnpm icon` resolves Icon Composer through Xcode's own command-line tool.
+  "ignoreBinaries": ["xcode-select"],
 }
