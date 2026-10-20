@@ -27,7 +27,7 @@ defineEmits<{ 'update:modelValue': [value: string] }>();
           >
             <SelectItemText>{{ option.label }}</SelectItemText>
             <SelectItemIndicator>
-              <CheckIcon class="size-4 shrink-0 text-red-600" />
+              <CheckIcon class="size-4 shrink-0 text-sky-600" />
             </SelectItemIndicator>
           </SelectItem>
         </SelectViewport>

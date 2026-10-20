@@ -67,7 +67,7 @@ onUnmounted(() => {
     </div>
     <div class="flex flex-col gap-2">
       <p class="text-sm font-medium text-neutral-900">{{ t('settings.instructions') }}</p>
-      <blockquote class="flex flex-col gap-2 border-l-2 border-red-600 pl-4 text-sm/6 text-neutral-700">
+      <blockquote class="flex flex-col gap-2 border-l-2 border-sky-600 pl-4 text-sm/6 text-neutral-700">
         <p>{{ t('settings.instructionsText') }}</p>
         <footer class="text-neutral-500">
           — {{ t('settings.instructionsBy') }} <cite>{{ t('settings.instructionsSource') }}</cite>

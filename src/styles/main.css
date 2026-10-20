@@ -21,20 +21,20 @@
 }
 
 @utility btn-primary {
-  @apply bg-red-600 text-white ring-1 ring-red-600 outline-red-600 hover:bg-red-700;
+  @apply bg-sky-700 text-white ring-1 ring-sky-700 outline-sky-600 hover:bg-sky-800;
 }
 
 @utility btn-secondary {
-  @apply bg-white text-neutral-900 ring-1 ring-neutral-950/15 outline-red-600 hover:bg-neutral-50;
+  @apply bg-white text-neutral-900 ring-1 ring-neutral-950/15 outline-sky-600 hover:bg-neutral-50;
 }
 
 /* disabled:pointer-events-none keeps the hover background off a disabled button. */
 @utility icon-btn {
-  @apply rounded p-1 outline-red-600 outline-offset-2 focus-visible:outline-2 disabled:pointer-events-none disabled:opacity-30;
+  @apply rounded p-1 outline-sky-600 outline-offset-2 focus-visible:outline-2 disabled:pointer-events-none disabled:opacity-30;
 }
 
 @utility icon-btn-accent {
-  @apply text-red-600 hover:bg-red-50;
+  @apply text-sky-600 hover:bg-sky-50;
 }
 
 @utility icon-btn-neutral {
@@ -42,7 +42,7 @@
 }
 
 @utility field {
-  @apply w-full rounded-lg bg-white px-3 py-2.5 text-base text-neutral-900 ring-1 ring-neutral-950/15 outline-hidden placeholder:text-neutral-400 focus-visible:ring-2 focus-visible:ring-red-600 sm:py-2 sm:text-sm;
+  @apply w-full rounded-lg bg-white px-3 py-2.5 text-base text-neutral-900 ring-1 ring-neutral-950/15 outline-hidden placeholder:text-neutral-400 focus-visible:ring-2 focus-visible:ring-sky-600 sm:py-2 sm:text-sm;
 }
 
 @utility card {
@@ -54,7 +54,7 @@
 }
 
 @utility link {
-  @apply rounded-sm font-medium text-red-600 underline underline-offset-2 outline-red-600 outline-offset-2 hover:text-red-700 focus-visible:outline-2;
+  @apply rounded-sm font-medium text-sky-700 underline underline-offset-2 outline-sky-600 outline-offset-2 hover:text-sky-800 focus-visible:outline-2;
 }
 
 /* reka-ui positions popover content inside its own wrapper, which would still catch taps meant for the columns a

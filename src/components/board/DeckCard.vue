@@ -27,8 +27,8 @@ const side = computed(() => (horizontal.value ? 'right' : 'bottom'));
     >
       <button
         type="button"
-        class="max-w-70 min-w-50 cursor-grab touch-none rounded-xl bg-white px-5 py-4.5 text-center font-semibold shadow-sm outline-red-600 outline-offset-2 select-none focus-visible:outline-2"
-        :class="[selected ? 'ring-2 ring-red-600' : 'ring-1 ring-neutral-950/10', { 'opacity-35': lifted }]"
+        class="max-w-70 min-w-50 cursor-grab touch-none rounded-xl bg-white px-5 py-4.5 text-center font-semibold shadow-sm outline-sky-600 outline-offset-2 select-none focus-visible:outline-2"
+        :class="[selected ? 'ring-2 ring-sky-600' : 'ring-1 ring-neutral-950/10', { 'opacity-35': lifted }]"
         :aria-pressed="selected"
         data-deck
         @pointerdown="$emit('pointerdown', $event)"

@@ -186,7 +186,7 @@ function customGame(): void {
 <template>
   <div class="flex flex-col gap-6">
     <div v-if="loading" role="status" class="flex flex-col items-center gap-3 py-16 text-sm text-neutral-500">
-      <ArrowPathIcon class="size-4 animate-spin text-red-600" aria-hidden="true" />
+      <ArrowPathIcon class="size-4 animate-spin text-sky-600" aria-hidden="true" />
       {{ t('game.loading') }}
     </div>
 
@@ -300,7 +300,7 @@ function customGame(): void {
 
     <div
       v-if="drag.ghost.value"
-      class="pointer-events-none fixed top-0 left-0 z-50 rounded-xl bg-white px-4.5 py-3.5 font-semibold whitespace-nowrap shadow-xl ring-2 ring-red-600"
+      class="pointer-events-none fixed top-0 left-0 z-50 rounded-xl bg-white px-4.5 py-3.5 font-semibold whitespace-nowrap shadow-xl ring-2 ring-sky-600"
       :style="{ transform: `translate(${drag.ghost.value.x}px, ${drag.ghost.value.y}px)` }"
       aria-hidden="true"
     >

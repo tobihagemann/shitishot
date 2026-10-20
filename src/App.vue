@@ -33,22 +33,22 @@ const { titlesSource } = useSettings();
               href="https://tobiha.de/"
               target="_blank"
               rel="noopener noreferrer"
-              class="rounded-sm outline-red-600 outline-offset-2 hover:text-neutral-900 focus-visible:outline-2"
+              class="rounded-sm outline-sky-600 outline-offset-2 hover:text-neutral-900 focus-visible:outline-2"
               >{{ t('footer.copyright') }}</a
             >
           </p>
           <nav :aria-label="t('footer.nav')" class="flex flex-wrap gap-x-4 gap-y-1">
-            <RouterLink :to="{ name: 'impressum' }" class="rounded-sm outline-red-600 outline-offset-2 hover:text-neutral-900 focus-visible:outline-2">{{
+            <RouterLink :to="{ name: 'impressum' }" class="rounded-sm outline-sky-600 outline-offset-2 hover:text-neutral-900 focus-visible:outline-2">{{
               t('footer.impressum')
             }}</RouterLink>
-            <RouterLink :to="{ name: 'privacy' }" class="rounded-sm outline-red-600 outline-offset-2 hover:text-neutral-900 focus-visible:outline-2">{{
+            <RouterLink :to="{ name: 'privacy' }" class="rounded-sm outline-sky-600 outline-offset-2 hover:text-neutral-900 focus-visible:outline-2">{{
               t('footer.privacy')
             }}</RouterLink>
             <a
               href="https://github.com/tobihagemann/shitishot"
               target="_blank"
               rel="noopener noreferrer"
-              class="rounded-sm outline-red-600 outline-offset-2 hover:text-neutral-900 focus-visible:outline-2"
+              class="rounded-sm outline-sky-600 outline-offset-2 hover:text-neutral-900 focus-visible:outline-2"
               >{{ t('footer.sourceCode') }}</a
             >
           </nav>
@@ -59,7 +59,7 @@ const { titlesSource } = useSettings();
             href="https://www.youtube.com/watch?v=upm6SfYuGX4"
             target="_blank"
             rel="noopener noreferrer"
-            class="rounded-sm outline-red-600 outline-offset-2 hover:text-neutral-900 focus-visible:outline-2"
+            class="rounded-sm outline-sky-600 outline-offset-2 hover:text-neutral-900 focus-visible:outline-2"
             >{{ t('footer.inspiredGame') }}</a
           >
           {{ t('footer.inspiredMiddle') }}
@@ -67,7 +67,7 @@ const { titlesSource } = useSettings();
             href="https://de.wikipedia.org/wiki/Neo_Magazin_Royale"
             target="_blank"
             rel="noopener noreferrer"
-            class="rounded-sm outline-red-600 outline-offset-2 hover:text-neutral-900 focus-visible:outline-2"
+            class="rounded-sm outline-sky-600 outline-offset-2 hover:text-neutral-900 focus-visible:outline-2"
             >{{ t('footer.inspiredShow') }}</a
           >.
         </p>

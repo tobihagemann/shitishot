@@ -28,11 +28,11 @@ const { t, n } = useI18n();
       <button
         v-if="!results"
         type="button"
-        class="relative flex min-h-14 min-w-0 flex-1 items-center px-3.5 py-2.5 text-left touch-none outline-red-600 -outline-offset-2 select-none focus-visible:outline-2 board:min-h-30 board:justify-center board:px-2.5 board:py-3.5 board:text-center"
+        class="relative flex min-h-14 min-w-0 flex-1 items-center px-3.5 py-2.5 text-left touch-none outline-sky-600 -outline-offset-2 select-none focus-visible:outline-2 board:min-h-30 board:justify-center board:px-2.5 board:py-3.5 board:text-center"
         :class="{
           'cursor-grab': title != null,
-          'bg-red-50 ring-2 ring-red-600 ring-inset': hoverIndex === index || (selected === index && !dragging),
-          'cursor-pointer after:pointer-events-none after:absolute after:inset-1.5 after:rounded-lg after:border-[1.5px] after:border-dashed after:border-red-600/35':
+          'bg-sky-50 ring-2 ring-sky-600 ring-inset': hoverIndex === index || (selected === index && !dragging),
+          'cursor-pointer after:pointer-events-none after:absolute after:inset-1.5 after:rounded-lg after:border-[1.5px] after:border-dashed after:border-sky-600/35':
             title == null && tappable && !dragging,
         }"
         :aria-label="title != null ? t('game.slot', { column: index + 1, title }) : t('game.emptySlot', { column: index + 1 })"
